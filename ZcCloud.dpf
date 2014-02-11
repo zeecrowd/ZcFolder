@@ -222,16 +222,6 @@
                   </QtResourceFile>
                 </Item>
                 <Item Template="QtResourceFile">
-                  <QtResourceFile FileName="FileTextDelegate.qml">
-                    <Properties>
-                      <BuildAction value="Compile" />
-                      <Locale value="" />
-                      <Alias value="" />
-                    </Properties>
-                    <Items />
-                  </QtResourceFile>
-                </Item>
-                <Item Template="QtResourceFile">
                   <QtResourceFile FileName="FolderGridIconView.qml">
                     <Properties>
                       <BuildAction value="Compile" />
@@ -303,6 +293,54 @@
                     <Items>
                       <Item Template="QtResourceFile">
                         <QtResourceFile FileName="LockedDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="FileNameDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="FileTextDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="CheckedDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="DateDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="SizeDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
                           </Properties>

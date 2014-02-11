@@ -20,7 +20,6 @@ Item
         repeater.model = model
     }
 
-    signal clean();
 
     Slider
     {

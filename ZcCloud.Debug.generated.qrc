@@ -17,7 +17,6 @@
 		<file>Resources\unlock.png</file>
 		<file>Views\Folder\copyWorker.js</file>
 		<file>Views\Folder\FileHeaderDelegate.qml</file>
-		<file>Views\Folder\FileTextDelegate.qml</file>
 		<file>Views\Folder\FolderGridIconView.qml</file>
 		<file>Views\Folder\FolderGridView.qml</file>
 		<file>Views\Folder\SplashScreen.qml</file>
@@ -25,6 +24,11 @@
 		<file>Views\Folder\ZcFolder.qml</file>
 		<file>Views\Folder\ZcFolderPresenter.js</file>
 		<file>Views\Folder\Delegate\LockedDelegate.qml</file>
+		<file>Views\Folder\Delegate\FileNameDelegate.qml</file>
+		<file>Views\Folder\Delegate\FileTextDelegate.qml</file>
+		<file>Views\Folder\Delegate\CheckedDelegate.qml</file>
+		<file>Views\Folder\Delegate\DateDelegate.qml</file>
+		<file>Views\Folder\Delegate\SizeDelegate.qml</file>
 		<file>ZcCloud.zeeapmanifest</file>
 	</qresource>
 </RCC>

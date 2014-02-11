@@ -8,7 +8,10 @@ Item
 
     function changeLock()
     {
-        var dataObject = Tools.parseDatas(item.datas)
+        if (item === undefined ||item === null)
+            return;
+
+        var dataObject = Tools.parseDatas(item.cast.datas)
         if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
         {
             lockImage.source = "qrc:/ZcCloud/Resources/lock.png"
@@ -24,12 +27,6 @@ Item
         changeLock();
         item.cast.datasChanged.connect(changeLock)
     }
-
-    Component.onDestruction:
-    {
-        item.cast.datasChanged.disconnect(changeLock)
-    }
-
 
     height      : 25
     width       : 25

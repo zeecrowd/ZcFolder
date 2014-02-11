@@ -38,7 +38,7 @@ ZcAppView
                 fileDialog.open()
             }
         }
-       ,
+        ,
         Action {
             id: exportAction
             shortcut: "Ctrl+E"
@@ -79,10 +79,9 @@ ZcAppView
             iconSource: "qrc:/ZcCloud/Resources/tile.png"
             onTriggered:
             {
-                loader.item.clean()
                 loader.source = "";
-               loader.source = "FolderGridIconView.qml"
-               loader.item.setModel(documentFolder.files);
+                loader.source = "FolderGridIconView.qml"
+                loader.item.setModel(documentFolder.files);
             }
         }
         ,
@@ -91,10 +90,9 @@ ZcAppView
             iconSource: "qrc:/ZcCloud/Resources/list.png"
             onTriggered:
             {
-                loader.item.clean()
                 loader.source = "";
-               loader.source = "FolderGridView.qml"
-               loader.item.setModel(documentFolder.files);
+                loader.source = "FolderGridView.qml"
+                loader.item.setModel(documentFolder.files);
             }
         }
 
@@ -189,7 +187,7 @@ ZcAppView
                     return;
 
                 notifySender.sendMessage("","{ sender : \"" + mainView.context.nickname + "\", action : \"added\" , fileName : \"" + fileName + "\" , size : " +  result.size + " , lastModified : \"" + result.timeStamp + "\" }");
-             }
+            }
 
             onFileDownloaded :
             {
@@ -215,7 +213,7 @@ ZcAppView
         onStarted:
         {
             lockedActivityItems.loadItems(
-                             lockedActivityItemsQueryStatus);
+                        lockedActivityItemsQueryStatus);
         }
 
         ZcMessageListener
@@ -245,7 +243,7 @@ ZcAppView
                         }
                     }
                     else if (o.action === "added")
-                   {
+                    {
                         if (o.sender !== mainView.context.nickname)
                         {
                             var fd = documentFolder.getFileDescriptor(o.fileName,true);
@@ -265,56 +263,56 @@ ZcAppView
 
         ZcCrowdActivityItems
         {
-             id         : lockedActivityItems
-             name       : "FilesLocked"
-             persistent : true
+            id         : lockedActivityItems
+            name       : "FilesLocked"
+            persistent : true
 
-             ZcQueryStatus
-             {
-               id : lockedActivityItemsQueryStatus
+            ZcQueryStatus
+            {
+                id : lockedActivityItemsQueryStatus
 
-               onCompleted :
-               {
-                   documentFolder.ensureLocalPathExists();
-                   mainView.refreshFiles();
-               }
+                onCompleted :
+                {
+                    documentFolder.ensureLocalPathExists();
+                    mainView.refreshFiles();
+                }
 
-               onErrorOccured :
-               {
-                   console.log(">> ERRROR " + error + " " + errorCause  + " " + errorMessage)
-               }
-             }
+                onErrorOccured :
+                {
+                    console.log(">> ERRROR " + error + " " + errorCause  + " " + errorMessage)
+                }
+            }
 
-             onItemChanged :
-             {
-                 console.log(">> item changed ")
-                 var objectFound = Tools.findInListModel(documentFolder.files, function(x)
-                 {return x.cast.name === idItem});
+            onItemChanged :
+            {
+                console.log(">> item changed ")
+                var objectFound = Tools.findInListModel(documentFolder.files, function(x)
+                {return x.cast.name === idItem});
 
-                 if (objectFound !== null)
-                 {
-                     var objectDatas = Tools.parseDatas(objectFound.cast.datas);
-                     objectDatas.lockedBy = lockedActivityItems.getItem(idItem,"");
+                if (objectFound !== null)
+                {
+                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
+                    objectDatas.lockedBy = lockedActivityItems.getItem(idItem,"");
 
-                     objectFound.cast.datas = JSON.stringify(objectDatas)
-                 }
-             }
+                    objectFound.cast.datas = JSON.stringify(objectDatas)
+                }
+            }
 
-             onItemDeleted :
-             {
-                 console.log(">> onItemDeleted "  +idItem)
+            onItemDeleted :
+            {
+                console.log(">> onItemDeleted "  +idItem)
 
-                 var objectFound = Tools.findInListModel(documentFolder.files, function(x)
-                 {return x.cast.name === idItem});
+                var objectFound = Tools.findInListModel(documentFolder.files, function(x)
+                {return x.cast.name === idItem});
 
-                 if (objectFound !== null)
-                 {
-                     var objectDatas = Tools.parseDatas(objectFound.cast.datas);
-                     objectDatas.lockedBy = "";
+                if (objectFound !== null)
+                {
+                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
+                    objectDatas.lockedBy = "";
 
-                     objectFound.cast.datas = JSON.stringify(objectDatas)
-                 }
-             }
+                    objectFound.cast.datas = JSON.stringify(objectDatas)
+                }
+            }
 
 
 
@@ -353,10 +351,10 @@ ZcAppView
             {
                 importFile(fileDialog.fileUrls);
             }
-//            else
-//            {
-//                exportFile(fileDialog.folder);
-//            }
+            //            else
+            //            {
+            //                exportFile(fileDialog.folder);
+            //            }
         }
     }
 
@@ -441,7 +439,7 @@ ZcAppView
         else
         {
             Presenter.instance.fileStatus[file.cast.name] = "open"
-        //    documentFolder.downloadFile(file.cast)
+            //    documentFolder.downloadFile(file.cast)
             Presenter.instance.startDownload(file);
         }
     }
@@ -517,7 +515,7 @@ ZcAppView
     }
 
     function refreshFiles()
-	{
+    {
         documentFolder.loadFiles();
         documentFolder.loadRemoteFiles(documentFolderQueryStatus);
     }
@@ -532,11 +530,11 @@ ZcAppView
 
         onTriggered:
         {
-//            if (needRefresh)
-//            {
-//                needRefresh = false;
-//                refreshFiles()
-//            }
+            //            if (needRefresh)
+            //            {
+            //                needRefresh = false;
+            //                refreshFiles()
+            //            }
         }
     }
 }
