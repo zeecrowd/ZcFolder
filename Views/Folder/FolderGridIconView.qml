@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
+import "./Delegate"
 
 import ZcClient 1.0
 
@@ -135,18 +136,6 @@ Item
                             {
                                 extension.text = item.cast.suffix();
                             }
-//                            else
-//                            {
-//                                if (sourceSize.width < parent.width && sourceSize.height < parent.height)
-//                                {
-//                                    image.width = sourceSize.width;
-//                                    image.height = sourceSize.height;
-
-//                                    image.anchors.centerIn = parent;
-//                                }
-
-//                            }
-
                         }
 
                     }
@@ -216,7 +205,7 @@ Item
                                 image.refreshImage();
                             }
                         }
-                     }
+                    }
 
                     Rectangle
                     {
@@ -255,6 +244,17 @@ Item
 
                         visible: image.status === Image.Error
                     }
+
+
+                    LockedDelegate
+                    {
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.rightMargin: 3
+                        anchors.topMargin: 3
+
+                    }
+
 
 
                     //        CheckBox

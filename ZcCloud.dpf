@@ -3,7 +3,7 @@
   <Configurations>
     <Configuration name="Debug">
       <Properties>
-        <OutputDirectory value="..\..\..\..\ZC\Crowd\Source\Client\bin\Debug\packages\ZcCloud" />
+        <OutputDirectory value="..\..\dev\ZC\Crowd\Source\Client\bin\Debug\packages\ZcCloud" />
         <ShortNodeName />
         <IntermediateFilesDirectory value=".\IntermediateFiles\Debug" />
         <CommandLineArguments value="" />
@@ -82,6 +82,16 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
+            <QtResourceFile FileName="folder.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
             <QtResourceFile FileName="import.png">
               <Properties>
                 <BuildAction value="Compile" />
@@ -96,6 +106,16 @@
           </Item>
           <Item Template="QtResourceFile">
             <QtResourceFile FileName="list.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="synchronize.png">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />
@@ -151,7 +171,7 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
-            <QtResourceFile FileName="folder.png">
+            <QtResourceFile FileName="lock.png">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />
@@ -161,9 +181,11 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
-            <QtResourceFile FileName="synchronize.png">
+            <QtResourceFile FileName="unlock.png">
               <Properties>
                 <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
               </Properties>
               <Items />
             </QtResourceFile>
@@ -274,6 +296,21 @@
                     </Properties>
                     <Items />
                   </QtResourceFile>
+                </Item>
+                <Item Template="QtResourceProjectFolder">
+                  <QtResourceProjectFolder Name="Delegate">
+                    <Properties />
+                    <Items>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="LockedDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                    </Items>
+                  </QtResourceProjectFolder>
                 </Item>
               </Items>
             </QtResourceProjectFolder>

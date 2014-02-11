@@ -7,5 +7,6 @@ OTHER_FILES += \
     Views/Folder/ZcFolderPresenter.js \
     Views/Folder/copyWorker.js \
     Views/Folder/SplashScreen.qml \
-    Views/Folder/FolderGridIconView.qml
+    Views/Folder/FolderGridIconView.qml \
+    Views/Folder/Delegate/LockedDelegate.qml
   

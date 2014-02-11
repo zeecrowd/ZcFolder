@@ -37,3 +37,40 @@ function findInListModel(listModel, findDelegate)
 
     return null;
 }
+
+
+function parseDatas(datas)
+{
+    if (datas === null || datas === undefined)
+        return {}
+
+
+    var objectDatas = null;
+
+    try
+    {
+
+        objectDatas = JSON.parse(datas);
+    }
+    catch (e)
+    {
+        objectDatas = {}
+    }
+
+    if (objectDatas === null)
+        return {};
+
+    if (objectDatas === undefined)
+        return {};
+
+    objectDatas.testparse = "testparse"
+    if (objectDatas.testparse !== "testparse")
+    {
+        return {}
+    }
+
+    objectDatas.testparse = undefined;
+
+    return objectDatas;
+
+}
