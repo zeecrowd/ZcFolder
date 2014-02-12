@@ -335,12 +335,24 @@
                         <QtResourceFile FileName="DateDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
                           </Properties>
                           <Items />
                         </QtResourceFile>
                       </Item>
                       <Item Template="QtResourceFile">
                         <QtResourceFile FileName="SizeDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="SynchronizeDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
                           </Properties>

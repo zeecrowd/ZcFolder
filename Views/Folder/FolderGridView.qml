@@ -103,78 +103,55 @@ ScrollView
                 header              : FileHeaderDelegate { text :  "Name" }
             }
 
-
             ListView
             {
+
                 id                  : filesSynchronizeListView
                 spacing             : 5
                 Layout.minimumWidth : 25
                 interactive         : false
                 contentY            : filesCalculateDateListView.contentY
-                delegate            :
-                    Rectangle
-                {
-                height      : 25
-                width       : 25
-                color       : item != null && item !== undefined && item.busy ? "lightgrey" : (index % 2 ? "#FFF2B7" : "white")
-                Image
-                {
-                    anchors.fill: parent
-                    visible    : item.status !== "" && !item.busy
-                    source : item.status === "upload" ? "qrc:/ZcCloud/Resources/export.png" : "qrc:/ZcCloud/Resources/import.png"
+                delegate            : SynchronizeDelegate {}
 
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        enabled     : parent.visible
-
-                        onClicked:
-                        {
-                            mainView.synchronize(item)
-                        }
-                    }
-                }
+                header              : FileHeaderDelegate { }
             }
-            header              : FileHeaderDelegate { }
+
+            ListView
+            {
+                id                  : filesLockedListView
+                spacing             : 5
+                Layout.minimumWidth : 25
+                interactive         : false
+                contentY            : filesCalculateDateListView.contentY
+                delegate            : LockedDelegate{}
+
+
+                header              : FileHeaderDelegate { }
+            }
+
+            ListView
+            {
+                id                  : filesCalculateSizeListView
+                spacing             : 5
+                Layout.minimumWidth : 100
+                contentY            : filesCalculateDateListView.contentY
+                model               : parent.model
+                interactive         : false
+                delegate            : SizeDelegate {}
+                header              : FileHeaderDelegate { text :  "Size" }
+            }
+
+            ListView
+            {
+                id                    : filesCalculateDateListView
+                spacing               : 5
+                Layout.minimumWidth   : 200
+                model                 : parent.model
+                interactive           : false
+                delegate              : DateDelegate {}
+                header                : FileHeaderDelegate { text :  "Date" }
+            }
+
         }
-
-        ListView
-        {
-            id                  : filesLockedListView
-            spacing             : 5
-            Layout.minimumWidth : 25
-            interactive         : false
-            contentY            : filesCalculateDateListView.contentY
-            delegate            : LockedDelegate{}
-
-
-            header              : FileHeaderDelegate { }
-        }
-
-
-        ListView
-        {
-            id                  : filesCalculateSizeListView
-            spacing             : 5
-            Layout.minimumWidth : 100
-            contentY            : filesCalculateDateListView.contentY
-            model               : parent.model
-            interactive         : false
-            delegate            : SizeDelegate {}
-            header              : FileHeaderDelegate { text :  "Size" }
-        }
-
-        ListView
-        {
-            id                    : filesCalculateDateListView
-            spacing               : 5
-            Layout.minimumWidth   : 200
-            model                 : parent.model
-            interactive           : false
-            delegate              : DateDelegate {}
-            header                : FileHeaderDelegate { text :  "Date" }
-        }
-
     }
-}
 }

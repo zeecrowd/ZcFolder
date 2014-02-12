@@ -6,7 +6,10 @@ Item
 {
     id : delegateLock
 
-    function changeLock()
+    /*
+    ** Et lock/unlock image from datas.lockedBy
+    */
+    function setImageLock()
     {
         if (item === undefined ||item === null)
             return;
@@ -19,13 +22,15 @@ Item
         }
 
         lockImage.source = "qrc:/ZcCloud/Resources/unlock.png"
-
     }
 
+    /*
+    ** Change lock image when datas changed
+    */
     Component.onCompleted:
     {
-        changeLock();
-        item.cast.datasChanged.connect(changeLock)
+        setImageLock();
+        item.cast.datasChanged.connect(setImageLock)
     }
 
     height      : 25
@@ -44,11 +49,13 @@ Item
 
             onClicked:
             {
+                // Lock or unlock only have the right to do this
                 if (!mainView.haveTheRighToModify(item.name))
                     return;
 
                 var datasObject = Tools.parseDatas(item.datas);
 
+                // lock or unlock
                 if (datasObject.lockedBy === undefined || datasObject.lockedBy === "" || datasObject.lockedBy === null )
                 {
                     mainView.lockFile(item.name);

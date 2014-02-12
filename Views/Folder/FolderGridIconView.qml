@@ -44,36 +44,38 @@ Item
     {
         id : fodlerGridIconeViewId
 
-        anchors.top: slider.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-
-
-
+        anchors
+        {
+            top     : slider.bottom
+            left    : parent.left
+            right   : parent.right
+            bottom  : parent.bottom
+        }
 
         Flow
         {
             id : listView
-            anchors.top  : parent.top
-            anchors.left : parent.left
+
+            anchors
+            {
+                top  : parent.top
+                left : parent.left
+            }
 
             width : slider.width
-
-            flow : Flow.LeftToRight
+            flow  : Flow.LeftToRight
 
             spacing: 10
 
-            Repeater {
+            Repeater
+            {
                 id : repeater
-
 
                 Item
                 {
 
-                    width: 200 * slider.value
-                    height: 200 * slider.value
-
+                    width  : 200 * slider.value
+                    height : 200 * slider.value
 
                     Rectangle
                     {
@@ -85,12 +87,16 @@ Item
                     Image
                     {
                         id : image
-                        anchors.top: parent.top
-                        anchors.left: parent.left
+
+                        anchors
+                        {
+                            top: parent.top
+                            left: parent.left
+                        }
 
                         asynchronous: true
 
-                        width : parent.width
+                        width  : parent.width
                         height : 200 * slider.value - 20
 
                         fillMode: Image.PreserveAspectFit
@@ -139,31 +145,46 @@ Item
 
                     }
 
-                    Image
+
+                    SynchronizeDelegate
                     {
-                        height      : 25
-                        width       : 25
+                        color : "#00000000"
 
-                        anchors.bottom: image.bottom
-                        anchors.right: parent.right
-                        anchors.leftMargin: 3
-                        anchors.rightMargin: 3
-
-                        visible    : item.status !== "" && !item.busy
-                        source : item.status === "upload" ? "qrc:/ZcCloud/Resources/export.png" : "qrc:/ZcCloud/Resources/import.png"
-
-                        MouseArea
+                        anchors
                         {
-                            anchors.fill: parent
-                            enabled     : parent.visible
+                            bottom: image.bottom
+                            right: parent.right
+                            leftMargin: 3
+                            rightMargin: 3
 
-                            onClicked:
-                            {
-                                mainView.synchronize(item)
-                            }
                         }
-
                     }
+
+                    //                    Image
+                    //                    {
+                    //                        height      : 25
+                    //                        width       : 25
+
+                    //                        anchors.bottom: image.bottom
+                    //                        anchors.right: parent.right
+                    //                        anchors.leftMargin: 3
+                    //                        anchors.rightMargin: 3
+
+                    //                        visible    : item.status !== "" && !item.busy
+                    //                        source : item.status === "upload" ? "qrc:/ZcCloud/Resources/export.png" : "qrc:/ZcCloud/Resources/import.png"
+
+                    //                        MouseArea
+                    //                        {
+                    //                            anchors.fill: parent
+                    //                            enabled     : parent.visible
+
+                    //                            onClicked:
+                    //                            {
+                    //                                mainView.synchronize(item)
+                    //                            }
+                    //                        }
+
+                    //                    }
 
                     ProgressBar
                     {
@@ -254,28 +275,6 @@ Item
 
                     }
 
-
-
-                    //        CheckBox
-                    //        {
-                    //            id : checkBox
-                    //            anchors.left: parent.left
-                    //            anchors.top: parent.top
-                    //            anchors.leftMargin: 3
-                    //            anchors.rightMargin: 3
-
-                    //            enabled : !item.busy
-
-                    //            onCheckedChanged:
-                    //            {
-                    //                model.cast.isSelected = checked
-                    //            }
-
-                    //            Component.onCompleted :
-                    //            {
-                    //                checked = model.cast.isSelected;
-                    //            }
-                    //        }
                 }
 
             }
