@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 
+import "../Tools.js" as Tools
+
 Rectangle
 {
     height : 20
@@ -22,16 +24,50 @@ Rectangle
 
         Label
         {
+            id : lbName
             height : 20 ;
-            anchors
-            {
-                left : lbStatus.right
-                right : parent.right
-            }
+            width : 200 ;
 
             text: name ;
             color : "black";
             font.pixelSize:  16
+        }
+
+        Label
+        {
+            height : 20 ;
+
+            width  : 400
+
+            text: message ;
+            color : "black";
+            font.pixelSize:  16
+        }
+
+        Button
+        {
+            height : 20 ;
+            width  : status === "NeedValidation" ? 80 : 0
+            text: "Validate"
+
+            onClicked:
+            {
+                Tools.setPropertyinListModel(uploadingFiles,"status","Validated",function (x) { return x.name === name });
+                Tools.setPropertyinListModel(uploadingFiles,"validated",true,function (x) { return x.name === name });
+                Tools.setPropertyinListModel(uploadingFiles,"message","",function (x) { return x.name === name });
+                mainView.restartUpload(name,localPath);
+            }
+        }
+        Button
+        {
+            height : 20 ;
+            width  : status === "NeedValidation" || status === "Error" ? 80 : 0
+            text: "Cancel"
+
+            onClicked:
+            {
+                mainView.cancelUpload(name);
+            }
         }
     }
 

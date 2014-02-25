@@ -166,23 +166,15 @@ ZcAppView
             {
                 var fileDescriptor = Presenter.instance.fileDescriptorToUpload[fileName];
 
-                if (fileDescriptor !== null && fileDescriptor !== undefined)
-                {
-                    Tools.setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === fileName });
-                    documentFolder.uploadFile(fileDescriptor,".upload/" + fileDescriptor.name)
-                }
+                Tools.setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === fileName });
+                Presenter.instance.decrementUploadRunning();
+                Presenter.instance.startUpload(fileDescriptor,"");
             }
 
             onFileUploaded :
             {
 
-                var fileDescriptor = Presenter.instance.fileDescriptorToUpload[fileName];
 
-                if (fileDescriptor !== null && fileDescriptor !== undefined)
-                {
-                    documentFolder.removeLocalFile(".upload\\" + fileDescriptor.name)
-                    notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"added\" , \"fileName\" : \"" + fileName + "\" , \"size\" : " +  fileDescriptor.size + " , \"lastModified\" : \"" + fileDescriptor.timeStamp + "\" }");
-                }
 
                 Presenter.instance.uploadFinished(fileName);
 
@@ -442,24 +434,38 @@ ZcAppView
 //        })
 //    }
 
-    function synchronize(file)
+    function cancelUpload(fileName)
     {
-
-        if (file.status === "upload")
-        {
-            console.log(">> synchronize " + file.name)
-
-            if (!mainView.haveTheRighToModify(file.name))
-                return;
-
-            Presenter.instance.startUpload(file,"");
-        }
-        else if (file.status === "download")
-        {
-            Presenter.instance.startDownload(file);
-        }
-
+        Presenter.instance.uploadFinished(fileName)
     }
+
+    function restartUpload(fileName,path)
+    {
+        var file = Presenter.instance.fileDescriptorToUpload[fileName];
+        if (file === null || file === undefined)
+            return;
+
+        Presenter.instance.startUpload(file.cast,path);
+    }
+
+//    function synchronize(file)
+//    {
+
+//        if (file.status === "upload")
+//        {
+//            console.log(">> synchronize " + file.name)
+
+//            if (!mainView.haveTheRighToModify(file.name))
+//                return;
+
+//            Presenter.instance.startUpload(file.cast,"");
+//        }
+//        else if (file.status === "download")
+//        {
+//            Presenter.instance.startDownload(file);
+//        }
+
+//    }
 
     function openFile(file)
     {
@@ -488,8 +494,6 @@ ZcAppView
         {
             var fd = documentFolder.createFileDescriptorFromFile(fileUrls[i]);
 
-            if (!mainView.haveTheRighToModify(fd.name))
-                continue;
 
             if (fd !== null)
             {
@@ -503,7 +507,7 @@ ZcAppView
 
         Tools.forEachInArray(fds, function (x)
         {
-            Presenter.instance.startUpload(x.fileDescriptor,x.url);
+            Presenter.instance.startUpload(x.fileDescriptor.cast,x.url);
         });
     }
 
