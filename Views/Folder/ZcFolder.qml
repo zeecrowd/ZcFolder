@@ -32,7 +32,7 @@ ZcAppView
             tooltip : "Push on the cloud"
             onTriggered:
             {
-                mainView.state = "import"
+                mainView.state = "putOnCloud"
                 fileDialog.selectMultiple = true;
                 fileDialog.selectFolder = false
                 fileDialog.open()
@@ -62,26 +62,26 @@ ZcAppView
                 mainView.deleteSelectedFiles();
             }
         }
-        ,
-        Action {
-            id: refreshAction
-            shortcut: "F5"
-            iconSource: "qrc:/ZcCloud/Resources/synchronize.png"
-            tooltip : "Synchronize all\nselected files"
-            onTriggered:
-            {
-                mainView.synchronizeSelectedFiles();
-            }
-        }
+//        ,
+//        Action {
+//            id: refreshAction
+//            shortcut: "F5"
+//            iconSource: "qrc:/ZcCloud/Resources/synchronize.png"
+//            tooltip : "Synchronize all\nselected files"
+//            onTriggered:
+//            {
+//                mainView.synchronizeSelectedFiles();
+//            }
+//        }
         ,
         Action {
             id: iconAction
             iconSource: "qrc:/ZcCloud/Resources/tile.png"
             onTriggered:
             {
-                loader.source = "";
-                loader.source = "FolderGridIconView.qml"
-                loader.item.setModel(documentFolder.files);
+                loaderFolderView.source = "";
+                loaderFolderView.source = "FolderGridIconView.qml"
+                loaderFolderView.item.setModel(documentFolder.files);
             }
         }
         ,
@@ -90,9 +90,9 @@ ZcAppView
             iconSource: "qrc:/ZcCloud/Resources/list.png"
             onTriggered:
             {
-                loader.source = "";
-                loader.source = "FolderGridView.qml"
-                loader.item.setModel(documentFolder.files);
+                loaderFolderView.source = "";
+                loaderFolderView.source = "FolderGridView.qml"
+                loaderFolderView.item.setModel(documentFolder.files);
             }
         }
 
@@ -139,15 +139,13 @@ ZcAppView
                             toBeDeleted.push(file.cast.name);
                         }
 
+                        /*
+                        ** SetDatas : lockedBy
+                        */
                         var lockedBy = lockedActivityItems.getItem(file.cast.name,"");
-
-
-                        if (lockedBy !== null && lockedBy !== "" && lockedBy !== undefined)
-                        {
-                            var objectData = {}
-                            objectData.lockedBy = lockedBy
-                            file.cast.datas = JSON.stringify(objectData);
-                        }
+                        var objectData = Tools.parseDatas(lockedBy)
+                        objectData.lockedBy = lockedBy
+                        file.cast.datas = JSON.stringify(objectData);
                     })
 
                     Tools.forEachInArray(toBeDeleted, function (x)
@@ -157,7 +155,7 @@ ZcAppView
 
 
 
-                    loader.item.setModel(documentFolder.files);
+                    loaderFolderView.item.setModel(documentFolder.files);
                     splashScreenId.height = 0;
                     splashScreenId.width = 0;
                     splashScreenId.visible = false;
@@ -166,27 +164,33 @@ ZcAppView
 
             onImportFileToLocalFolderCompleted :
             {
-                var result = Tools.findInListModel(documentFolder.files, function(x)
-                {return x.cast.name === fileName});
+                var fileDescriptor = Presenter.instance.fileDescriptorToUpload[fileName];
 
-                if (result === null || result === undefined)
-                    return;
-
-                documentFolder.uploadFile(result);
+                if (fileDescriptor !== null && fileDescriptor !== undefined)
+                {
+                    Tools.setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === fileName });
+                    documentFolder.uploadFile(fileDescriptor,".upload/" + fileDescriptor.name)
+                }
             }
 
             onFileUploaded :
             {
-                Presenter.instance.uploadFinished();
 
-                var result = Tools.findInListModel(documentFolder.files, function(x)
-                {return x.cast.name === fileName});
+                var fileDescriptor = Presenter.instance.fileDescriptorToUpload[fileName];
 
+                if (fileDescriptor !== null && fileDescriptor !== undefined)
+                {
+                    documentFolder.removeLocalFile(".upload\\" + fileDescriptor.name)
+                    notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"added\" , \"fileName\" : \"" + fileName + "\" , \"size\" : " +  fileDescriptor.size + " , \"lastModified\" : \"" + fileDescriptor.timeStamp + "\" }");
+                }
 
-                if (result === null || result === undefined)
-                    return;
+                Presenter.instance.uploadFinished(fileName);
 
-                notifySender.sendMessage("","{ sender : \"" + mainView.context.nickname + "\", action : \"added\" , fileName : \"" + fileName + "\" , size : " +  result.size + " , lastModified : \"" + result.timeStamp + "\" }");
+                // close the upload view
+                if (uploadingFiles.count === 0)
+                {
+                    loaderUploadView.height = 0
+                }
             }
 
             onFileDownloaded :
@@ -206,7 +210,9 @@ ZcAppView
             }
             onFileDeleted :
             {
-                notifySender.sendMessage("","{ sender : \"" + mainView.context.nickname + "\", action : \"deleted\" , fileName : \"" + fileName + "\"}");
+                notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"deleted\" , \"fileName\" : \"" + fileName + "\"}");
+                // file no longer exist .. then ubnlock it
+                mainView.unlockFile(fileName);
             }
         }
 
@@ -223,7 +229,7 @@ ZcAppView
 
             onMessageReceived :
             {
-                var o = eval("(" + message.body +")" );
+                var o = JSON.parse(message.body);
 
                 if ( o !==null )
                 {
@@ -244,12 +250,9 @@ ZcAppView
                     }
                     else if (o.action === "added")
                     {
-                        if (o.sender !== mainView.context.nickname)
-                        {
                             var fd = documentFolder.getFileDescriptor(o.fileName,true);
                             fd.setRemoteInfo(o.size,new Date(o.lastModified));
                             fd.status = "download";
-                        }
                     }
                 }
 
@@ -274,6 +277,7 @@ ZcAppView
                 onCompleted :
                 {
                     documentFolder.ensureLocalPathExists();
+                    documentFolder.ensureLocalPathExists(".upload");
                     mainView.refreshFiles();
                 }
 
@@ -285,7 +289,6 @@ ZcAppView
 
             onItemChanged :
             {
-                console.log(">> item changed ")
                 var objectFound = Tools.findInListModel(documentFolder.files, function(x)
                 {return x.cast.name === idItem});
 
@@ -293,14 +296,12 @@ ZcAppView
                 {
                     var objectDatas = Tools.parseDatas(objectFound.cast.datas);
                     objectDatas.lockedBy = lockedActivityItems.getItem(idItem,"");
-
                     objectFound.cast.datas = JSON.stringify(objectDatas)
                 }
             }
 
             onItemDeleted :
             {
-                console.log(">> onItemDeleted "  +idItem)
 
                 var objectFound = Tools.findInListModel(documentFolder.files, function(x)
                 {return x.cast.name === idItem});
@@ -309,7 +310,6 @@ ZcAppView
                 {
                     var objectDatas = Tools.parseDatas(objectFound.cast.datas);
                     objectDatas.lockedBy = "";
-
                     objectFound.cast.datas = JSON.stringify(objectDatas)
                 }
             }
@@ -321,23 +321,43 @@ ZcAppView
 
     }
 
-    function lockFile(fileName)
+    SplitView
     {
-        console.log(">> lockFile ")
-        lockedActivityItems.setItem(fileName,mainView.context.nickname)
-    }
+        anchors.fill: parent
+        orientation: Qt.Vertical
 
-    function unlockFile(fileName)
-    {
-        console.log(">> lunockFile ")
-        lockedActivityItems.deleteItem(fileName)
-    }
+        Component
+        {
+            id : handleDelegateDelegate
+            Rectangle
+            {
+                height : 10
+                color :  styleData.hovered ? "grey" :  "lightgrey"
+            }
+        }
 
-    Loader
-    {
-        id : loader
-        anchors.fill : parent
-        source : "FolderGridView.qml"
+        handleDelegate : handleDelegateDelegate
+
+        Loader
+        {
+            id : loaderFolderView
+            source : "FolderGridView.qml"
+            Layout.fillHeight : true
+
+        }
+
+        Loader
+        {
+            id : loaderUploadView
+            height : 0
+
+            source : "UploadStatusView.qml"
+
+            onSourceChanged:
+            {
+                item.setModel(uploadingFiles);
+            }
+        }
     }
 
     FileDialog
@@ -347,14 +367,10 @@ ZcAppView
 
         onAccepted:
         {
-            if ( state == "import" )
+            if ( state == "putOnCloud" )
             {
-                importFile(fileDialog.fileUrls);
+                putFilesOnTheCloud(fileDialog.fileUrls);
             }
-            //            else
-            //            {
-            //                exportFile(fileDialog.folder);
-            //            }
         }
     }
 
@@ -382,6 +398,21 @@ ZcAppView
         }
     }
 
+    ListModel
+    {
+        id : uploadingFiles
+    }
+
+    function lockFile(fileName)
+    {
+        lockedActivityItems.setItem(fileName,mainView.context.nickname)
+    }
+
+    function unlockFile(fileName)
+    {
+        lockedActivityItems.deleteItem(fileName)
+    }
+
     function haveTheRighToModify(filename)
     {
         if (mainView.context.affiliation >= 3)
@@ -400,16 +431,16 @@ ZcAppView
         return false;
     }
 
-    function synchronizeSelectedFiles(file)
-    {
-        Tools.forEachInObjectList( documentFolder.files, function(x)
-        {
-            if (x.cast.isSelected)
-            {
-                synchronize(x.cast)
-            }
-        })
-    }
+//    function synchronizeSelectedFiles(file)
+//    {
+//        Tools.forEachInObjectList( documentFolder.files, function(x)
+//        {
+//            if (x.cast.isSelected)
+//            {
+//                synchronize(x.cast)
+//            }
+//        })
+//    }
 
     function synchronize(file)
     {
@@ -444,22 +475,24 @@ ZcAppView
         }
     }
 
-    function importFile(fileUrls)
+    function putFilesOnTheCloud(fileUrls)
     {
+        // open the uploadView
+        if (loaderUploadView.height === 0)
+        {
+            loaderUploadView.height = 200
+        }
+
         var fds = [];
         for ( var i = 0 ; i < fileUrls.length ; i ++)
         {
-            var fd = documentFolder.addFileDescriptorFromFile(fileUrls[i]);
-
-            console.log(">> importfile " + fd.name)
+            var fd = documentFolder.createFileDescriptorFromFile(fileUrls[i]);
 
             if (!mainView.haveTheRighToModify(fd.name))
                 continue;
 
             if (fd !== null)
             {
-                console.log(">> fileName " + fd.name)
-
                 var fdo = {}
                 fdo.fileDescriptor =fd;
                 fdo.url = fileUrls[i];
@@ -498,7 +531,6 @@ ZcAppView
         {
             if (file.cast.isSelected)
             {
-                console.log(">> tobeDeleted " + file.cast.name)
 
                 if (mainView.haveTheRighToModify(file.cast.name))
                 {
@@ -509,7 +541,7 @@ ZcAppView
 
         Tools.forEachInArray(toBeDeleted, function (x)
         {
-
+            mainView.lockFile(x.cast.name);
             documentFolder.deleteFile(x.cast);
         })
     }
@@ -520,21 +552,6 @@ ZcAppView
         documentFolder.loadRemoteFiles(documentFolderQueryStatus);
     }
 
-    Timer
-    {
-        id                      : timerId
 
-        interval : 1000
-        repeat   : true
-        running : true;
 
-        onTriggered:
-        {
-            //            if (needRefresh)
-            //            {
-            //                needRefresh = false;
-            //                refreshFiles()
-            //            }
-        }
-    }
 }

@@ -1,6 +1,10 @@
+Qt.include("Tools.js")
+
 var instance = {}
 
 instance.fileStatus = {}
+
+instance.fileDescriptorToUpload = {};
 
 var maxNbrDomwnload = 5;
 var maxNbrUpload = 5;
@@ -31,11 +35,12 @@ function nextUpload()
 
         if (file.path !== "" && file.path !== null && file.path !== undefined)
         {
-            documentFolder.importFileToLocalFolder(file.descriptor,file.path)
+            documentFolder.importFileToLocalFolder(file.descriptor,file.path,".upload")
         }
         else
         {
-            documentFolder.uploadFile(file.descriptor)
+            setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === file.descriptor.name });
+            documentFolder.uploadFile(file.descriptor,".upload/" + file.descriptor.name)
         }
     }
 }
@@ -57,14 +62,36 @@ instance.startUpload = function(file,path)
     fd.path = path
 
     filesToUpload.push(fd)
+
+    /*
+    ** uploadingFiles contain all progress ulpoading files
+    */
+    instance.fileDescriptorToUpload[file.name] = file
+
+    /*
+    ** to now the state of the progress
+    */
+    file.queryProgressChanged.connect(function(){ updateQueryProgress(file.queryProgress,file.name) });
+
+
+    uploadingFiles.append( { "name"  : file.name, "progress" : 0, "status" : "Waiting" })
+
     if (uploadRunning < maxNbrUpload)
-    {
+    {       
         nextUpload();
     }
 }
 
-instance.uploadFinished = function()
+function updateQueryProgress(progress, fileName)
 {
+    setPropertyinListModel(uploadingFiles,"progress",progress,function (x) { return x.name === fileName });
+}
+
+instance.uploadFinished = function(fileName)
+{
+    instance.fileDescriptorToUpload[fileName] = null
+    removeInListModel(uploadingFiles,function (x) { return x.name === fileName} );
+
     uploadRunning = uploadRunning - 1;
     nextUpload();
 }

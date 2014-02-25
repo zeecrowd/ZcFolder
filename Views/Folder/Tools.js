@@ -16,6 +16,7 @@ function forEachInArray(array, delegate)
     }
 }
 
+
 function findInListModel(listModel, findDelegate)
 {
     for (var i=0;i<listModel.count;i++)
@@ -27,15 +28,31 @@ function findInListModel(listModel, findDelegate)
     return null;
 }
 
-function findInListModel(listModel, findDelegate)
+function getIndexInListModel(listModel, findDelegate)
 {
     for (var i=0;i<listModel.count;i++)
     {
         if ( findDelegate(listModel.get(i)) )
-            return listModel.get(i);
+            return i;
     }
+    return -1;
+}
 
-    return null;
+function removeInListModel(listModel, findDelegate)
+{
+    var index = getIndexInListModel(listModel, findDelegate);
+    if (index === -1)
+        return
+    listModel.remove(index)
+}
+
+
+function setPropertyinListModel(listModel, prop , value,  findDelegate)
+{
+    var index = getIndexInListModel(listModel, findDelegate);
+    if (index === -1)
+        return
+    listModel.setProperty(index,prop,value)
 }
 
 

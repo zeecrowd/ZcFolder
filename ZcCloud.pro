@@ -13,5 +13,7 @@ OTHER_FILES += \
     Views/Folder/Delegate/CheckedDelegate.qml \
     Views/Folder/Delegate/SizeDelegate.qml \
     Views/Folder/Delegate/DateDelegate.qml \
-    Views/Folder/Delegate/SynchronizeDelegate.qml
+    Views/Folder/Delegate/SynchronizeDelegate.qml \
+    Views/Folder/UploadStatusView.qml \
+    Views/Folder/Delegate/UploadViewDelegate.qml
   

@@ -115,6 +115,16 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
+            <QtResourceFile FileName="lock.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
             <QtResourceFile FileName="synchronize.png">
               <Properties>
                 <BuildAction value="Compile" />
@@ -126,6 +136,16 @@
           </Item>
           <Item Template="QtResourceFile">
             <QtResourceFile FileName="tile.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="unlock.png">
               <Properties>
                 <BuildAction value="Compile" />
                 <Locale value="" />
@@ -170,26 +190,6 @@
               <Items />
             </QtResourceFile>
           </Item>
-          <Item Template="QtResourceFile">
-            <QtResourceFile FileName="lock.png">
-              <Properties>
-                <BuildAction value="Compile" />
-                <Locale value="" />
-                <Alias value="" />
-              </Properties>
-              <Items />
-            </QtResourceFile>
-          </Item>
-          <Item Template="QtResourceFile">
-            <QtResourceFile FileName="unlock.png">
-              <Properties>
-                <BuildAction value="Compile" />
-                <Locale value="" />
-                <Alias value="" />
-              </Properties>
-              <Items />
-            </QtResourceFile>
-          </Item>
         </Items>
       </QtResourceProjectFolder>
     </Item>
@@ -201,6 +201,91 @@
             <QtResourceProjectFolder Name="Folder">
               <Properties />
               <Items>
+                <Item Template="QtResourceProjectFolder">
+                  <QtResourceProjectFolder Name="Delegate">
+                    <Properties />
+                    <Items>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="CheckedDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="DateDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="FileNameDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="FileTextDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="LockedDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="SizeDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="SynchronizeDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="UploadViewDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                    </Items>
+                  </QtResourceProjectFolder>
+                </Item>
                 <Item Template="QtResourceFile">
                   <QtResourceFile FileName="copyWorker.js">
                     <Properties>
@@ -287,80 +372,15 @@
                     <Items />
                   </QtResourceFile>
                 </Item>
-                <Item Template="QtResourceProjectFolder">
-                  <QtResourceProjectFolder Name="Delegate">
-                    <Properties />
-                    <Items>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="LockedDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="FileNameDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="FileTextDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="CheckedDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="DateDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="SizeDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="SynchronizeDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                    </Items>
-                  </QtResourceProjectFolder>
+                <Item Template="QtResourceFile">
+                  <QtResourceFile FileName="UploadStatusView.qml">
+                    <Properties>
+                      <BuildAction value="Compile" />
+                      <Locale value="" />
+                      <Alias value="" />
+                    </Properties>
+                    <Items />
+                  </QtResourceFile>
                 </Item>
               </Items>
             </QtResourceProjectFolder>

@@ -146,19 +146,19 @@ Item
                     }
 
 
-                    SynchronizeDelegate
-                    {
-                        color : "#00000000"
+//                    SynchronizeDelegate
+//                    {
+//                        color : "#00000000"
 
-                        anchors
-                        {
-                            bottom: image.bottom
-                            right: parent.right
-                            leftMargin: 3
-                            rightMargin: 3
+//                        anchors
+//                        {
+//                            bottom: image.bottom
+//                            right: parent.right
+//                            leftMargin: 3
+//                            rightMargin: 3
 
-                        }
-                    }
+//                        }
+//                    }
 
                     //                    Image
                     //                    {
