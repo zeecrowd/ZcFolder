@@ -166,6 +166,10 @@ function updateQueryProgress(progress, fileName)
     setPropertyinListModel(uploadingFiles,"progress",progress,function (x) { return x.name === fileName });
 }
 
+/*
+** Upload is finished
+** clean all object and try to do an next upload
+*/
 instance.uploadFinished = function(fileName)
 {
     var fileDescriptor = instance.fileDescriptorToUpload[fileName];

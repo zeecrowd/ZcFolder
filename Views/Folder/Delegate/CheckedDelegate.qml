@@ -5,7 +5,7 @@ Rectangle
 {
     height : 25
     width : parent.width
-    color : item != null && item !== undefined && item.busy ? "lightgrey" : (index % 2 ? "#FFF2B7" : "white")
+    color : item != null && item !== undefined && item.busy ? "lightgrey" : /*(index % 2 ? "#FFF2B7" :*/ "white" //)
 
     CheckBox
     {

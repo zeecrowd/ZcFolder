@@ -30,6 +30,8 @@ ScrollView
             anchors.fill : parent
             orientation: Qt.Horizontal
 
+            handleDelegate: Rectangle { width: 1; color: "white"}
+
             function setModel(model)
             {
                 filesCheckListView.model = model;
@@ -41,7 +43,7 @@ ScrollView
             }
 
             ListView
-            {
+            {  
                 Component
                 {
                     id : headerCheckComponent

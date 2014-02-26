@@ -13,12 +13,12 @@ Rectangle
     property bool isBusy : false
     property int position : 0
 
-    color : isBusy ? "lightgrey" : (position % 2 ? "#FFF2B7" : "white")
+    color : isBusy ? "lightgrey" : /*(position % 2 ? "#FFF2B7" :*/ "white" //)
     property alias text : delegateId.text
 
     onIsBusyChanged:
     {
-        color = isBusy ? "lightgrey" : (position % 2 ? "#FFF2B7" : "white");
+        color = isBusy ? "lightgrey" : /*(position % 2 ? "#FFF2B7" :*/ "white" //);
     }
 
     Text
@@ -53,7 +53,7 @@ Rectangle
         {
             if (notifyPressed)
             {
-                fileTextDelegate.color = isBusy ? "lightgrey" : (position % 2 ? "#FFF2B7" : "white")
+                fileTextDelegate.color = isBusy ? "lightgrey" : /*(position % 2 ? "#FFF2B7" :*/  "white" //)
             }
         }
     }

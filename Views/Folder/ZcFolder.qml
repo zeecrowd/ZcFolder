@@ -134,6 +134,9 @@ ZcAppView
                     Tools.forEachInObjectList( documentFolder.files, function(file)
                     {
 
+                        /*
+                        ** No longer exist on the server
+                        */
                         if (file.cast.status === "new")
                         {
                             toBeDeleted.push(file.cast.name);
@@ -154,11 +157,27 @@ ZcAppView
                     })
 
 
-
                     loaderFolderView.item.setModel(documentFolder.files);
                     splashScreenId.height = 0;
                     splashScreenId.width = 0;
                     splashScreenId.visible = false;
+
+                    /*
+                    ** Restart pending upload
+                    */
+                    var uploadFilePending = documentFolder.getFilePathFromDirectory(".upload");
+
+                    Tools.forEachInArray(uploadFilePending, function (x)
+                    {
+                        openUploadView();
+                        var completePath = documentFolder.localPath + ".upload/" + x;
+                        var fd = documentFolder.createFileDescriptorFromFile(completePath);
+                        if (fd !== null)
+                        {
+                           Presenter.instance.startUpload(fd,"")
+                        }
+                    });
+
                 }
             }
 
@@ -332,6 +351,13 @@ ZcAppView
 
         Loader
         {
+            Rectangle
+            {
+                anchors.fill: parent
+                color : "white"
+            }
+
+
             id : loaderFolderView
             source : "FolderGridView.qml"
             Layout.fillHeight : true
@@ -423,17 +449,6 @@ ZcAppView
         return false;
     }
 
-//    function synchronizeSelectedFiles(file)
-//    {
-//        Tools.forEachInObjectList( documentFolder.files, function(x)
-//        {
-//            if (x.cast.isSelected)
-//            {
-//                synchronize(x.cast)
-//            }
-//        })
-//    }
-
     function cancelUpload(fileName)
     {
         Presenter.instance.uploadFinished(fileName)
@@ -447,25 +462,6 @@ ZcAppView
 
         Presenter.instance.startUpload(file.cast,path);
     }
-
-//    function synchronize(file)
-//    {
-
-//        if (file.status === "upload")
-//        {
-//            console.log(">> synchronize " + file.name)
-
-//            if (!mainView.haveTheRighToModify(file.name))
-//                return;
-
-//            Presenter.instance.startUpload(file.cast,"");
-//        }
-//        else if (file.status === "download")
-//        {
-//            Presenter.instance.startDownload(file);
-//        }
-
-//    }
 
     function openFile(file)
     {
@@ -481,13 +477,19 @@ ZcAppView
         }
     }
 
-    function putFilesOnTheCloud(fileUrls)
+    function openUploadView()
     {
-        // open the uploadView
         if (loaderUploadView.height === 0)
         {
             loaderUploadView.height = 200
         }
+    }
+
+    function putFilesOnTheCloud(fileUrls)
+    {
+        openUploadView()
+
+        console.log(">> fileUrls.length " + fileUrls.length)
 
         var fds = [];
         for ( var i = 0 ; i < fileUrls.length ; i ++)
