@@ -279,6 +279,16 @@
                         <QtResourceFile FileName="UploadViewDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="FileIconDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
                           </Properties>
                           <Items />
                         </QtResourceFile>
@@ -350,6 +360,16 @@
                   </QtResourceFile>
                 </Item>
                 <Item Template="QtResourceFile">
+                  <QtResourceFile FileName="UploadStatusView.qml">
+                    <Properties>
+                      <BuildAction value="Compile" />
+                      <Locale value="" />
+                      <Alias value="" />
+                    </Properties>
+                    <Items />
+                  </QtResourceFile>
+                </Item>
+                <Item Template="QtResourceFile">
                   <QtResourceFile FileName="ZcFolder.qml">
                     <Properties>
                       <BuildAction value="Compile" />
@@ -368,16 +388,6 @@
                       <CopyAs value="" />
                       <CopyToOutputDirectory value="Never" />
                       <CustomTool value="" />
-                    </Properties>
-                    <Items />
-                  </QtResourceFile>
-                </Item>
-                <Item Template="QtResourceFile">
-                  <QtResourceFile FileName="UploadStatusView.qml">
-                    <Properties>
-                      <BuildAction value="Compile" />
-                      <Locale value="" />
-                      <Alias value="" />
                     </Properties>
                     <Items />
                   </QtResourceFile>

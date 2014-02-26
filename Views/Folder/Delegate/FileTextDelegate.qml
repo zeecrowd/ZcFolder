@@ -4,7 +4,7 @@ Rectangle
 {
     id : fileTextDelegate
 
-    height : 25
+    height : 40
     width : parent.width
 
     signal clicked()
@@ -28,7 +28,7 @@ Rectangle
         anchors.verticalCenter      : parent.verticalCenter
         anchors.left                : parent.left
         anchors.leftMargin          : 5
-        font.pixelSize              : 14
+        font.pixelSize              : 16
      }
 
     MouseArea

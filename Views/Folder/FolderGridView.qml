@@ -36,6 +36,7 @@ ScrollView
             {
                 filesCheckListView.model = model;
                 filesNameListView.model = model;
+                filesIconListView.model = model;
                 //filesSynchronizeListView.model = model;
                 filesLockedListView.model = model;
                 filesCalculateSizeListView.model = model;
@@ -78,7 +79,7 @@ ScrollView
                 }
 
                 id                  : filesCheckListView
-                spacing             : 5
+                spacing             : 10
                 contentY            : filesCalculateDateListView.contentY
                 Layout.minimumWidth : 25
                 Layout.maximumWidth : 25
@@ -91,10 +92,29 @@ ScrollView
                 header : headerCheckComponent
             }
 
+
+            ListView
+            {
+                id                  : filesIconListView
+                spacing             : 10
+                contentY            : filesCalculateDateListView.contentY
+                Layout.minimumWidth : 40
+                Layout.maximumWidth : 40
+
+                model       : parent.model
+                interactive : false
+
+                delegate    : FileIconDelegate {}
+
+                header : FileHeaderDelegate { text :  "" }
+            }
+
+
+
             ListView
             {
                 id : filesNameListView
-                spacing             : 5
+                spacing             : 10
                 contentY            : filesCalculateDateListView.contentY
                 Layout.minimumWidth : 100
                 Layout.fillWidth    : true
@@ -121,8 +141,8 @@ ScrollView
             ListView
             {
                 id                  : filesLockedListView
-                spacing             : 5
-                Layout.minimumWidth : 25
+                spacing             : 10
+                Layout.minimumWidth : 125
                 interactive         : false
                 contentY            : filesCalculateDateListView.contentY
                 delegate            : LockedDelegate{}
@@ -134,7 +154,7 @@ ScrollView
             ListView
             {
                 id                  : filesCalculateSizeListView
-                spacing             : 5
+                spacing             : 10
                 Layout.minimumWidth : 100
                 contentY            : filesCalculateDateListView.contentY
                 model               : parent.model
@@ -146,7 +166,7 @@ ScrollView
             ListView
             {
                 id                    : filesCalculateDateListView
-                spacing               : 5
+                spacing               : 10
                 Layout.minimumWidth   : 200
                 model                 : parent.model
                 interactive           : false

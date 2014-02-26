@@ -44,23 +44,23 @@ function verifyRightOrValidationToUploading(fileName)
     else
     {
         // If i am a admin need a validation
-        if ( mainView.context.affiliation >= 3 )
-        {
-            // Check has already have a validation
-            var o = findInListModel(uploadingFiles, function(x) {return x.name === fileName} )
+//        if ( mainView.context.affiliation >= 3 )
+//        {
+//            // Check has already have a validation
+//            var o = findInListModel(uploadingFiles, function(x) {return x.name === fileName} )
 
-            if ( o !== null && o.validated)
-                return true;
+//            if ( o !== null && o.validated)
+//                return true;
 
-            setPropertyinListModel(uploadingFiles,"status","NeedValidation",function (x) { return x.name === fileName });
-            setPropertyinListModel(uploadingFiles,"message","File is locked by " + lock,function (x) { return x.name === fileName });
-        }
-        // File it's locked ... , i haven't got the right to upload the file
-        else
-        {
+//            setPropertyinListModel(uploadingFiles,"status","NeedValidation",function (x) { return x.name === fileName });
+//            setPropertyinListModel(uploadingFiles,"message","File is locked by " + lock,function (x) { return x.name === fileName });
+//        }
+//        // File it's locked ... , i haven't got the right to upload the file
+//        else
+//        {
             setPropertyinListModel(uploadingFiles,"status","Error",function (x) { return x.name === fileName });
             setPropertyinListModel(uploadingFiles,"message","File is locked by " + lock,function (x) { return x.name === fileName });
-        }
+        //}
         return false;
     }
 }
@@ -170,14 +170,18 @@ function updateQueryProgress(progress, fileName)
 ** Upload is finished
 ** clean all object and try to do an next upload
 */
-instance.uploadFinished = function(fileName)
+instance.uploadFinished = function(fileName,notify)
 {
     var fileDescriptor = instance.fileDescriptorToUpload[fileName];
 
     if (fileDescriptor !== null && fileDescriptor !== undefined)
     {
         documentFolder.removeLocalFile(".upload\\" + fileDescriptor.name)
-        notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"added\" , \"fileName\" : \"" + fileName + "\" , \"size\" : " +  fileDescriptor.size + " , \"lastModified\" : \"" + fileDescriptor.timeStamp + "\" }");
+        /*
+        ** For example if it's a cancel : no notification for all users
+        */
+        if (notify)
+            notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"added\" , \"fileName\" : \"" + fileName + "\" , \"size\" : " +  fileDescriptor.size + " , \"lastModified\" : \"" + fileDescriptor.timeStamp + "\" }");
     }
     instance.fileDescriptorToUpload[fileName] = null
     removeInListModel(uploadingFiles,function (x) { return x.name === fileName} );

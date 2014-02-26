@@ -193,15 +193,10 @@ ZcAppView
             onFileUploaded :
             {
 
-
-
-                Presenter.instance.uploadFinished(fileName);
+                Presenter.instance.uploadFinished(fileName,true);
 
                 // close the upload view
-                if (uploadingFiles.count === 0)
-                {
-                    loaderUploadView.height = 0
-                }
+                closeUploadViewIfNeeded()
             }
 
             onFileDownloaded :
@@ -309,6 +304,18 @@ ZcAppView
                     objectDatas.lockedBy = lockedActivityItems.getItem(idItem,"");
                     objectFound.cast.datas = JSON.stringify(objectDatas)
                 }
+
+                // Restart a blocking uploading File
+//                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
+//                {return x.name === idItem});
+
+//                if (pendingUploadFile !== null)
+//                {
+//                    if (pendingUploadFile.status !== "Uploading")
+//                    {
+//                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
+//                    }
+//                }
             }
 
             onItemDeleted :
@@ -323,6 +330,19 @@ ZcAppView
                     objectDatas.lockedBy = "";
                     objectFound.cast.datas = JSON.stringify(objectDatas)
                 }
+
+                // Restart a blocking uploading File
+//                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
+//                {return x.name === idItem});
+
+//                if (pendingUploadFile !== null)
+//                {
+//                    if (pendingUploadFile.status !== "Uploading")
+//                    {
+//                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
+//                    }
+//                }
+
             }
 
 
@@ -356,7 +376,6 @@ ZcAppView
                 anchors.fill: parent
                 color : "white"
             }
-
 
             id : loaderFolderView
             source : "FolderGridView.qml"
@@ -451,7 +470,9 @@ ZcAppView
 
     function cancelUpload(fileName)
     {
-        Presenter.instance.uploadFinished(fileName)
+        // false : no notification for all users
+        Presenter.instance.uploadFinished(fileName,false)
+        closeUploadViewIfNeeded()
     }
 
     function restartUpload(fileName,path)
@@ -474,6 +495,14 @@ ZcAppView
             Presenter.instance.fileStatus[file.cast.name] = "open"
             //    documentFolder.downloadFile(file.cast)
             Presenter.instance.startDownload(file);
+        }
+    }
+
+    function closeUploadViewIfNeeded()
+    {
+        if (uploadingFiles.count === 0)
+        {
+            loaderUploadView.height = 0
         }
     }
 

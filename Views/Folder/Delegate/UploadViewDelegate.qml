@@ -44,24 +44,24 @@ Rectangle
             font.pixelSize:  16
         }
 
-        Button
-        {
-            height : 20 ;
-            width  : status === "NeedValidation" ? 80 : 0
-            text: "Validate"
+//        Button
+//        {
+//            height : 20 ;
+//            width  : status === "NeedValidation" ? 80 : 0
+//            text: "Validate"
 
-            onClicked:
-            {
-                Tools.setPropertyinListModel(uploadingFiles,"status","Validated",function (x) { return x.name === name });
-                Tools.setPropertyinListModel(uploadingFiles,"validated",true,function (x) { return x.name === name });
-                Tools.setPropertyinListModel(uploadingFiles,"message","",function (x) { return x.name === name });
-                mainView.restartUpload(name,localPath);
-            }
-        }
+//            onClicked:
+//            {
+//                Tools.setPropertyinListModel(uploadingFiles,"status","Validated",function (x) { return x.name === name });
+//                Tools.setPropertyinListModel(uploadingFiles,"validated",true,function (x) { return x.name === name });
+//                Tools.setPropertyinListModel(uploadingFiles,"message","",function (x) { return x.name === name });
+//                mainView.restartUpload(name,localPath);
+//            }
+//        }
         Button
         {
             height : 20 ;
-            width  : status === "NeedValidation" || status === "Error" ? 80 : 0
+            width  : 80
             text: "Cancel"
 
             onClicked:

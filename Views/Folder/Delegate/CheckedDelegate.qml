@@ -3,7 +3,7 @@ import QtQuick.Controls 1.0
 
 Rectangle
 {
-    height : 25
+    height : 40
     width : parent.width
     color : item != null && item !== undefined && item.busy ? "lightgrey" : /*(index % 2 ? "#FFF2B7" :*/ "white" //)
 

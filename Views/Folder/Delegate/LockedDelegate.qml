@@ -18,10 +18,12 @@ Item
         if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
         {
             lockImage.source = "qrc:/ZcCloud/Resources/lock.png"
+            lbLockedBy.text = "  " + dataObject.lockedBy;
             return;
         }
 
         lockImage.source = "qrc:/ZcCloud/Resources/unlock.png"
+        lbLockedBy.text = "";
     }
 
     /*
@@ -33,38 +35,54 @@ Item
         item.cast.datasChanged.connect(setImageLock)
     }
 
-    height      : 25
-    width       : 25
+    height      : 40
+    width       : 150
 
-    Image
+    Row
     {
-        id : lockImage
         anchors.fill: parent
 
-
-        MouseArea
+        Image
         {
-            anchors.fill: parent
-            enabled     : parent.visible
+            id : lockImage
+            height      : 25
+            width       : 25
 
-            onClicked:
+            anchors.verticalCenter: parent.verticalCenter
+
+            MouseArea
             {
-                // Lock or unlock only have the right to do this
-                if (!mainView.haveTheRighToModify(item.name))
-                    return;
+                anchors.fill: parent
+                enabled     : parent.visible
 
-                var datasObject = Tools.parseDatas(item.datas);
+                onClicked:
+                {
+                    // Lock or unlock only have the right to do this
+                    if (!mainView.haveTheRighToModify(item.name))
+                        return;
 
-                // lock or unlock
-                if (datasObject.lockedBy === undefined || datasObject.lockedBy === "" || datasObject.lockedBy === null )
-                {
-                    mainView.lockFile(item.name);
-                }
-                else
-                {
-                    mainView.unlockFile(item.name);
+                    var datasObject = Tools.parseDatas(item.datas);
+
+                    // lock or unlock
+                    if (datasObject.lockedBy === undefined || datasObject.lockedBy === "" || datasObject.lockedBy === null )
+                    {
+                        mainView.lockFile(item.name);
+                    }
+                    else
+                    {
+                        mainView.unlockFile(item.name);
+                    }
                 }
             }
+        }
+
+        Label
+        {
+            id : lbLockedBy
+            height : 25
+            width : 125
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize              : 16
         }
     }
 }
