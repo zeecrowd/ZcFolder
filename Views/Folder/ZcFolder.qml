@@ -62,17 +62,17 @@ ZcAppView
                 mainView.deleteSelectedFiles();
             }
         }
-//        ,
-//        Action {
-//            id: refreshAction
-//            shortcut: "F5"
-//            iconSource: "qrc:/ZcCloud/Resources/synchronize.png"
-//            tooltip : "Synchronize all\nselected files"
-//            onTriggered:
-//            {
-//                mainView.synchronizeSelectedFiles();
-//            }
-//        }
+        //        ,
+        //        Action {
+        //            id: refreshAction
+        //            shortcut: "F5"
+        //            iconSource: "qrc:/ZcCloud/Resources/synchronize.png"
+        //            tooltip : "Synchronize all\nselected files"
+        //            onTriggered:
+        //            {
+        //                mainView.synchronizeSelectedFiles();
+        //            }
+        //        }
         ,
         Action {
             id: iconAction
@@ -144,10 +144,13 @@ ZcAppView
 
                         /*
                         ** SetDatas : lockedBy
+                        **            modifyingBy
                         */
                         var lockedBy = lockedActivityItems.getItem(file.cast.name,"");
+                        var modifyingBy = modifiersActivityItems.getItem(file.cast.name,"");
                         var objectData = Tools.parseDatas(lockedBy)
                         objectData.lockedBy = lockedBy
+                        objectData.modifyingBy = modifyingBy
                         file.cast.datas = JSON.stringify(objectData);
                     })
 
@@ -174,7 +177,7 @@ ZcAppView
                         var fd = documentFolder.createFileDescriptorFromFile(completePath);
                         if (fd !== null)
                         {
-                           Presenter.instance.startUpload(fd,"")
+                            Presenter.instance.startUpload(fd,"")
                         }
                     });
 
@@ -256,9 +259,9 @@ ZcAppView
                     }
                     else if (o.action === "added")
                     {
-                            var fd = documentFolder.getFileDescriptor(o.fileName,true);
-                            fd.setRemoteInfo(o.size,new Date(o.lastModified));
-                            fd.status = "download";
+                        var fd = documentFolder.getFileDescriptor(o.fileName,true);
+                        fd.setRemoteInfo(o.size,new Date(o.lastModified));
+                        fd.status = "download";
                     }
                 }
 
@@ -270,6 +273,9 @@ ZcAppView
             subject : "notify"
         }
 
+        /*
+        ** Contains all the files lockers
+        */
         ZcCrowdActivityItems
         {
             id         : lockedActivityItems
@@ -282,9 +288,8 @@ ZcAppView
 
                 onCompleted :
                 {
-                    documentFolder.ensureLocalPathExists();
-                    documentFolder.ensureLocalPathExists(".upload");
-                    mainView.refreshFiles();
+                    modifiersActivityItems.loadItems(
+                                modifiersActivityItemsQueryStatus);
                 }
 
                 onErrorOccured :
@@ -306,16 +311,16 @@ ZcAppView
                 }
 
                 // Restart a blocking uploading File
-//                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
-//                {return x.name === idItem});
+                //                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
+                //                {return x.name === idItem});
 
-//                if (pendingUploadFile !== null)
-//                {
-//                    if (pendingUploadFile.status !== "Uploading")
-//                    {
-//                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
-//                    }
-//                }
+                //                if (pendingUploadFile !== null)
+                //                {
+                //                    if (pendingUploadFile.status !== "Uploading")
+                //                    {
+                //                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
+                //                    }
+                //                }
             }
 
             onItemDeleted :
@@ -332,16 +337,16 @@ ZcAppView
                 }
 
                 // Restart a blocking uploading File
-//                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
-//                {return x.name === idItem});
+                //                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
+                //                {return x.name === idItem});
 
-//                if (pendingUploadFile !== null)
-//                {
-//                    if (pendingUploadFile.status !== "Uploading")
-//                    {
-//                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
-//                    }
-//                }
+                //                if (pendingUploadFile !== null)
+                //                {
+                //                    if (pendingUploadFile.status !== "Uploading")
+                //                    {
+                //                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
+                //                    }
+                //                }
 
             }
 
@@ -349,6 +354,61 @@ ZcAppView
 
         }
 
+        /*
+        ** Contains all the files modifiers
+        */
+        ZcCrowdActivityItems
+        {
+            id         : modifiersActivityItems
+            name       : "FilesModifiers"
+            persistent : true
+
+            ZcQueryStatus
+            {
+                id : modifiersActivityItemsQueryStatus
+
+                onCompleted :
+                {
+                    documentFolder.ensureLocalPathExists();
+                    documentFolder.ensureLocalPathExists(".upload");
+                    mainView.refreshFiles();
+                }
+
+                onErrorOccured :
+                {
+                    console.log(">> ERRROR " + error + " " + errorCause  + " " + errorMessage)
+                }
+            }
+
+            function updateModifiers(fileName,modifier)
+            {
+                console.log(">> updateModiyiers " + fileName + " " + modifier)
+                var objectFound = Tools.findInListModel(documentFolder.files, function(x)
+                {return x.cast.name === fileName});
+
+                console.log(">> object found " + objectFound)
+                if (objectFound !== null)
+                {
+                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
+                    objectDatas.modifyingBy = modifier;
+                    objectFound.cast.datas = JSON.stringify(objectDatas)
+                }
+
+            }
+
+            onItemChanged :
+            {
+                updateModifiers(idItem,modifiersActivityItems.getItem(idItem,""));
+            }
+
+            onItemDeleted :
+            {
+                updateModifiers(idItem,"");
+            }
+
+
+
+        }
 
     }
 
@@ -423,7 +483,7 @@ ZcAppView
     }
 
     onClosed :
-    {
+    {i
         activity.stop();
     }
 
@@ -440,6 +500,12 @@ ZcAppView
         id : uploadingFiles
     }
 
+    function  iModifyTheFile(fileName)
+    {
+        lockFile(fileName)
+        modifiersActivityItems.setItem(fileName,mainView.context.nickname)
+    }
+
     function lockFile(fileName)
     {
         lockedActivityItems.setItem(fileName,mainView.context.nickname)
@@ -450,17 +516,23 @@ ZcAppView
         lockedActivityItems.deleteItem(fileName)
     }
 
-    function haveTheRighToModify(filename)
+    function haveTheRighToLockUnlock(filename)
     {
         if (mainView.context.affiliation >= 3)
             return true;
+
+        return haveTheRighToModify(filename);
+    }
+
+    function haveTheRighToModify(filename)
+    {
 
         var lockedBy = lockedActivityItems.getItem(filename,"")
 
         if (lockedBy === null || lockedBy === undefined || lockedBy === "")
             return true;
 
-        if (filename === mainView.context.nickname)
+        if (lockedBy === mainView.context.nickname)
         {
             return true;
         }

@@ -39,6 +39,7 @@ ScrollView
                 filesIconListView.model = model;
                 //filesSynchronizeListView.model = model;
                 filesLockedListView.model = model;
+                filesModifyListView.model = model;
                 filesCalculateSizeListView.model = model;
                 filesCalculateDateListView.model = model;
             }
@@ -125,18 +126,19 @@ ScrollView
                 header              : FileHeaderDelegate { text :  "Name" }
             }
 
-//            ListView
-//            {
 
-//                id                  : filesSynchronizeListView
-//                spacing             : 5
-//                Layout.minimumWidth : 25
-//                interactive         : false
-//                contentY            : filesCalculateDateListView.contentY
-//                delegate            : SynchronizeDelegate {}
+            ListView
+            {
+                id                  : filesModifyListView
+                spacing             : 10
+                Layout.minimumWidth : 125
+                interactive         : false
+                contentY            : filesCalculateDateListView.contentY
+                delegate            : ModifyItDelegate { }
 
-//                header              : FileHeaderDelegate { }
-//            }
+
+                header              : FileHeaderDelegate { text :  "Modifying" }
+            }
 
             ListView
             {

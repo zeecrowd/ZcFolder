@@ -29,33 +29,40 @@ Rectangle
         anchors.left                : parent.left
         anchors.leftMargin          : 5
         font.pixelSize              : 16
+        textFormat: Text.RichText
+
+        onLinkActivated:
+        {
+            if (!isBusy)
+                fileTextDelegate.clicked()
+        }
      }
 
-    MouseArea
-    {
-        hoverEnabled: true
-        anchors.fill: parent
-        enabled: !isBusy
+//    MouseArea
+//    {
+//        hoverEnabled: true
+//        anchors.fill: parent
+//        enabled: !isBusy
 
-        onDoubleClicked:
-        {
-           fileTextDelegate.clicked()
-        }
+//        onDoubleClicked:
+//        {
+//           fileTextDelegate.clicked()
+//        }
 
-        onPressed :
-        {
-            if (notifyPressed)
-            {
-                fileTextDelegate.color = "lightblue"
-            }
-        }
-        onReleased:
-        {
-            if (notifyPressed)
-            {
-                fileTextDelegate.color = isBusy ? "lightgrey" : /*(position % 2 ? "#FFF2B7" :*/  "white" //)
-            }
-        }
-    }
+//        onPressed :
+//        {
+//            if (notifyPressed)
+//            {
+//                fileTextDelegate.color = "lightblue"
+//            }
+//        }
+//        onReleased:
+//        {
+//            if (notifyPressed)
+//            {
+//                fileTextDelegate.color = isBusy ? "lightgrey" : /*(position % 2 ? "#FFF2B7" :*/  "white" //)
+//            }
+//        }
+//    }
  }
 

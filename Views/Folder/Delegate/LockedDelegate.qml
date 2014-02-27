@@ -11,6 +11,7 @@ Item
     */
     function setImageLock()
     {
+        console.log(">> setImageLock ")
         if (item === undefined ||item === null)
             return;
 
@@ -57,11 +58,15 @@ Item
 
                 onClicked:
                 {
-                    // Lock or unlock only have the right to do this
-                    if (!mainView.haveTheRighToModify(item.name))
-                        return;
-
                     var datasObject = Tools.parseDatas(item.datas);
+
+                    /*
+                    ** I can't unlocked a file than i modify
+                    */
+                    console.log(">> datasObject.modifyingBy " + datasObject.modifyingBy)
+                    console.log(">> datasObject.modifyingBy " + mainView.context.nickname)
+                    if ( datasObject.modifyingBy === mainView.context.nickname )
+                        return;
 
                     // lock or unlock
                     if (datasObject.lockedBy === undefined || datasObject.lockedBy === "" || datasObject.lockedBy === null )
@@ -70,7 +75,10 @@ Item
                     }
                     else
                     {
-                        mainView.unlockFile(item.name);
+                        if (mainView.haveTheRighToLockUnlock(item.name))
+                        {
+                            mainView.unlockFile(item.name);
+                        }
                     }
                 }
             }

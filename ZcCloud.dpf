@@ -289,6 +289,16 @@
                         <QtResourceFile FileName="FileIconDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="ModifyItDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
                           </Properties>
                           <Items />
                         </QtResourceFile>

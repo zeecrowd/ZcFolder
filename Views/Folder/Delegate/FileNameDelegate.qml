@@ -2,8 +2,8 @@ import QtQuick 2.0
 
 FileTextDelegate
 {
-    text : name
-    isBusy : item != null && item !== undefined ?  item.busy : false
+    text : "<a href=\" \">"+name+"</a>"
+        isBusy : item != null && item !== undefined ?  item.busy : false
     position : index
 
     onClicked : mainView.openFile(item)

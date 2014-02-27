@@ -16,5 +16,6 @@ OTHER_FILES += \
     Views/Folder/Delegate/SynchronizeDelegate.qml \
     Views/Folder/UploadStatusView.qml \
     Views/Folder/Delegate/UploadViewDelegate.qml \
-    Views/Folder/Delegate/FileIconDelegate.qml
+    Views/Folder/Delegate/FileIconDelegate.qml \
+    Views/Folder/Delegate/ModifyItDelegate.qml
   
