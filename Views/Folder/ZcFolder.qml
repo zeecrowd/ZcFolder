@@ -144,13 +144,12 @@ ZcAppView
 
                         /*
                         ** SetDatas : lockedBy
-                        **            modifyingBy
                         */
                         var lockedBy = lockedActivityItems.getItem(file.cast.name,"");
-                        var modifyingBy = modifiersActivityItems.getItem(file.cast.name,"");
+                        //var modifyingBy = modifiersActivityItems.getItem(file.cast.name,"");
                         var objectData = Tools.parseDatas(lockedBy)
                         objectData.lockedBy = lockedBy
-                        objectData.modifyingBy = modifyingBy
+                        //objectData.modifyingBy = modifyingBy
                         file.cast.datas = JSON.stringify(objectData);
                     })
 
@@ -186,11 +185,17 @@ ZcAppView
 
             onImportFileToLocalFolderCompleted :
             {
-                var fileDescriptor = Presenter.instance.fileDescriptorToUpload[fileName];
+                // import a file to the .upload directory finished
+                if (localFilePath.indexOf(".upload") !== -1)
+                {
 
-                Tools.setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === fileName });
-                Presenter.instance.decrementUploadRunning();
-                Presenter.instance.startUpload(fileDescriptor,"");
+                    var fileDescriptor = Presenter.instance.fileDescriptorToUpload[fileName];
+
+                    Tools.setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === fileName });
+                    Presenter.instance.decrementUploadRunning();
+                    Presenter.instance.startUpload(fileDescriptor,"");
+                    return;
+                }
             }
 
             onFileUploaded :
@@ -204,18 +209,20 @@ ZcAppView
 
             onFileDownloaded :
             {
+                /*
+                ** downloadFile to read it or to modify it
+                */
+
                 Presenter.instance.downloadFinished();
-                var result = Tools.findInListModel(documentFolder.files, function(x)
-                {return x.cast.name === fileName});
 
-                if (result === null || result === undefined)
-                    return;
+                // file dowloaded to modify it
+                // then add it to the list if doens't exist
+//                if (localFilePath.indexOf(".modify") !== -1)
+//                {
 
-                if (Presenter.instance.fileStatus[result.cast.name] === "open")
-                {
-                    Presenter.instance.fileStatus[result.cast.name] = null;
-                    documentFolder.openFileWithDefaultApplication(result.cast);
-                }
+//                }
+
+                Qt.openUrlExternally(localFilePath)
             }
             onFileDeleted :
             {
@@ -288,8 +295,12 @@ ZcAppView
 
                 onCompleted :
                 {
-                    modifiersActivityItems.loadItems(
-                                modifiersActivityItemsQueryStatus);
+                    documentFolder.ensureLocalPathExists();
+                    documentFolder.ensureLocalPathExists(".upload");
+                    //documentFolder.ensureLocalPathExists(".modify");
+                    mainView.refreshFiles();
+//                    modifiersActivityItems.loadItems(
+//                                modifiersActivityItemsQueryStatus);
                 }
 
                 onErrorOccured :
@@ -357,58 +368,59 @@ ZcAppView
         /*
         ** Contains all the files modifiers
         */
-        ZcCrowdActivityItems
-        {
-            id         : modifiersActivityItems
-            name       : "FilesModifiers"
-            persistent : true
+//        ZcCrowdActivityItems
+//        {
+//            id         : modifiersActivityItems
+//            name       : "FilesModifiers"
+//            persistent : true
 
-            ZcQueryStatus
-            {
-                id : modifiersActivityItemsQueryStatus
+//            ZcQueryStatus
+//            {
+//                id : modifiersActivityItemsQueryStatus
 
-                onCompleted :
-                {
-                    documentFolder.ensureLocalPathExists();
-                    documentFolder.ensureLocalPathExists(".upload");
-                    mainView.refreshFiles();
-                }
+//                onCompleted :
+//                {
+//                    documentFolder.ensureLocalPathExists();
+//                    documentFolder.ensureLocalPathExists(".upload");
+//                    //documentFolder.ensureLocalPathExists(".modify");
+//                    mainView.refreshFiles();
+//                }
 
-                onErrorOccured :
-                {
-                    console.log(">> ERRROR " + error + " " + errorCause  + " " + errorMessage)
-                }
-            }
+//                onErrorOccured :
+//                {
+//                    console.log(">> ERRROR " + error + " " + errorCause  + " " + errorMessage)
+//                }
+//            }
 
-            function updateModifiers(fileName,modifier)
-            {
-                console.log(">> updateModiyiers " + fileName + " " + modifier)
-                var objectFound = Tools.findInListModel(documentFolder.files, function(x)
-                {return x.cast.name === fileName});
+//            function updateModifiers(fileName,modifier)
+//            {
+//                console.log(">> updateModiyiers " + fileName + " " + modifier)
+//                var objectFound = Tools.findInListModel(documentFolder.files, function(x)
+//                {return x.cast.name === fileName});
 
-                console.log(">> object found " + objectFound)
-                if (objectFound !== null)
-                {
-                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
-                    objectDatas.modifyingBy = modifier;
-                    objectFound.cast.datas = JSON.stringify(objectDatas)
-                }
+//                console.log(">> object found " + objectFound)
+//                if (objectFound !== null)
+//                {
+//                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
+//                    //objectDatas.modifyingBy = modifier;
+//                    objectFound.cast.datas = JSON.stringify(objectDatas)
+//                }
 
-            }
+//            }
 
-            onItemChanged :
-            {
-                updateModifiers(idItem,modifiersActivityItems.getItem(idItem,""));
-            }
+//            onItemChanged :
+//            {
+//                updateModifiers(idItem,modifiersActivityItems.getItem(idItem,""));
+//            }
 
-            onItemDeleted :
-            {
-                updateModifiers(idItem,"");
-            }
+//            onItemDeleted :
+//            {
+//                updateModifiers(idItem,"");
+//            }
 
 
 
-        }
+//        }
 
     }
 
@@ -419,7 +431,7 @@ ZcAppView
 
         Component
         {
-            id : handleDelegateDelegate
+            id : handleDelegateVertical
             Rectangle
             {
                 height : 10
@@ -427,10 +439,22 @@ ZcAppView
             }
         }
 
-        handleDelegate : handleDelegateDelegate
+        Component
+        {
+            id : handleDelegateHorizontal
+            Rectangle
+            {
+                width : 10
+                color :  styleData.hovered ? "grey" :  "lightgrey"
+            }
+        }
+
+        handleDelegate : handleDelegateVertical
 
         Loader
         {
+
+            Layout.fillHeight : true
             Rectangle
             {
                 anchors.fill: parent
@@ -439,9 +463,10 @@ ZcAppView
 
             id : loaderFolderView
             source : "FolderGridView.qml"
-            Layout.fillHeight : true
-
+            Layout.fillWidth : true
         }
+
+
 
         Loader
         {
@@ -500,11 +525,16 @@ ZcAppView
         id : uploadingFiles
     }
 
-    function  iModifyTheFile(fileName)
-    {
-        lockFile(fileName)
-        modifiersActivityItems.setItem(fileName,mainView.context.nickname)
-    }
+    //    ListModel
+    //    {
+    //        id : modifyingFiles
+    //    }
+
+//    function  iModifyTheFile(fileName)
+//    {
+//        lockFile(fileName)
+//        modifiersActivityItems.setItem(fileName,mainView.context.nickname)
+//    }
 
     function lockFile(fileName)
     {
@@ -558,13 +588,14 @@ ZcAppView
 
     function openFile(file)
     {
-        if (file.status === "")
+        // TODO : reduct the real Status
+        if (file.status !== "download")
         {
             documentFolder.openFileWithDefaultApplication(file.cast);
         }
         else
         {
-            Presenter.instance.fileStatus[file.cast.name] = "open"
+            // Presenter.instance.fileStatus[file.cast.name] = "open"
             //    documentFolder.downloadFile(file.cast)
             Presenter.instance.startDownload(file);
         }
@@ -589,8 +620,6 @@ ZcAppView
     function putFilesOnTheCloud(fileUrls)
     {
         openUploadView()
-
-        console.log(">> fileUrls.length " + fileUrls.length)
 
         var fds = [];
         for ( var i = 0 ; i < fileUrls.length ; i ++)
@@ -629,6 +658,26 @@ ZcAppView
             }
         })
     }
+
+    function synchronize(file)
+      {
+
+          if (file.status === "upload")
+          {
+              if (!mainView.haveTheRighToModify(file.name))
+                  return;
+
+              openUploadView()
+
+              Presenter.instance.startUpload(file.cast,documentFolder.localPath + file.name);
+          }
+          else if (file.status === "download")
+          {
+              Presenter.instance.startDownload(file);
+          }
+
+      }
+
 
     function deleteSelectedFiles()
     {

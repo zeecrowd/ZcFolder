@@ -37,15 +37,15 @@ ScrollView
                 filesCheckListView.model = model;
                 filesNameListView.model = model;
                 filesIconListView.model = model;
-                //filesSynchronizeListView.model = model;
+                filesSynchronizeListView.model = model;
                 filesLockedListView.model = model;
-                filesModifyListView.model = model;
+                //filesModifyListView.model = model;
                 filesCalculateSizeListView.model = model;
                 filesCalculateDateListView.model = model;
             }
 
             ListView
-            {  
+            {
                 Component
                 {
                     id : headerCheckComponent
@@ -127,17 +127,33 @@ ScrollView
             }
 
 
+            //            ListView
+            //            {
+            //                id                  : filesModifyListView
+            //                spacing             : 10
+            //                Layout.minimumWidth : 125
+            //                interactive         : false
+            //                contentY            : filesCalculateDateListView.contentY
+            //                delegate            : ModifyItDelegate { }
+
+
+            //                header              : FileHeaderDelegate { text :  "Modifying" }
+            //            }
+
+
             ListView
             {
-                id                  : filesModifyListView
+                id                  : filesSynchronizeListView
                 spacing             : 10
+
+
                 Layout.minimumWidth : 125
                 interactive         : false
                 contentY            : filesCalculateDateListView.contentY
-                delegate            : ModifyItDelegate { }
+                delegate            : SynchronizeDelegate { }
 
 
-                header              : FileHeaderDelegate { text :  "Modifying" }
+                header              : FileHeaderDelegate { text :  "" }
             }
 
             ListView
@@ -150,8 +166,9 @@ ScrollView
                 delegate            : LockedDelegate{}
 
 
-                header              : FileHeaderDelegate { }
+                header              : FileHeaderDelegate { text : "Locked by"}
             }
+
 
             ListView
             {

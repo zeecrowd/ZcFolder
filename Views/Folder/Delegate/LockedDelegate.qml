@@ -11,7 +11,6 @@ Item
     */
     function setImageLock()
     {
-        console.log(">> setImageLock ")
         if (item === undefined ||item === null)
             return;
 
@@ -46,8 +45,8 @@ Item
         Image
         {
             id : lockImage
-            height      : 25
-            width       : 25
+            height      : 40
+            width       : 40
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -63,13 +62,13 @@ Item
                     /*
                     ** I can't unlocked a file than i modify
                     */
-                    console.log(">> datasObject.modifyingBy " + datasObject.modifyingBy)
-                    console.log(">> datasObject.modifyingBy " + mainView.context.nickname)
                     if ( datasObject.modifyingBy === mainView.context.nickname )
                         return;
 
                     // lock or unlock
-                    if (datasObject.lockedBy === undefined || datasObject.lockedBy === "" || datasObject.lockedBy === null )
+                    if (datasObject.lockedBy === undefined ||
+                            datasObject.lockedBy === "" ||
+                            datasObject.lockedBy === null )
                     {
                         mainView.lockFile(item.name);
                     }
