@@ -100,15 +100,6 @@ ZcAppView
 
     property bool  needRefresh : false
 
-
-
-    SplashScreen
-    {
-        id : splashScreenId
-        width : parent.width
-        height: parent.height
-    }
-
     ZcCrowdActivity
     {
         id : activity
@@ -160,9 +151,6 @@ ZcAppView
 
 
                     loaderFolderView.item.setModel(documentFolder.files);
-                    splashScreenId.height = 0;
-                    splashScreenId.width = 0;
-                    splashScreenId.visible = false;
 
                     /*
                     ** Restart pending upload
@@ -221,8 +209,11 @@ ZcAppView
 //                {
 
 //                }
-
-                Qt.openUrlExternally(localFilePath)
+                if (Presenter.instance.fileStatus[fileName] === "open")
+                {
+                   Presenter.instance.fileStatus[fileName] = null
+                   Qt.openUrlExternally(localFilePath)
+                }
             }
             onFileDeleted :
             {
@@ -299,6 +290,11 @@ ZcAppView
                     documentFolder.ensureLocalPathExists(".upload");
                     //documentFolder.ensureLocalPathExists(".modify");
                     mainView.refreshFiles();
+
+                    splashScreenId.height = 0;
+                    splashScreenId.width = 0;
+                    splashScreenId.visible = false;
+
 //                    modifiersActivityItems.loadItems(
 //                                modifiersActivityItemsQueryStatus);
                 }
@@ -595,7 +591,7 @@ ZcAppView
         }
         else
         {
-            // Presenter.instance.fileStatus[file.cast.name] = "open"
+             Presenter.instance.fileStatus[file.cast.name] = "open"
             //    documentFolder.downloadFile(file.cast)
             Presenter.instance.startDownload(file);
         }
@@ -708,6 +704,12 @@ ZcAppView
         documentFolder.loadRemoteFiles(documentFolderQueryStatus);
     }
 
+    SplashScreen
+    {
+        id : splashScreenId
+        width : parent.width
+        height: parent.height
+    }
 
 
 }
