@@ -190,6 +190,14 @@
               <Items />
             </QtResourceFile>
           </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="icon2.png">
+              <Properties>
+                <BuildAction value="Compile" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
         </Items>
       </QtResourceProjectFolder>
     </Item>
@@ -217,6 +225,16 @@
                       </Item>
                       <Item Template="QtResourceFile">
                         <QtResourceFile FileName="DateDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="FileIconDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
                             <Locale value="" />
@@ -256,6 +274,14 @@
                         </QtResourceFile>
                       </Item>
                       <Item Template="QtResourceFile">
+                        <QtResourceFile FileName="ModifyItDelegate.qml">
+                          <Properties>
+                            <BuildAction value="Compile" />
+                          </Properties>
+                          <Items />
+                        </QtResourceFile>
+                      </Item>
+                      <Item Template="QtResourceFile">
                         <QtResourceFile FileName="SizeDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
@@ -281,24 +307,6 @@
                             <BuildAction value="Compile" />
                             <Locale value="" />
                             <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="FileIconDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
-                            <Locale value="" />
-                            <Alias value="" />
-                          </Properties>
-                          <Items />
-                        </QtResourceFile>
-                      </Item>
-                      <Item Template="QtResourceFile">
-                        <QtResourceFile FileName="ModifyItDelegate.qml">
-                          <Properties>
-                            <BuildAction value="Compile" />
                           </Properties>
                           <Items />
                         </QtResourceFile>
