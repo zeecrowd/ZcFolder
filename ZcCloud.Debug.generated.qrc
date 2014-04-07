@@ -6,6 +6,7 @@
 		<file>Resources\close.png</file>
 		<file>Resources\export.png</file>
 		<file>Resources\folder.png</file>
+		<file>Resources\icon2.png</file>
 		<file>Resources\import.png</file>
 		<file>Resources\list.png</file>
 		<file>Resources\lock.png</file>
@@ -15,7 +16,6 @@
 		<file>Resources\updateDown.png</file>
 		<file>Resources\updates.png</file>
 		<file>Resources\updateUp.png</file>
-		<file>Resources\icon2.png</file>
 		<file>Views\Folder\Delegate\CheckedDelegate.qml</file>
 		<file>Views\Folder\Delegate\DateDelegate.qml</file>
 		<file>Views\Folder\Delegate\FileIconDelegate.qml</file>
