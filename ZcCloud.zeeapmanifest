@@ -4,7 +4,7 @@
     <a:ZeeapManifestMetaData>
       <a:ZeeapManifestMetaData.AppName>ZcCloud</a:ZeeapManifestMetaData.AppName>
       <a:ZeeapManifestMetaData.Author>ZeeCrowd</a:ZeeapManifestMetaData.Author>
-      <a:ZeeapManifestMetaData.Version>114</a:ZeeapManifestMetaData.Version>
+      <a:ZeeapManifestMetaData.Version>115</a:ZeeapManifestMetaData.Version>
       <a:ZeeapManifestMetaData.Url>htpp://</a:ZeeapManifestMetaData.Url>
       <a:ZeeapManifestMetaData.AppConfig>ZcFolder.cfg</a:ZeeapManifestMetaData.AppConfig>
     </a:ZeeapManifestMetaData>
