@@ -25,6 +25,9 @@ import QtQuick.Layouts 1.0
 import "./Delegate"
 import "Tools.js" as Tools
 
+import ZcClient 1.0 as Zc
+
+
 ScrollView
 {
     anchors.fill: parent
@@ -51,6 +54,8 @@ ScrollView
             anchors.fill : parent
             orientation: Qt.Horizontal
 
+            property string activeSort : "Name"
+
             handleDelegate: Rectangle { width: 1; color: "white"}
 
             function setModel(model)
@@ -73,7 +78,7 @@ ScrollView
                     Item
                     {
                         height  : 30;
-                        width   : parent.width;
+                        width   : filesCheckListView.width;
 
                         Rectangle
                         {
@@ -128,13 +133,30 @@ ScrollView
 
                 delegate    : FileIconDelegate {}
 
-                header : FileHeaderDelegate { text :  "" }
+                header :
+                    FileHeaderDelegate
+                    {
+                        text :  ""
+                        width : filesIconListView.width
+                        sortAvailable: false
+                    }
             }
 
 
 
             ListView
             {
+
+                Zc.JavaScriptSorter
+                {
+                    id : javaScriptSorterName
+
+                    function lessThan(left,right)
+                    {
+                        return left.name < right.name;
+                    }
+                }
+
                 id : filesNameListView
                 spacing             : 10
                 contentY            : filesCalculateDateListView.contentY
@@ -144,7 +166,22 @@ ScrollView
                 interactive         : false
                 delegate            : FileNameDelegate {}
 
-                header              : FileHeaderDelegate { text :  "Name" }
+                header              : FileHeaderDelegate
+                {                    
+                    text :  "Name"
+                    width : filesNameListView.width
+                    order : sortFilterObjectListModel.order
+                    sortJavaScriptObjet : javaScriptSorterName
+                    sortListModel : sortFilterObjectListModel
+                    sortAvailable : splitView.activeSort === "Name"
+
+                    onClicked:
+                    {
+                        splitView.activeSort = "Name"
+                        switchSort()
+                    }
+
+                }
             }
 
 
@@ -174,7 +211,12 @@ ScrollView
                 delegate            : SynchronizeDelegate { }
 
 
-                header              : FileHeaderDelegate { text :  "" }
+                header              : FileHeaderDelegate
+                {
+                    text :  ""
+                    width : filesSynchronizeListView.width
+                    sortAvailable : false
+                }
             }
 
             ListView
@@ -187,12 +229,31 @@ ScrollView
                 delegate            : LockedDelegate{}
 
 
-                header              : FileHeaderDelegate { text : "Locked by"}
+                header              :
+                    FileHeaderDelegate
+                    {
+                        text : "Locked by"
+                        width : filesLockedListView.width
+                        sortAvailable: false
+                    }
             }
 
 
             ListView
             {
+                Zc.JavaScriptSorter
+                {
+                    id : javaScriptSorterSize
+
+                    function lessThan(left,right)
+                    {
+                        var leftsize = left.status === "upload" ? left.sizeKb : left.remoteSizeKb
+                        var rightsize = right.status === "upload" ? right.sizeKb : right.remoteSizeKb
+                        return leftsize < rightsize;
+                    }
+                }
+
+
                 id                  : filesCalculateSizeListView
                 spacing             : 10
                 Layout.minimumWidth : 100
@@ -200,18 +261,63 @@ ScrollView
                 model               : parent.model
                 interactive         : false
                 delegate            : SizeDelegate {}
-                header              : FileHeaderDelegate { text :  "Size" }
+                header              : FileHeaderDelegate
+                {
+                    text :  "Size";
+                    width : filesCalculateSizeListView.width
+                    order : sortFilterObjectListModel.order
+                    sortJavaScriptObjet : javaScriptSorterSize
+                    sortListModel : sortFilterObjectListModel
+                    sortAvailable : splitView.activeSort === "Size"
+
+
+                    onClicked:
+                    {
+                        splitView.activeSort = "Size"
+                        switchSort();
+                    }
+                }
             }
 
             ListView
             {
+                Zc.JavaScriptSorter
+                {
+                    id : javaScriptSorterDate
+
+                    function lessThan(left,right)
+                    {
+
+                        var leftdate = left.status === "upload" ? left.timeStamp : left.remoteTimeStamp
+                        var rightdate = right.status === "upload" ? right.timeStamp : right.remoteTimeStamp
+
+                        return leftdate < rightdate;
+                    }
+                }
+
+
                 id                    : filesCalculateDateListView
                 spacing               : 10
                 Layout.minimumWidth   : 200
                 model                 : parent.model
                 interactive           : false
                 delegate              : DateDelegate {}
-                header                : FileHeaderDelegate { text :  "Date" }
+                header                : FileHeaderDelegate
+                {
+                    text :  "Date" ;
+                    width :filesCalculateDateListView.width
+                    sortJavaScriptObjet : javaScriptSorterDate
+                    sortListModel : sortFilterObjectListModel
+                    order : sortFilterObjectListModel.order
+                    sortAvailable : splitView.activeSort === "Date"
+
+
+                    onClicked:
+                    {
+                        splitView.activeSort = "Date"
+                        switchSort()
+                    }
+                }
             }
 
         }

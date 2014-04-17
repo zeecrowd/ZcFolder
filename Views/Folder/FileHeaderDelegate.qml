@@ -21,12 +21,46 @@
 
 import QtQuick 2.0
 
+
 Item
 {
+    id : delegateHeader
     height  : 30
-    width   : parent.width
+    width   : 100
+
+    signal clicked();
 
     property alias text : theText.text
+    property alias sortAvailable : imageSort.visible
+
+    property QtObject sortJavaScriptObjet : null
+    property QtObject sortListModel : null
+
+    property int order : 0
+
+    function switchSort()
+    {
+        if (!sortAvailable)
+        {
+            sortAvailable = true;
+            sortListModel.order = 0
+        }
+        else
+        {
+            if (sortListModel.order === 0)
+                sortListModel.order = 1;
+            else
+                sortListModel.order = 0;
+
+        }
+
+        order = sortListModel.order
+        imageSort.source = sortListModel.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
+
+        sortJavaScriptObjet.qmlObjectSorter = sortJavaScriptObjet;
+        sortListModel.setSorter(sortJavaScriptObjet);
+        sortListModel.refresh();
+    }
 
     Rectangle
     {
@@ -41,6 +75,30 @@ Item
         {
             id                          : theText
             anchors.centerIn            : parent
+        }
+
+        Image
+        {
+            id : imageSort
+            anchors.top     : parent.top
+            anchors.topMargin     : 5
+            anchors.right   : parent.right
+            anchors.rightMargin     : 5
+            anchors.bottom  : parent.bottom
+            anchors.bottomMargin     : 5
+
+            width : height
+
+            source : delegateHeader.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked:
+            {
+                delegateHeader.clicked();
+            }
         }
     }
 }

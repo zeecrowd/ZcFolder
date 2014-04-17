@@ -92,6 +92,16 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
+            <QtResourceFile FileName="icon2.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
             <QtResourceFile FileName="import.png">
               <Properties>
                 <BuildAction value="Compile" />
@@ -191,7 +201,17 @@
             </QtResourceFile>
           </Item>
           <Item Template="QtResourceFile">
-            <QtResourceFile FileName="icon2.png">
+            <QtResourceFile FileName="up.png">
+              <Properties>
+                <BuildAction value="Compile" />
+                <Locale value="" />
+                <Alias value="" />
+              </Properties>
+              <Items />
+            </QtResourceFile>
+          </Item>
+          <Item Template="QtResourceFile">
+            <QtResourceFile FileName="down.png">
               <Properties>
                 <BuildAction value="Compile" />
               </Properties>
@@ -277,6 +297,8 @@
                         <QtResourceFile FileName="ModifyItDelegate.qml">
                           <Properties>
                             <BuildAction value="Compile" />
+                            <Locale value="" />
+                            <Alias value="" />
                           </Properties>
                           <Items />
                         </QtResourceFile>

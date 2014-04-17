@@ -27,9 +27,9 @@ import QtQuick.Dialogs 1.0
 import "Tools.js" as Tools
 import "ZcFolderPresenter.js" as Presenter
 
-import ZcClient 1.0
+import ZcClient 1.0 as Zc
 
-ZcAppView
+Zc.AppView
 {
     id : mainView
 
@@ -121,16 +121,33 @@ ZcAppView
 
     property bool  needRefresh : false
 
-    ZcCrowdActivity
+    Zc.SortFilterObjectListModel
+    {
+        id : sortFilterObjectListModel
+    }
+
+    Zc.JavaScriptSorter
+    {
+        id : javaScriptSorter
+
+        function lessThan(left,right)
+        {
+            return left.name < right.name;
+        }
+    }
+
+
+
+    Zc.CrowdActivity
     {
         id : activity
 
-        ZcCrowdDocumentFolder
+        Zc.CrowdDocumentFolder
         {
             id   : documentFolder
             name : "Test"
             
-            ZcQueryStatus
+            Zc.QueryStatus
             {
                 id : documentFolderQueryStatus
 
@@ -171,7 +188,11 @@ ZcAppView
                     })
 
 
-                    loaderFolderView.item.setModel(documentFolder.files);
+                    sortFilterObjectListModel.setModel(documentFolder.files);
+                    javaScriptSorter.qmlObjectSorter = javaScriptSorter;
+                    sortFilterObjectListModel.setSorter(javaScriptSorter);
+
+                    loaderFolderView.item.setModel(sortFilterObjectListModel);
 
                     /*
                     ** Restart pending upload
@@ -250,7 +271,7 @@ ZcAppView
                         lockedActivityItemsQueryStatus);
         }
 
-        ZcMessageListener
+        Zc.MessageListener
         {
             id      : notifyListener
             subject : "notify"
@@ -286,7 +307,7 @@ ZcAppView
 
             }
         }
-        ZcMessageSender
+        Zc.MessageSender
         {
             id      : notifySender
             subject : "notify"
@@ -295,13 +316,13 @@ ZcAppView
         /*
         ** Contains all the files lockers
         */
-        ZcCrowdActivityItems
+        Zc.CrowdActivityItems
         {
             id         : lockedActivityItems
             name       : "FilesLocked"
             persistent : true
 
-            ZcQueryStatus
+            Zc.QueryStatus
             {
                 id : lockedActivityItemsQueryStatus
 
@@ -513,7 +534,7 @@ ZcAppView
         }
     }
 
-    ZcAppNotification
+    Zc.AppNotification
     {
         id : appNotification
     }
@@ -525,7 +546,7 @@ ZcAppView
     }
 
     onClosed :
-    {i
+    {
         activity.stop();
     }
 
