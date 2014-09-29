@@ -19,7 +19,8 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 
 
 Item
@@ -55,11 +56,16 @@ Item
         }
 
         order = sortListModel.order
-        imageSort.source = sortListModel.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
+
+        validate.iconSource = sortListModel.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
 
         sortJavaScriptObjet.qmlObjectSorter = sortJavaScriptObjet;
         sortListModel.setSorter(sortJavaScriptObjet);
         sortListModel.refresh();
+
+        // refresh the repeater view
+        sortListModel.setModel(null);
+        sortListModel.setModel(documentFolder.files)
     }
 
     Rectangle
@@ -77,28 +83,31 @@ Item
             anchors.centerIn            : parent
         }
 
-        Image
+        ToolButton
         {
             id : imageSort
             anchors.top     : parent.top
-            anchors.topMargin     : 5
+    //        anchors.topMargin     : 5
             anchors.right   : parent.right
-            anchors.rightMargin     : 5
+      //      anchors.rightMargin     : 5
             anchors.bottom  : parent.bottom
             anchors.bottomMargin     : 5
 
             width : height
 
-            source : delegateHeader.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
-        }
+            action : Action
+            {
+                id : validate
+                iconSource : delegateHeader.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
+                tooltip     : "Sort"
 
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked:
+            onTriggered :
             {
                 delegateHeader.clicked();
             }
+
         }
-    }
+
+        }
+}
 }

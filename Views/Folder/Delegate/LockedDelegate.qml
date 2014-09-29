@@ -19,8 +19,8 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import "../Tools.js" as Tools
 
 Item
@@ -38,12 +38,14 @@ Item
         var dataObject = Tools.parseDatas(item.cast.datas)
         if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
         {
-            lockImage.source = "qrc:/ZcCloud/Resources/lock.png"
+            lockImage.iconSource = "qrc:/ZcCloud/Resources/lock.png"
+            lockImage.tooltip = "Unlock File"
             lbLockedBy.text = "  " + dataObject.lockedBy;
             return;
         }
 
-        lockImage.source = "qrc:/ZcCloud/Resources/unlock.png"
+        lockImage.iconSource = "qrc:/ZcCloud/Resources/unlock.png"
+        lockImage.tooltip = "Lock File"
         lbLockedBy.text = "";
     }
 
@@ -63,46 +65,86 @@ Item
     {
         anchors.fill: parent
 
-        Image
+        ToolButton
         {
-            id : lockImage
-            height      : 40
-            width       : 40
+            height: 40
+            width: 40
 
             anchors.verticalCenter: parent.verticalCenter
 
-            MouseArea
+
+            action : Action
             {
-                anchors.fill: parent
-                enabled     : parent.visible
+            id : lockImage
 
-                onClicked:
+            onTriggered :
+            {
+                var datasObject = Tools.parseDatas(item.datas);
+
+                /*
+                ** I can't unlocked a file than i modify
+                */
+                if ( datasObject.modifyingBy === mainView.context.nickname )
+                    return;
+
+                // lock or unlock
+                if (datasObject.lockedBy === undefined ||
+                        datasObject.lockedBy === "" ||
+                        datasObject.lockedBy === null )
                 {
-                    var datasObject = Tools.parseDatas(item.datas);
-
-                    /*
-                    ** I can't unlocked a file than i modify
-                    */
-                    if ( datasObject.modifyingBy === mainView.context.nickname )
-                        return;
-
-                    // lock or unlock
-                    if (datasObject.lockedBy === undefined ||
-                            datasObject.lockedBy === "" ||
-                            datasObject.lockedBy === null )
+                    mainView.lockFile(item.name);
+                }
+                else
+                {
+                    if (mainView.haveTheRighToLockUnlock(item.name))
                     {
-                        mainView.lockFile(item.name);
-                    }
-                    else
-                    {
-                        if (mainView.haveTheRighToLockUnlock(item.name))
-                        {
-                            mainView.unlockFile(item.name);
-                        }
+                        mainView.unlockFile(item.name);
                     }
                 }
             }
+
         }
+    }
+//        Image
+//        {
+//            id : lockImage
+//            height      : 40
+//            width       : 40
+
+//            anchors.verticalCenter: parent.verticalCenter
+
+//            MouseArea
+//            {
+//                anchors.fill: parent
+//                enabled     : parent.visible
+
+//                onClicked:
+//                {
+//                    var datasObject = Tools.parseDatas(item.datas);
+
+//                    /*
+//                    ** I can't unlocked a file than i modify
+//                    */
+//                    if ( datasObject.modifyingBy === mainView.context.nickname )
+//                        return;
+
+//                    // lock or unlock
+//                    if (datasObject.lockedBy === undefined ||
+//                            datasObject.lockedBy === "" ||
+//                            datasObject.lockedBy === null )
+//                    {
+//                        mainView.lockFile(item.name);
+//                    }
+//                    else
+//                    {
+//                        if (mainView.haveTheRighToLockUnlock(item.name))
+//                        {
+//                            mainView.unlockFile(item.name);
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         Label
         {

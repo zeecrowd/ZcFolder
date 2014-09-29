@@ -38,6 +38,7 @@ var filesToUpload = []
 
 function nextDownload()
 {
+
     if (filesToDownload.length > 0)
     {
         downloadRunning++;
@@ -128,6 +129,7 @@ instance.decrementUploadRunning = function()
 instance.startDownload = function(file)
 {
     filesToDownload.push(file)
+
     if (downloadRunning < maxNbrDomwnload)
     {
         nextDownload();
@@ -197,7 +199,7 @@ instance.uploadFinished = function(fileName,notify)
 
     if (fileDescriptor !== null && fileDescriptor !== undefined)
     {
-        documentFolder.removeLocalFile(".upload\\" + fileDescriptor.name)
+        documentFolder.removeLocalFile(".upload/" + fileDescriptor.name)
         /*
         ** For example if it's a cancel : no notification for all users
         */

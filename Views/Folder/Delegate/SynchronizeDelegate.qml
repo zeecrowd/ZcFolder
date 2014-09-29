@@ -19,8 +19,8 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 
 Rectangle
 {
@@ -33,7 +33,8 @@ Rectangle
 
         spacing: 10
 
-        Image
+
+        ToolButton
         {
             height: 40
             width: 40
@@ -41,19 +42,22 @@ Rectangle
             anchors.verticalCenter: parent.verticalCenter
 
             visible    : item.status !== "" && !item.busy
-            source : item.status === "upload" ? "qrc:/ZcCloud/Resources/export.png" : "qrc:/ZcCloud/Resources/import.png"
 
-            MouseArea
+            action : Action
             {
-                anchors.fill: parent
-                enabled     : parent.visible
+            id : validate
+            iconSource  : item.status === "upload" ? "qrc:/ZcCloud/Resources/export.png" : "qrc:/ZcCloud/Resources/import.png"
+           tooltip     : item.status === "upload" ? "Upload File" : "Download File"
 
-                onClicked:
-                {
-                    mainView.synchronize(item)
-                }
+
+            onTriggered :
+            {
+                mainView.synchronize(item)
             }
+
         }
+    }
+
         Label
         {
             visible : item.status === "upload"

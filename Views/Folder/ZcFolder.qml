@@ -19,10 +19,10 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick 2.2
+import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.1
 
 import "Tools.js" as Tools
 import "ZcFolderPresenter.js" as Presenter
@@ -94,28 +94,28 @@ Zc.AppView
         //                mainView.synchronizeSelectedFiles();
         //            }
         //        }
-        ,
-        Action {
-            id: iconAction
-            iconSource: "qrc:/ZcCloud/Resources/tile.png"
-            onTriggered:
-            {
-                loaderFolderView.source = "";
-                loaderFolderView.source = "FolderGridIconView.qml"
-                loaderFolderView.item.setModel(documentFolder.files);
-            }
-        }
-        ,
-        Action {
-            id: listAction
-            iconSource: "qrc:/ZcCloud/Resources/list.png"
-            onTriggered:
-            {
-                loaderFolderView.source = "";
-                loaderFolderView.source = "FolderGridView.qml"
-                loaderFolderView.item.setModel(documentFolder.files);
-            }
-        }
+  //      ,
+//        Action {
+//            id: iconAction
+//            iconSource: "qrc:/ZcCloud/Resources/tile.png"
+//            onTriggered:
+//            {
+//                loaderFolderView.source = "";
+//                loaderFolderView.source = "FolderGridIconView.qml"
+//                loaderFolderView.item.setModel(documentFolder.files);
+//            }
+//        }
+//        ,
+//        Action {
+//            id: listAction
+//            iconSource: "qrc:/ZcCloud/Resources/list.png"
+//            onTriggered:
+//            {
+//                loaderFolderView.source = "";
+//                loaderFolderView.source = "FolderGridView.qml"
+//                loaderFolderView.item.setModel(documentFolder.files);
+//            }
+//        }
 
     ]
 
@@ -132,7 +132,7 @@ Zc.AppView
 
         function lessThan(left,right)
         {
-            return left.name < right.name;
+            return left.name.toLowerCase() < right.name.toLowerCase();
         }
     }
 
