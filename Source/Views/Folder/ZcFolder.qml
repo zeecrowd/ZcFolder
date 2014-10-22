@@ -232,6 +232,7 @@ Zc.AppView
             {
 
                 Presenter.instance.uploadFinished(fileName,true);
+                appNotification.logEvent(Zc.AppNotification.Add,"File",fileName,"image://icons/" + "file:///" + fileName)
 
                 // close the upload view
                 closeUploadViewIfNeeded()
