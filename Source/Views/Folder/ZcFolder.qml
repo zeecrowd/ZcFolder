@@ -21,6 +21,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
@@ -94,28 +95,28 @@ Zc.AppView
         //                mainView.synchronizeSelectedFiles();
         //            }
         //        }
-  //      ,
-//        Action {
-//            id: iconAction
-//            iconSource: "qrc:/ZcCloud/Resources/tile.png"
-//            onTriggered:
-//            {
-//                loaderFolderView.source = "";
-//                loaderFolderView.source = "FolderGridIconView.qml"
-//                loaderFolderView.item.setModel(documentFolder.files);
-//            }
-//        }
-//        ,
-//        Action {
-//            id: listAction
-//            iconSource: "qrc:/ZcCloud/Resources/list.png"
-//            onTriggered:
-//            {
-//                loaderFolderView.source = "";
-//                loaderFolderView.source = "FolderGridView.qml"
-//                loaderFolderView.item.setModel(documentFolder.files);
-//            }
-//        }
+        //      ,
+        //        Action {
+        //            id: iconAction
+        //            iconSource: "qrc:/ZcCloud/Resources/tile.png"
+        //            onTriggered:
+        //            {
+        //                loaderFolderView.source = "";
+        //                loaderFolderView.source = "FolderGridIconView.qml"
+        //                loaderFolderView.item.setModel(documentFolder.files);
+        //            }
+        //        }
+        //        ,
+        //        Action {
+        //            id: listAction
+        //            iconSource: "qrc:/ZcCloud/Resources/list.png"
+        //            onTriggered:
+        //            {
+        //                loaderFolderView.source = "";
+        //                loaderFolderView.source = "FolderGridView.qml"
+        //                loaderFolderView.item.setModel(documentFolder.files);
+        //            }
+        //        }
 
     ]
 
@@ -135,8 +136,6 @@ Zc.AppView
             return left.name.toLowerCase() < right.name.toLowerCase();
         }
     }
-
-
 
     Zc.CrowdActivity
     {
@@ -248,14 +247,14 @@ Zc.AppView
 
                 // file dowloaded to modify it
                 // then add it to the list if doens't exist
-//                if (localFilePath.indexOf(".modify") !== -1)
-//                {
+                //                if (localFilePath.indexOf(".modify") !== -1)
+                //                {
 
-//                }
+                //                }
                 if (Presenter.instance.fileStatus[fileName] === "open")
                 {
-                   Presenter.instance.fileStatus[fileName] = null
-                   Qt.openUrlExternally(localFilePath)
+                    Presenter.instance.fileStatus[fileName] = null
+                    Qt.openUrlExternally(localFilePath)
                 }
             }
             onFileDeleted :
@@ -338,8 +337,8 @@ Zc.AppView
                     splashScreenId.width = 0;
                     splashScreenId.visible = false;
 
-//                    modifiersActivityItems.loadItems(
-//                                modifiersActivityItemsQueryStatus);
+                    //                    modifiersActivityItems.loadItems(
+                    //                                modifiersActivityItemsQueryStatus);
                 }
 
                 onErrorOccured :
@@ -360,17 +359,6 @@ Zc.AppView
                     objectFound.cast.datas = JSON.stringify(objectDatas)
                 }
 
-                // Restart a blocking uploading File
-                //                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
-                //                {return x.name === idItem});
-
-                //                if (pendingUploadFile !== null)
-                //                {
-                //                    if (pendingUploadFile.status !== "Uploading")
-                //                    {
-                //                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
-                //                    }
-                //                }
             }
 
             onItemDeleted :
@@ -386,81 +374,8 @@ Zc.AppView
                     objectFound.cast.datas = JSON.stringify(objectDatas)
                 }
 
-                // Restart a blocking uploading File
-                //                var pendingUploadFile = Tools.findInListModel(uploadingFiles, function(x)
-                //                {return x.name === idItem});
-
-                //                if (pendingUploadFile !== null)
-                //                {
-                //                    if (pendingUploadFile.status !== "Uploading")
-                //                    {
-                //                        restartUpload(pendingUploadFile.name,pendingUploadFile.localPath)
-                //                    }
-                //                }
-
             }
-
-
-
         }
-
-        /*
-        ** Contains all the files modifiers
-        */
-//        ZcCrowdActivityItems
-//        {
-//            id         : modifiersActivityItems
-//            name       : "FilesModifiers"
-//            persistent : true
-
-//            ZcQueryStatus
-//            {
-//                id : modifiersActivityItemsQueryStatus
-
-//                onCompleted :
-//                {
-//                    documentFolder.ensureLocalPathExists();
-//                    documentFolder.ensureLocalPathExists(".upload");
-//                    //documentFolder.ensureLocalPathExists(".modify");
-//                    mainView.refreshFiles();
-//                }
-
-//                onErrorOccured :
-//                {
-//                    console.log(">> ERRROR " + error + " " + errorCause  + " " + errorMessage)
-//                }
-//            }
-
-//            function updateModifiers(fileName,modifier)
-//            {
-//                console.log(">> updateModiyiers " + fileName + " " + modifier)
-//                var objectFound = Tools.findInListModel(documentFolder.files, function(x)
-//                {return x.cast.name === fileName});
-
-//                console.log(">> object found " + objectFound)
-//                if (objectFound !== null)
-//                {
-//                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
-//                    //objectDatas.modifyingBy = modifier;
-//                    objectFound.cast.datas = JSON.stringify(objectDatas)
-//                }
-
-//            }
-
-//            onItemChanged :
-//            {
-//                updateModifiers(idItem,modifiersActivityItems.getItem(idItem,""));
-//            }
-
-//            onItemDeleted :
-//            {
-//                updateModifiers(idItem,"");
-//            }
-
-
-
-//        }
-
     }
 
     SplitView
@@ -504,8 +419,6 @@ Zc.AppView
             source : "FolderGridView.qml"
             Layout.fillWidth : true
         }
-
-
 
         Loader
         {
@@ -563,17 +476,6 @@ Zc.AppView
     {
         id : uploadingFiles
     }
-
-    //    ListModel
-    //    {
-    //        id : modifyingFiles
-    //    }
-
-//    function  iModifyTheFile(fileName)
-//    {
-//        lockFile(fileName)
-//        modifiersActivityItems.setItem(fileName,mainView.context.nickname)
-//    }
 
     function lockFile(fileName)
     {
@@ -634,7 +536,7 @@ Zc.AppView
         }
         else
         {
-             Presenter.instance.fileStatus[file.cast.name] = "open"
+            Presenter.instance.fileStatus[file.cast.name] = "open"
             //    documentFolder.downloadFile(file.cast)
             Presenter.instance.startDownload(file);
         }
@@ -699,23 +601,36 @@ Zc.AppView
     }
 
     function synchronize(file)
-      {
+    {
 
-          if (file.status === "upload")
-          {
-              if (!mainView.haveTheRighToModify(file.name))
-                  return;
+        if (file.status === "upload")
+        {
+            if (!mainView.haveTheRighToModify(file.name))
+                return;
 
-              openUploadView()
+            confirmationId.upload = true;
 
-              Presenter.instance.startUpload(file.cast,documentFolder.localPath + file.name);
-          }
-          else if (file.status === "download")
-          {
-              Presenter.instance.startDownload(file);
-          }
+            //              openUploadView()
 
-      }
+            //              Presenter.instance.startUpload(file.cast,documentFolder.localPath + file.name);
+        }
+        else if (file.status === "download")
+        {
+            //    Presenter.instance.startDownload(file);
+            confirmationId.upload = false;
+        }
+
+        confirmationId.file = file.cast
+        confirmationId.fileName =  file.name
+        confirmationId.localSize =  file.size
+        confirmationId.serverSize = file.remoteSize
+
+        confirmationId.localDate = file.timeStampLabel
+        confirmationId.serverDate = file.remoteTimeStampLabel
+
+        confirmationId.visible = true;
+
+    }
 
 
     function deleteSelectedFiles()
@@ -754,5 +669,167 @@ Zc.AppView
         height: parent.height
     }
 
+    Rectangle
+    {
+        id : confirmationId
+        width : parent.width
+        height: parent.height
 
+        visible : false
+
+        color : "lightgrey"
+
+        property QtObject file : null
+        property string fileName : ""
+        property string serverSize : ""
+        property string localSize : ""
+        property string serverDate : ""
+        property string localDate : ""
+
+        property bool upload : true
+
+        property string localV :  "Local Version : "  + confirmationId.localDate  + " " + confirmationId.localSize  + " octets"
+        property string serverV :  "Distant Version : "  + confirmationId.serverDate  + " " + confirmationId.serverSize  + " octets"
+
+        Row
+        {
+            height : 100
+            width : parent.width * 2/3 + 50
+
+            anchors.centerIn: parent
+
+            spacing: 10
+
+            Column
+            {
+                height : 100
+                width : parent.width * 2/3
+
+                Label
+                {
+                    text : confirmationId.upload ? "Do you really want to override the distant file " + confirmationId.fileName + " ?": "Do you really want to override your local file " + confirmationId.fileName + " ?"
+
+                    font.pixelSize: 18
+                    color : "black"
+                }
+
+                Item
+                {
+                    height : 20
+                    width : 20
+                }
+
+
+                Label
+                {
+                    text : confirmationId.upload ? confirmationId.localV : confirmationId.serverV
+                    font.pixelSize: 15
+                    color : "black"
+                }
+                Label
+                {
+                    text : "will override"
+                    font.pixelSize: 15
+                    color : "black"
+                }
+
+                Label
+                {
+                    text : confirmationId.upload ? confirmationId.serverV : confirmationId.localV
+                    font.pixelSize: 15
+                    color : "black"
+                }
+
+
+            }
+
+            Column
+            {
+                height : 100
+                width : 50
+
+                spacing: 5
+
+                Button
+                {
+
+                    height : 50
+                    width : 50
+
+                    style: ButtonStyle {
+                        background: Item {
+                            implicitWidth: 50
+                            implicitHeight: 50
+
+
+                            Image
+                            {
+                                source : "qrc:/ZcCloud/Resources/ok.png"
+                                anchors.fill: parent
+                            }
+
+                            Rectangle
+                            {
+                                anchors.fill: parent
+                                border.width: control.activeFocus ? 2 : 1
+                                border.color: "black"
+                                color : control.pressed ? "#AAAAAA" : "#00000000"
+                                opacity : 0.8
+                            }
+                        }
+
+                    }
+
+                    onClicked:
+                    {
+                        if (confirmationId.upload)
+                        {
+                            openUploadView()
+                            confirmationId.visible = false
+                            Presenter.instance.startUpload(confirmationId.file.cast,documentFolder.localPath + confirmationId.file.name);
+                        }
+                        else
+                        {
+                            confirmationId.visible = false
+                            Presenter.instance.startDownload(confirmationId.file);
+                        }
+
+                    }
+                }
+
+                Button
+                {
+                    height : 50
+                    width : 50
+                    style: ButtonStyle {
+                        background: Item {
+                            implicitWidth: 50
+                            implicitHeight: 50
+
+
+                            Image
+                            {
+                                source : "qrc:/ZcCloud/Resources/cancel.png"
+                                anchors.fill: parent
+                            }
+
+                            Rectangle
+                            {
+                                anchors.fill: parent
+                                border.width: control.activeFocus ? 2 : 1
+                                border.color: "black"
+                                color : control.pressed ? "#AAAAAA" : "#00000000"
+                                opacity : 0.8
+                            }
+                        }
+                    }
+
+                    onClicked:
+                    {
+                        confirmationId.visible = false
+                    }
+                }
+        }
+    }
+}
 }

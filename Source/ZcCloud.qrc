@@ -36,5 +36,7 @@
         <file>Views/Folder/UploadStatusView.qml</file>
         <file>Views/Folder/ZcFolder.qml</file>
         <file>Views/Folder/ZcFolderPresenter.js</file>
+        <file>Resources/cancel.png</file>
+        <file>Resources/ok.png</file>
     </qresource>
 </RCC>
