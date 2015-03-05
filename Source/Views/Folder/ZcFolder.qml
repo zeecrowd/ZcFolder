@@ -609,27 +609,15 @@ Zc.AppView
                 return;
 
             confirmationId.upload = true;
-
-            //              openUploadView()
-
-            //              Presenter.instance.startUpload(file.cast,documentFolder.localPath + file.name);
         }
         else if (file.status === "download")
         {
-            //    Presenter.instance.startDownload(file);
             confirmationId.upload = false;
         }
 
         confirmationId.file = file.cast
         confirmationId.fileName =  file.name
-        confirmationId.localSize =  file.size
-        confirmationId.serverSize = file.remoteSize
-
-        confirmationId.localDate = file.timeStampLabel
-        confirmationId.serverDate = file.remoteTimeStampLabel
-
         confirmationId.visible = true;
-
     }
 
 
@@ -669,167 +657,25 @@ Zc.AppView
         height: parent.height
     }
 
-    Rectangle
+
+    Confirmation
     {
         id : confirmationId
-        width : parent.width
-        height: parent.height
 
-        visible : false
-
-        color : "lightgrey"
-
-        property QtObject file : null
-        property string fileName : ""
-        property string serverSize : ""
-        property string localSize : ""
-        property string serverDate : ""
-        property string localDate : ""
-
-        property bool upload : true
-
-        property string localV :  "Local Version : "  + confirmationId.localDate  + " " + confirmationId.localSize  + " octets"
-        property string serverV :  "Distant Version : "  + confirmationId.serverDate  + " " + confirmationId.serverSize  + " octets"
-
-        Row
+        onClicked:
         {
-            height : 100
-            width : parent.width * 2/3 + 50
-
-            anchors.centerIn: parent
-
-            spacing: 10
-
-            Column
+            if (confirmationId.upload)
             {
-                height : 100
-                width : parent.width * 2/3
-
-                Label
-                {
-                    text : confirmationId.upload ? "Do you really want to override the distant file " + confirmationId.fileName + " ?": "Do you really want to override your local file " + confirmationId.fileName + " ?"
-
-                    font.pixelSize: 18
-                    color : "black"
-                }
-
-                Item
-                {
-                    height : 20
-                    width : 20
-                }
-
-
-                Label
-                {
-                    text : confirmationId.upload ? confirmationId.localV : confirmationId.serverV
-                    font.pixelSize: 15
-                    color : "black"
-                }
-                Label
-                {
-                    text : "will override"
-                    font.pixelSize: 15
-                    color : "black"
-                }
-
-                Label
-                {
-                    text : confirmationId.upload ? confirmationId.serverV : confirmationId.localV
-                    font.pixelSize: 15
-                    color : "black"
-                }
-
-
+                openUploadView()
+                confirmationId.visible = false
+                Presenter.instance.startUpload(confirmationId.file.cast,documentFolder.localPath + confirmationId.file.name);
             }
-
-            Column
+            else
             {
-                height : 100
-                width : 50
-
-                spacing: 5
-
-                Button
-                {
-
-                    height : 50
-                    width : 50
-
-                    style: ButtonStyle {
-                        background: Item {
-                            implicitWidth: 50
-                            implicitHeight: 50
-
-
-                            Image
-                            {
-                                source : "qrc:/ZcCloud/Resources/ok.png"
-                                anchors.fill: parent
-                            }
-
-                            Rectangle
-                            {
-                                anchors.fill: parent
-                                border.width: control.activeFocus ? 2 : 1
-                                border.color: "black"
-                                color : control.pressed ? "#AAAAAA" : "#00000000"
-                                opacity : 0.8
-                            }
-                        }
-
-                    }
-
-                    onClicked:
-                    {
-                        if (confirmationId.upload)
-                        {
-                            openUploadView()
-                            confirmationId.visible = false
-                            Presenter.instance.startUpload(confirmationId.file.cast,documentFolder.localPath + confirmationId.file.name);
-                        }
-                        else
-                        {
-                            confirmationId.visible = false
-                            Presenter.instance.startDownload(confirmationId.file);
-                        }
-
-                    }
-                }
-
-                Button
-                {
-                    height : 50
-                    width : 50
-                    style: ButtonStyle {
-                        background: Item {
-                            implicitWidth: 50
-                            implicitHeight: 50
-
-
-                            Image
-                            {
-                                source : "qrc:/ZcCloud/Resources/cancel.png"
-                                anchors.fill: parent
-                            }
-
-                            Rectangle
-                            {
-                                anchors.fill: parent
-                                border.width: control.activeFocus ? 2 : 1
-                                border.color: "black"
-                                color : control.pressed ? "#AAAAAA" : "#00000000"
-                                opacity : 0.8
-                            }
-                        }
-                    }
-
-                    onClicked:
-                    {
-                        confirmationId.visible = false
-                    }
-                }
+                confirmationId.visible = false
+                Presenter.instance.startDownload(confirmationId.file);
+            }
         }
     }
-}
+
 }

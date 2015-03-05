@@ -54,7 +54,8 @@ OTHER_FILES += \
     ../../Source/Views/Folder/Delegate/ModifyItDelegate.qml \
     ../../Source/Views/Folder/Delegate/SizeDelegate.qml \
     ../../Source/Views/Folder/Delegate/SynchronizeDelegate.qml \
-    ../../Source/Views/Folder/Delegate/UploadViewDelegate.qml
+    ../../Source/Views/Folder/Delegate/UploadViewDelegate.qml \
+    ../../Source/Views/Folder/Confirmation.qml
   
 
 RESOURCES += \

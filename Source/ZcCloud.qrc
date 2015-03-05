@@ -38,5 +38,7 @@
         <file>Views/Folder/ZcFolderPresenter.js</file>
         <file>Resources/cancel.png</file>
         <file>Resources/ok.png</file>
+        <file>Views/Folder/Confirmation.qml</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>
