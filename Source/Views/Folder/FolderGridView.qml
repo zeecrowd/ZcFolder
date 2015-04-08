@@ -108,8 +108,8 @@ ScrollView
                 id                  : filesCheckListView
                 spacing             : 10
                 contentY            : filesCalculateDateListView.contentY
-                Layout.minimumWidth : 25
-                Layout.maximumWidth : 25
+                Layout.minimumWidth : 40
+                Layout.maximumWidth : 40
 
                 model       : parent.model
                 interactive : false

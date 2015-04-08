@@ -24,40 +24,85 @@ import QtQuick.Controls 1.2
 
 Rectangle
 {
+    id : checkBoxId
     height : 40
     width : parent.width
+
     color : item != null && item !== undefined && item.busy ? "lightgrey" : /*(index % 2 ? "#FFF2B7" :*/ "white" //)
 
-    CheckBox
+//    CheckBox
+//    {
+//        id : checkBox
+
+//        anchors
+//        {
+//            verticalCenter: parent.verticalCenter
+//            left    : parent.left
+//            leftMargin: 7
+//        }
+
+//        enabled : !item.busy
+
+//        onCheckedChanged:
+//        {
+//            model.cast.isSelected = checked
+//        }
+
+//    }
+
+//    function setImageLock()
+//    {
+//        checkedBoxImage.iconSource =
+//        if (item === undefined ||item === null)
+//            return;
+
+//        var dataObject = Tools.parseDatas(item.cast.datas)
+//        if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
+//        {
+//            lockImage.iconSource = "qrc:/ZcCloud/Resources/lock.png"
+//            lockImage.tooltip = "Unlock File"
+//            lbLockedBy.text = "  " + dataObject.lockedBy;
+//            return;
+//        }
+
+//        lockImage.iconSource = "qrc:/ZcCloud/Resources/unlock.png"
+//        lockImage.tooltip = "Lock File"
+//        lbLockedBy.text = "";
+//    }
+
+    property bool checked : false
+
+    ToolButton
     {
-        id : checkBox
+        height: 40
+        width: 40
 
-        anchors
+        anchors.verticalCenter: parent.verticalCenter
+
+
+        action : Action
         {
-            verticalCenter: parent.verticalCenter
-            left    : parent.left
-            leftMargin: 7
+            id : checkedBoxImage
+
+            iconSource : checkBoxId.checked ? "qrc:/ZcCloud/Resources/checkbox_checked.png" : "qrc:/ZcCloud/Resources/checkbox_unchecked.png"
+
+            onTriggered :
+            {
+                checkBoxId.checked = !checkBoxId.checked
+                model.cast.isSelected = checkBoxId.checked
+            }
         }
-
-        enabled : !item.busy
-
-        onCheckedChanged:
-        {
-            model.cast.isSelected = checked
-        }
-
     }
-
 
     function selectUnselect(val)
     {
-        checkBox.checked = val;
+        checkBoxId.checked = val;
     }
 
     Component.onCompleted :
     {
         fodlerGridViewId.onSelectedAllChanged.connect(selectUnselect);
-        checkBox.checked = model.cast.isSelected;
+        checkBoxId.checked = model.cast.isSelected;
     }
 
     Component.onDestruction:

@@ -66,6 +66,7 @@ Zc.AppView
             shortcut: "Ctrl+E"
             iconSource: "qrc:/ZcCloud/Resources/folder.png"
             tooltip : "Open local folder"
+
             onTriggered:
             {
                 mainView.state = "export"

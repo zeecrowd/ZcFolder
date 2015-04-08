@@ -39,6 +39,7 @@
         <file>Resources/cancel.png</file>
         <file>Resources/ok.png</file>
         <file>Views/Folder/Confirmation.qml</file>
+        <file>Resources/checkbox_checked.png</file>
+        <file>Resources/checkbox_unchecked.png</file>
     </qresource>
-    <qresource prefix="/"/>
 </RCC>
