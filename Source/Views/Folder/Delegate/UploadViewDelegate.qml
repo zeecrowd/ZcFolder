@@ -28,9 +28,21 @@ import "../Tools.js" as Tools
 
 Rectangle
 {
+    id : updateViewDelegate
     height : 20
     width : parent.width
-    color : index % 2 ? "lightgrey" : "white"
+    color : calculateColor(index,status)
+
+    function calculateColor(i,s)
+    {
+        if (s === "Error")
+        {
+            updateViewDelegate.color = "red"
+            return;
+        }
+
+        return index % 2 ? "lightgrey" : "white"
+    }
 
     Row
     {

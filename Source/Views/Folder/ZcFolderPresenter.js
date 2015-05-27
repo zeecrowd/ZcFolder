@@ -112,7 +112,16 @@ function nextUpload()
         {
             setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === file.descriptor.name });
             documentFolder.uploadFile(file.descriptor,".upload/" + file.descriptor.name)
+            file.descriptor.query.statusChanged.connect(function (x) { uploadStatusChanged(x,file.descriptor.name) })
         }
+    }
+}
+
+function uploadStatusChanged(x,fileName)
+{
+    if (x.statusCode === "500")
+    {
+        setPropertyinListModel(uploadingFiles,"status","Error",function (y) { return y.name === fileName });
     }
 }
 
@@ -156,6 +165,7 @@ instance.startUpload = function(file,path)
         ** to now the state of the progress
         */
         file.queryProgressChanged.connect(function(){ updateQueryProgress(file.queryProgress,file.name) });
+    //    file.queryStatusChanged.connect(function(){ console.log(">> status changed >> " + file.status) });
     }
 
     var found = findInListModel(uploadingFiles, function(x) {return x.name === file.name} )

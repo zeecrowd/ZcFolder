@@ -154,6 +154,7 @@ Zc.AppView
                 onErrorOccured :
                 {
                     console.log(">> ERRROR OCCURED")
+                    confirmationId.visible = true;
                 }
 
                 onCompleted :
