@@ -2,7 +2,6 @@ OTHER_FILES += \
     Views/Folder/ZcFolder.qml \
     Views/Folder/Tools.js \
     Views/Folder/FolderGridView.qml \
-    Views/Folder/ZcFolderPresenter.js \
     Views/Folder/copyWorker.js \
     Views/Folder/SplashScreen.qml \
     Views/Folder/FolderGridIconView.qml \
@@ -37,7 +36,6 @@ OTHER_FILES += \
     ../../Source/Resources/updates.png \
     ../../Source/Resources/updateUp.png \
     ../../Source/Views/Folder/Tools.js \
-    ../../Source/Views/Folder/ZcFolderPresenter.js \
     ../../Source/Views/Folder/FileHeaderDelegate.qml \
     ../../Source/Views/Folder/FolderGridIconView.qml \
     ../../Source/Views/Folder/FolderGridView.qml \
@@ -61,4 +59,5 @@ RESOURCES += \
     ../../Source/ZcCloud.qrc
 
 DISTFILES += \
-    ../../Source/Views/Folder/UploadManager.qml
+    ../../Source/Views/Folder/UploadManager.qml \
+    ../../Source/Views/Folder/DownloadManager.qml

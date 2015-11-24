@@ -27,7 +27,6 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.2
 
 import "Tools.js" as Tools
-import "ZcFolderPresenter.js" as Presenter
 
 import ZcClient 1.0 as Zc
 
@@ -89,6 +88,7 @@ Zc.AppView
     ]
 
     property bool  needRefresh : false
+    property var fileStatus : ([])
 
     UploadManager
     {
@@ -97,6 +97,12 @@ Zc.AppView
         lockedActivityItems : lockedActivityItemsId
         uploadingListFiles: uploadingFiles
         theNotifySender : notifySender
+    }
+
+    DownloadManager
+    {
+        id : downloadManager
+        documentFolder : documentFolderId
     }
 
     Zc.SortFilterObjectListModel
@@ -220,7 +226,7 @@ Zc.AppView
                 ** downloadFile to read it or to modify it
                 */
 
-                Presenter.instance.downloadFinished();
+                downloadManager.downloadFinished();
 
                 // file dowloaded to modify it
                 // then add it to the list if doens't exist
@@ -228,9 +234,9 @@ Zc.AppView
                 //                {
 
                 //                }
-                if (Presenter.instance.fileStatus[fileName] === "open")
+                if (fileStatus[fileName] === "open")
                 {
-                    Presenter.instance.fileStatus[fileName] = null
+                    fileStatus[fileName] = null
                     Qt.openUrlExternally(localFilePath)
                 }
             }
@@ -432,7 +438,7 @@ Zc.AppView
 
     onLoaded :
     {
-        Presenter.instance.documentFolder = documentFolderId
+        //Presenter.instance.documentFolder = documentFolderId
         activity.start();
     }
 
@@ -513,9 +519,8 @@ Zc.AppView
         }
         else
         {
-            Presenter.instance.fileStatus[file.cast.name] = "open"
-            //    documentFolderId.downloadFile(file.cast)
-            Presenter.instance.startDownload(file);
+            fileStatus[file.cast.name] = "open"
+            downloadManager.startDownload(file);
         }
     }
 
@@ -570,8 +575,7 @@ Zc.AppView
                 if (x.cast.status !== "")
                 {
                     x.queryProgress = 1;
-                    Presenter.instance.startDownload(x.cast);
-                    //documentFolderId.downloadFile(x.cast)
+                    downloadManager.startDownload(x.cast);
                 }
             }
         })
@@ -650,7 +654,7 @@ Zc.AppView
             else
             {
                 confirmationId.visible = false
-                Presenter.instance.startDownload(confirmationId.file);
+                downloadManager.startDownload(confirmationId.file);
             }
         }
     }

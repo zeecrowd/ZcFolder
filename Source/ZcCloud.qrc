@@ -34,13 +34,12 @@
         <file>Views/Folder/Tools.js</file>
         <file>Views/Folder/UploadStatusView.qml</file>
         <file>Views/Folder/ZcFolder.qml</file>
-        <file>Views/Folder/ZcFolderPresenter.js</file>
         <file>Resources/cancel.png</file>
         <file>Resources/ok.png</file>
         <file>Views/Folder/Confirmation.qml</file>
         <file>Resources/checkbox_checked.png</file>
         <file>Resources/checkbox_unchecked.png</file>
         <file>Views/Folder/UploadManager.qml</file>
+        <file>Views/Folder/DownloadManager.qml</file>
     </qresource>
-    <qresource prefix="/"/>
 </RCC>
