@@ -27,7 +27,6 @@
         <file>Views/Folder/Delegate/SizeDelegate.qml</file>
         <file>Views/Folder/Delegate/SynchronizeDelegate.qml</file>
         <file>Views/Folder/Delegate/UploadViewDelegate.qml</file>
-        <file>Views/Folder/copyWorker.js</file>
         <file>Views/Folder/FileHeaderDelegate.qml</file>
         <file>Views/Folder/FolderGridIconView.qml</file>
         <file>Views/Folder/FolderGridView.qml</file>
@@ -41,5 +40,7 @@
         <file>Views/Folder/Confirmation.qml</file>
         <file>Resources/checkbox_checked.png</file>
         <file>Resources/checkbox_unchecked.png</file>
+        <file>Views/Folder/UploadManager.qml</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

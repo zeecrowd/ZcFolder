@@ -19,8 +19,9 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick 2.5
+import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.4
 
 Rectangle
 {
@@ -29,46 +30,6 @@ Rectangle
     width : parent.width
 
     color : item != null && item !== undefined && item.busy ? "lightgrey" : /*(index % 2 ? "#FFF2B7" :*/ "white" //)
-
-//    CheckBox
-//    {
-//        id : checkBox
-
-//        anchors
-//        {
-//            verticalCenter: parent.verticalCenter
-//            left    : parent.left
-//            leftMargin: 7
-//        }
-
-//        enabled : !item.busy
-
-//        onCheckedChanged:
-//        {
-//            model.cast.isSelected = checked
-//        }
-
-//    }
-
-//    function setImageLock()
-//    {
-//        checkedBoxImage.iconSource =
-//        if (item === undefined ||item === null)
-//            return;
-
-//        var dataObject = Tools.parseDatas(item.cast.datas)
-//        if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
-//        {
-//            lockImage.iconSource = "qrc:/ZcCloud/Resources/lock.png"
-//            lockImage.tooltip = "Unlock File"
-//            lbLockedBy.text = "  " + dataObject.lockedBy;
-//            return;
-//        }
-
-//        lockImage.iconSource = "qrc:/ZcCloud/Resources/unlock.png"
-//        lockImage.tooltip = "Lock File"
-//        lbLockedBy.text = "";
-//    }
 
     property bool checked : false
 

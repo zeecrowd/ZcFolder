@@ -25,32 +25,27 @@ var instance = {}
 
 instance.fileStatus = {}
 
-instance.fileDescriptorToUpload = {};
+//instance.fileDescriptorToUpload = {};
 
 var maxNbrDomwnload = 5;
-var maxNbrUpload = 5;
+//var maxNbrUpload = 5;
 
-var uploadRunning = 0;
+//var uploadRunning = 0;
 var downloadRunning = 0;
 
 var filesToDownload = []
 var filesToUpload = []
 
-function nextDownload()
-{
-
-    if (filesToDownload.length > 0)
-    {
+function nextDownload() {
+    if (filesToDownload.length > 0) {
         downloadRunning++;
         var file = filesToDownload.pop();
         documentFolder.downloadFile(file.cast)
     }
 }
 
-function verifyRightOrValidationToUploading(fileName)
-{
-    // All is ok
-    // File doesn't exist in documentFolder
+/*
+function verifyRightOrValidationToUploading(fileName) {
     var found = findInListModel(documentFolder.files, function(x) {return x.name === fileName} )
 
     if (found === null)
@@ -59,119 +54,76 @@ function verifyRightOrValidationToUploading(fileName)
     var lock = lockedActivityItems.getItem(fileName,"");
 
     // No lock or it's my lock
-    if ( lock === "" || lock === mainView.context.nickname)
-    {
+    if ( lock === "" || lock === mainView.context.nickname) {
         return true;
-    }
-    else
-    {
-        // If i am a admin need a validation
-//        if ( mainView.context.affiliation >= 3 )
-//        {
-//            // Check has already have a validation
-//            var o = findInListModel(uploadingFiles, function(x) {return x.name === fileName} )
-
-//            if ( o !== null && o.validated)
-//                return true;
-
-//            setPropertyinListModel(uploadingFiles,"status","NeedValidation",function (x) { return x.name === fileName });
-//            setPropertyinListModel(uploadingFiles,"message","File is locked by " + lock,function (x) { return x.name === fileName });
-//        }
-//        // File it's locked ... , i haven't got the right to upload the file
-//        else
-//        {
-            setPropertyinListModel(uploadingFiles,"status","Error",function (x) { return x.name === fileName });
-            setPropertyinListModel(uploadingFiles,"message","File is locked by " + lock,function (x) { return x.name === fileName });
-        //}
+    } else {
+        setPropertyinListModel(uploadingFiles,"status","Error",function (x) { return x.name === fileName });
+        setPropertyinListModel(uploadingFiles,"message","File is locked by " + lock,function (x) { return x.name === fileName });
         return false;
     }
 }
+*/
 
-
-function nextUpload()
-{
-    if (filesToUpload.length > 0)
-    {
+/*
+function nextUpload() {
+    if (filesToUpload.length > 0) {
         instance.incrementUploadRunning();
-
         var file = filesToUpload.pop();
-
         // Have you the rights to upload this file ???
         // or need Validation ??
-        if (!verifyRightOrValidationToUploading(file.descriptor.name))
-        {
+        if (!verifyRightOrValidationToUploading(file.descriptor.name)) {
             instance.decrementUploadRunning();
             return;
         }
 
-        if (file.path !== "" && file.path !== null && file.path !== undefined)
-        {
+        if (file.path !== "" && file.path !== null && file.path !== undefined) {
             documentFolder.importFileToLocalFolder(file.descriptor,file.path,".upload")
-        }
-        else
-        {
+        } else {
             setPropertyinListModel(uploadingFiles,"status","Uploading",function (x) { return x.name === file.descriptor.name });
             documentFolder.uploadFile(file.descriptor,".upload/" + file.descriptor.name)
             file.descriptor.query.statusChanged.connect(function (x) { uploadStatusChanged(x,file.descriptor.name) })
         }
     }
-}
+}*/
 
-function uploadStatusChanged(x,fileName)
-{
-    if (x.statusCode === "500")
-    {
+/*
+function uploadStatusChanged(x,fileName) {
+    if (x.statusCode === "500") {
         setPropertyinListModel(uploadingFiles,"status","Error",function (y) { return y.name === fileName });
     }
 }
 
-instance.incrementUploadRunning = function()
-{
+instance.incrementUploadRunning = function() {
     uploadRunning = uploadRunning + 1
 }
 
-instance.decrementUploadRunning = function()
-{
+instance.decrementUploadRunning = function() {
     uploadRunning = uploadRunning - 1
 }
+*/
 
-instance.startDownload = function(file)
-{
+instance.startDownload = function(file) {
     filesToDownload.push(file)
-
-    if (downloadRunning < maxNbrDomwnload)
-    {
+    if (downloadRunning < maxNbrDomwnload) {
         nextDownload();
     }
 }
 
-
-instance.startUpload = function(file,path)
-{   
+/*
+instance.startUpload = function(file,path) {
     var fd = {}
     fd.descriptor = file;
     fd.path = path
 
     filesToUpload.push(fd)
-
-    /*
-    ** uploadingFiles contain all progress ulpoading files
-    */
-    if ( instance.fileDescriptorToUpload[file.name] === null || instance.fileDescriptorToUpload[file.name] === undefined)
-    {
+    if ( instance.fileDescriptorToUpload[file.name] === null || instance.fileDescriptorToUpload[file.name] === undefined) {
         instance.fileDescriptorToUpload[file.name] = file
-
-        /*
-        ** to now the state of the progress
-        */
         file.queryProgressChanged.connect(function(){ updateQueryProgress(file.queryProgress,file.name) });
-    //    file.queryStatusChanged.connect(function(){ console.log(">> status changed >> " + file.status) });
     }
 
     var found = findInListModel(uploadingFiles, function(x) {return x.name === file.name} )
 
-    if (found === null)
-    {
+    if (found === null) {
         uploadingFiles.append( { "name"  : file.name,
                                  "action" : "Upload",
                                  "progress" : 0,
@@ -180,39 +132,28 @@ instance.startUpload = function(file,path)
                                  "localPath" : path,
                                   "validated" : false
                           })
-    }
-    else
-    {
+    } else {
         setPropertyinListModel(uploadingFiles,"localPath",path,function (x) { return x.name === file.name });
-
-        // TO DO : check override filename
     }
 
-    if (uploadRunning < maxNbrUpload)
-    {
+    if (uploadRunning < maxNbrUpload) {
         nextUpload();
     }
-}
+}*/
 
-function updateQueryProgress(progress, fileName)
-{
+/*function updateQueryProgress(progress, fileName) {
     setPropertyinListModel(uploadingFiles,"progress",progress,function (x) { return x.name === fileName });
-}
+}*/
 
 /*
 ** Upload is finished
 ** clean all object and try to do an next upload
 */
-instance.uploadFinished = function(fileName,notify)
-{
+/*instance.uploadFinished = function(fileName,notify) {
     var fileDescriptor = instance.fileDescriptorToUpload[fileName];
 
-    if (fileDescriptor !== null && fileDescriptor !== undefined)
-    {
+    if (fileDescriptor !== null && fileDescriptor !== undefined) {
         documentFolder.removeLocalFile(".upload/" + fileDescriptor.name)
-        /*
-        ** For example if it's a cancel : no notification for all users
-        */
         if (notify)
             notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"added\" , \"fileName\" : \"" + fileName + "\" , \"size\" : " +  fileDescriptor.size + " , \"lastModified\" : \"" + fileDescriptor.timeStamp + "\" }");
     }
@@ -220,10 +161,9 @@ instance.uploadFinished = function(fileName,notify)
     removeInListModel(uploadingFiles,function (x) { return x.name === fileName} );
     instance.decrementUploadRunning();
     nextUpload();
-}
+}*/
 
-instance.downloadFinished = function()
-{
+instance.downloadFinished = function() {
     downloadRunning--;
     nextDownload();
 }

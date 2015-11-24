@@ -36,7 +36,6 @@ OTHER_FILES += \
     ../../Source/Resources/updateDown.png \
     ../../Source/Resources/updates.png \
     ../../Source/Resources/updateUp.png \
-    ../../Source/Views/Folder/copyWorker.js \
     ../../Source/Views/Folder/Tools.js \
     ../../Source/Views/Folder/ZcFolderPresenter.js \
     ../../Source/Views/Folder/FileHeaderDelegate.qml \
@@ -51,7 +50,6 @@ OTHER_FILES += \
     ../../Source/Views/Folder/Delegate/FileNameDelegate.qml \
     ../../Source/Views/Folder/Delegate/FileTextDelegate.qml \
     ../../Source/Views/Folder/Delegate/LockedDelegate.qml \
-    ../../Source/Views/Folder/Delegate/ModifyItDelegate.qml \
     ../../Source/Views/Folder/Delegate/SizeDelegate.qml \
     ../../Source/Views/Folder/Delegate/SynchronizeDelegate.qml \
     ../../Source/Views/Folder/Delegate/UploadViewDelegate.qml \
@@ -61,3 +59,6 @@ OTHER_FILES += \
 RESOURCES += \
     ZcCloud.qrc \
     ../../Source/ZcCloud.qrc
+
+DISTFILES += \
+    ../../Source/Views/Folder/UploadManager.qml
