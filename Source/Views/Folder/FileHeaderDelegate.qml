@@ -88,9 +88,7 @@ Item
         {
             id : imageSort
             anchors.top     : parent.top
-    //        anchors.topMargin     : 5
             anchors.right   : parent.right
-      //      anchors.rightMargin     : 5
             anchors.bottom  : parent.bottom
             anchors.bottomMargin     : 5
 

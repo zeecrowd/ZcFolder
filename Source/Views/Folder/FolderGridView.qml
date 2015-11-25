@@ -65,7 +65,7 @@ ScrollView
                 filesCheckListView.model = model;
                 filesNameListView.model = model;
                 filesIconListView.model = model;
-                filesSynchronizeListView.model = model;
+                //filesSynchronizeListView.model = model;
                 filesLockedListView.model = model;
                 //filesModifyListView.model = model;
                 filesCalculateSizeListView.model = model;
@@ -201,7 +201,7 @@ ScrollView
             //            }
 
 
-            ListView
+           /* ListView
             {
                 id                  : filesSynchronizeListView
                 spacing             : 10
@@ -220,6 +220,7 @@ ScrollView
                     sortAvailable : false
                 }
             }
+            */
 
             ListView
             {
