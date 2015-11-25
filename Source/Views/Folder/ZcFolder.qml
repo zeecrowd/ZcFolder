@@ -26,6 +26,7 @@ import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.2
 
+import "../../Components"
 import "Tools.js" as Tools
 
 import ZcClient 1.0 as Zc
@@ -37,17 +38,7 @@ Zc.AppView
     anchors.fill : parent
 
     toolBarActions : [
-        Action {
-            id: closeAction
-            shortcut: "Ctrl+X"
-            iconSource: "../../Resources/close.png"
-            tooltip : "Close Aplication"
-            onTriggered:
-            {
-                mainView.close();
-            }
-        },
-        Action {
+        /* Action {
             id: importAction
             shortcut: "Ctrl+I"
             iconSource: "../../Resources/export.png"
@@ -59,8 +50,8 @@ Zc.AppView
                 fileDialog.selectFolder = false
                 fileDialog.open()
             }
-        }
-        ,
+        }*/
+        /*   ,
         Action {
             id: exportAction
             shortcut: "Ctrl+E"
@@ -73,8 +64,8 @@ Zc.AppView
                 exportFile();
                 documentFolder.openLocalPath();
             }
-        }
-        ,
+        }*/
+        //  ,
         Action {
             id: deleteAction
             shortcut: "Ctrl+D"
@@ -84,9 +75,34 @@ Zc.AppView
             {
                 mainView.deleteSelectedFiles();
             }
-        } 
+        }
     ]
 
+    menuActions :
+        [
+        Action {
+            id: close2Action
+            shortcut: "Ctrl+X"
+            text:  "Close ZcFolder"
+            onTriggered:
+            {
+                mainView.close();
+            }
+        },
+        Action {
+            id: addFile
+            shortcut: "Ctrl+I"
+            text:  "Add files"
+            onTriggered:
+            {
+                mainView.state = "putOnCloud"
+                fileDialog.selectMultiple = true;
+                fileDialog.selectFolder = false
+                fileDialog.open()
+            }
+        }
+
+    ]
     property bool  needRefresh : false
     property var fileStatus : ([])
 
@@ -540,30 +556,53 @@ Zc.AppView
         }
     }
 
+    // On passe dans le contecte les fichier à uploadé
+    // si l'utilisateur est ok pour evvrider ceux qui existent
+    // alors on les envoi à l'upload
+    Alert {
+        id : alertFilesExist
+        button1: "Ok"
+        button2: "Cancel"
+        message: qsTr("Files already exist.\nDo you want to override them?")
+        onButton1Clicked: {
+            openUploadView()
+            Tools.forEachInArray(alertFilesExist.context, function (x)
+            {
+                uploadManager.startUpload(x.fileDescriptor.cast,x.url);
+            });
+        }
+        onButton2Clicked: {
+            hide();
+        }
+    }
+
     function putFilesOnTheCloud(fileUrls)
     {
-        openUploadView()
-
         var fds = [];
-        for ( var i = 0 ; i < fileUrls.length ; i ++)
-        {
-            var fd = documentFolderId.createFileDescriptorFromFile(fileUrls[i]);
-
-
-            if (fd !== null)
-            {
-                var fdo = {}
-                fdo.fileDescriptor =fd;
-                fdo.url = fileUrls[i];
+        var areExistingFilesOnCloud = false;
+        for ( var i = 0 ; i < fileUrls.length ; i ++) {
+            var fdo = uploadManager.createFileDescriptorFromFile(fileUrls[i]);
+            if (fdo !== null) {
                 fds.push(fdo);
-                fd.queryProgress = 1;
+                if (uploadManager.fileAlreadyExistOnCloud(fdo.fileDescriptor.name)) {
+                    areExistingFilesOnCloud = true;
+                }
             }
         }
 
-        Tools.forEachInArray(fds, function (x)
-        {
-            uploadManager.startUpload(x.fileDescriptor.cast,x.url);
-        });
+        // Si il y a des fichiers qui vaient le même nom alors
+        // on demande à l'utilisateur une confirmation
+        // sinon on envoi à l'upload directement
+        if (areExistingFilesOnCloud) {
+            alertFilesExist.context = fds;
+            alertFilesExist.show()
+        } else {
+            openUploadView();
+            Tools.forEachInArray(fds, function (x)
+            {
+                uploadManager.startUpload(x.fileDescriptor.cast,x.url);
+            });
+        }
     }
 
     function exportFile()
@@ -600,7 +639,6 @@ Zc.AppView
         confirmationId.fileName =  file.name
         confirmationId.visible = true;
     }
-
 
     function deleteSelectedFiles()
     {

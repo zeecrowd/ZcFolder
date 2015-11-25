@@ -30,15 +30,41 @@ Item {
         uploadRunning = uploadRunning + 1
     }
 
+    function createFileDescriptorFromFile(url) {
+        var fd = documentFolder.createFileDescriptorFromFile(url);
+        if (fd === null)
+            return;
+
+        if (fd !== null)
+        {
+            var fdo = {}
+            fdo.fileDescriptor =fd;
+            fdo.url = url;
+            fd.queryProgress = 1;
+        }
+        return fdo;
+    }
+
+    function fileAlreadyExistOnCloud(fileName) {
+        var found = Tools.findInListModel(documentFolder.files, function(x) {
+                        return x.name === fileName}
+                    )
+
+        if (found !== null)
+            return true;
+
+        return false;
+    }
+
+
     // Si le fichier n'existe pas : Ok
     // Si le fichier existe et qu'il n'est pas locké : Ok
     // Si le fichier existe et qu'il est locké par moi  : Ok
     function verifyRightOrValidationToUploading(fileName) {
         // All is ok
         // File doesn't exist in documentFolder
-        var found = Tools.findInListModel(documentFolder.files, function(x) {return x.name === fileName} )
 
-        if (found === null)
+        if (!fileAlreadyExistOnCloud(fileName))
             return true;
 
         var lock = lockedActivityItems.getItem(fileName,"");

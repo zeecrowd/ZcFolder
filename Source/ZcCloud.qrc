@@ -41,5 +41,8 @@
         <file>Resources/checkbox_unchecked.png</file>
         <file>Views/Folder/UploadManager.qml</file>
         <file>Views/Folder/DownloadManager.qml</file>
+        <file>Components/Alert.qml</file>
+        <file>Components/AlertButtonStyle.qml</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>
