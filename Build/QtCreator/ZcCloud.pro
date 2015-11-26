@@ -12,7 +12,6 @@ OTHER_FILES += \
     Views/Folder/Delegate/CheckedDelegate.qml \
     Views/Folder/Delegate/SizeDelegate.qml \
     Views/Folder/Delegate/DateDelegate.qml \
-    Views/Folder/Delegate/SynchronizeDelegate.qml \
     Views/Folder/UploadStatusView.qml \
     Views/Folder/Delegate/UploadViewDelegate.qml \
     Views/Folder/Delegate/FileIconDelegate.qml \
@@ -28,7 +27,6 @@ OTHER_FILES += \
     ../../Source/Resources/import.png \
     ../../Source/Resources/list.png \
     ../../Source/Resources/lock.png \
-    ../../Source/Resources/synchronize.png \
     ../../Source/Resources/tile.png \
     ../../Source/Resources/unlock.png \
     ../../Source/Resources/up.png \
@@ -49,7 +47,6 @@ OTHER_FILES += \
     ../../Source/Views/Folder/Delegate/FileTextDelegate.qml \
     ../../Source/Views/Folder/Delegate/LockedDelegate.qml \
     ../../Source/Views/Folder/Delegate/SizeDelegate.qml \
-    ../../Source/Views/Folder/Delegate/SynchronizeDelegate.qml \
     ../../Source/Views/Folder/Delegate/UploadViewDelegate.qml \
     ../../Source/Views/Folder/Confirmation.qml
   
@@ -60,4 +57,6 @@ RESOURCES += \
 
 DISTFILES += \
     ../../Source/Views/Folder/UploadManager.qml \
-    ../../Source/Views/Folder/DownloadManager.qml
+    ../../Source/Views/Folder/DownloadManager.qml \
+    ../../Source/Components/ActionList.qml \
+    ../../Source/Components/ActionButtonStyle.qml

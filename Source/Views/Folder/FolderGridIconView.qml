@@ -138,7 +138,7 @@ Item
                             {
                                 if (!item.cast.isBusy)
                                 {
-                                    mainView.openFile(item)
+                                    mainView.showFileContextualMenu(item)
                                 }
                             }
                         }
@@ -168,46 +168,6 @@ Item
 
                     }
 
-
-//                    SynchronizeDelegate
-//                    {
-//                        color : "#00000000"
-
-//                        anchors
-//                        {
-//                            bottom: image.bottom
-//                            right: parent.right
-//                            leftMargin: 3
-//                            rightMargin: 3
-
-//                        }
-//                    }
-
-                    //                    Image
-                    //                    {
-                    //                        height      : 25
-                    //                        width       : 25
-
-                    //                        anchors.bottom: image.bottom
-                    //                        anchors.right: parent.right
-                    //                        anchors.leftMargin: 3
-                    //                        anchors.rightMargin: 3
-
-                    //                        visible    : item.status !== "" && !item.busy
-                    //                        source : item.status === "upload" ? "qrc:/ZcCloud/Resources/export.png" : "qrc:/ZcCloud/Resources/import.png"
-
-                    //                        MouseArea
-                    //                        {
-                    //                            anchors.fill: parent
-                    //                            enabled     : parent.visible
-
-                    //                            onClicked:
-                    //                            {
-                    //                                mainView.synchronize(item)
-                    //                            }
-                    //                        }
-
-                    //                    }
 
                     ProgressBar
                     {

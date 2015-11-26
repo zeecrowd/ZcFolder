@@ -48,7 +48,7 @@ ScrollView
     {
         anchors.fill: parent
 
-        contentHeight: filesCheckListView.contentHeight
+        contentHeight: filesIconListView.contentHeight
 
         SplitView
         {
@@ -62,16 +62,15 @@ ScrollView
 
             function setModel(model)
             {
-                filesCheckListView.model = model;
+                //filesCheckListView.model = model;
                 filesNameListView.model = model;
                 filesIconListView.model = model;
-                //filesSynchronizeListView.model = model;
                 filesLockedListView.model = model;
-                //filesModifyListView.model = model;
                 filesCalculateSizeListView.model = model;
                 filesCalculateDateListView.model = model;
             }
 
+            /*
             ListView
             {
                 Component
@@ -119,7 +118,7 @@ ScrollView
                 delegate    : CheckedDelegate {}
 
                 header : headerCheckComponent
-            }
+            }*/
 
 
             ListView
@@ -185,42 +184,6 @@ ScrollView
 
                 }
             }
-
-
-            //            ListView
-            //            {
-            //                id                  : filesModifyListView
-            //                spacing             : 10
-            //                Layout.minimumWidth : 125
-            //                interactive         : false
-            //                contentY            : filesCalculateDateListView.contentY
-            //                delegate            : ModifyItDelegate { }
-
-
-            //                header              : FileHeaderDelegate { text :  "Modifying" }
-            //            }
-
-
-           /* ListView
-            {
-                id                  : filesSynchronizeListView
-                spacing             : 10
-
-
-                Layout.minimumWidth : 125
-                interactive         : false
-                contentY            : filesCalculateDateListView.contentY
-                delegate            : SynchronizeDelegate { }
-
-
-                header              : FileHeaderDelegate
-                {
-                    text :  ""
-                    width : filesSynchronizeListView.width
-                    sortAvailable : false
-                }
-            }
-            */
 
             ListView
             {

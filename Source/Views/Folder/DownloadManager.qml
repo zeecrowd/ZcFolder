@@ -10,8 +10,13 @@ Item {
 
     property var documentFolder : null
 
-    function startDownload(file) {
-        filesToDownload.push(file)
+    function startDownload(file,localPath) {
+
+        var fde = {};
+        fde.fileDescriptor = file;
+        fde.localPath = localPath;
+
+        filesToDownload.push(fde)
         if (downloadRunning < maxNbrDomwnload) {
             nextDownload();
         }
@@ -19,8 +24,8 @@ Item {
     function nextDownload() {
         if (filesToDownload.length > 0) {
             downloadRunning++;
-            var file = filesToDownload.pop();
-            documentFolder.downloadFile(file.cast)
+            var fde = filesToDownload.pop();
+            documentFolder.downloadFileTo(fde.fileDescriptor.cast,fde.localPath)
         }
     }
 

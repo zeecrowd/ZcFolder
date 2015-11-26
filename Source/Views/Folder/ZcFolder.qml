@@ -26,7 +26,7 @@ import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.2
 
-import "../../Components"
+import "../../Components" as FolderComponents
 import "Tools.js" as Tools
 
 import ZcClient 1.0 as Zc
@@ -36,47 +36,6 @@ Zc.AppView
     id : mainView
 
     anchors.fill : parent
-
-    toolBarActions : [
-        /* Action {
-            id: importAction
-            shortcut: "Ctrl+I"
-            iconSource: "../../Resources/export.png"
-            tooltip : "Push on the cloud"
-            onTriggered:
-            {
-                mainView.state = "putOnCloud"
-                fileDialog.selectMultiple = true;
-                fileDialog.selectFolder = false
-                fileDialog.open()
-            }
-        }*/
-        /*   ,
-        Action {
-            id: exportAction
-            shortcut: "Ctrl+E"
-            iconSource: "../../Resources/folder.png"
-            tooltip : "Open local folder"
-
-            onTriggered:
-            {
-                mainView.state = "export"
-                exportFile();
-                documentFolder.openLocalPath();
-            }
-        }*/
-        //  ,
-        Action {
-            id: deleteAction
-            shortcut: "Ctrl+D"
-            iconSource: "../../Resources/bin.png"
-            tooltip : "Delete File"
-            onTriggered:
-            {
-                mainView.deleteSelectedFiles();
-            }
-        }
-    ]
 
     menuActions :
         [
@@ -103,6 +62,7 @@ Zc.AppView
         }
 
     ]
+
     property bool  needRefresh : false
     property var fileStatus : ([])
 
@@ -152,7 +112,6 @@ Zc.AppView
                 onErrorOccured :
                 {
                     console.log(">> ERRROR OCCURED")
-                    confirmationId.visible = true;
                 }
 
                 onCompleted :
@@ -306,6 +265,7 @@ Zc.AppView
 
             }
         }
+
         Zc.MessageSender
         {
             id      : notifySender
@@ -433,6 +393,20 @@ Zc.AppView
         }
     }
 
+    FileDialog {
+        id : chooseFolderToDownload
+        property var fileDescriptor : null
+        selectFolder: true
+        title : qsTr("Choose folder to download file")
+
+        folder : shortcuts.documents
+
+        onAccepted:
+        {
+            downloadManager.startDownload(fileDescriptor,folder)
+        }
+    }
+
     FileDialog
     {
         id: fileDialog
@@ -526,18 +500,10 @@ Zc.AppView
         uploadManager.startUpload(file.cast,path);
     }
 
-    function openFile(file)
+    function downloadFile(file)
     {
-        // TODO : reduct the real Status
-        if (file.status !== "download")
-        {
-            documentFolderId.openFileWithDefaultApplication(file.cast);
-        }
-        else
-        {
-            fileStatus[file.cast.name] = "open"
-            downloadManager.startDownload(file);
-        }
+        chooseFolderToDownload.fileDescriptor = file;
+        chooseFolderToDownload.open()
     }
 
     function closeUploadViewIfNeeded()
@@ -559,7 +525,7 @@ Zc.AppView
     // On passe dans le contecte les fichier à uploadé
     // si l'utilisateur est ok pour evvrider ceux qui existent
     // alors on les envoi à l'upload
-    Alert {
+    FolderComponents.Alert {
         id : alertFilesExist
         button1: "Ok"
         button2: "Cancel"
@@ -573,6 +539,40 @@ Zc.AppView
         }
         onButton2Clicked: {
             hide();
+        }
+    }
+
+    function showFileContextualMenu(item) {
+        fileContextualMenu.fileDescriptor = item
+        fileContextualMenu.show()
+    }
+
+    FolderComponents.ActionList {
+        id: fileContextualMenu
+
+        property var fileDescriptor : null
+
+        Action {
+            text: qsTr("Save")
+            onTriggered: {
+                mainView.downloadFile(fileContextualMenu.fileDescriptor)
+            }
+        }
+
+        Action {
+            text: qsTr("Save and Open")
+            onTriggered: {
+                // quand il sera downloadé alors on l'ouvrira
+                fileStatus[fileContextualMenu.fileDescriptor.cast.name] = "open"
+                mainView.downloadFile(fileContextualMenu.fileDescriptor)
+            }
+        }
+
+        Action {
+            text: qsTr("Delete")
+            onTriggered: {
+                mainView.deleteFile(fileContextualMenu.fileDescriptor)
+            }
         }
     }
 
@@ -605,41 +605,6 @@ Zc.AppView
         }
     }
 
-    function exportFile()
-    {
-        Tools.forEachInObjectList( documentFolderId.files, function(x)
-        {
-            if (x.cast.isSelected)
-            {
-                if (x.cast.status !== "")
-                {
-                    x.queryProgress = 1;
-                    downloadManager.startDownload(x.cast);
-                }
-            }
-        })
-    }
-
-    function synchronize(file)
-    {
-
-        if (file.status === "upload")
-        {
-            if (!mainView.haveTheRighToModify(file.name))
-                return;
-
-            confirmationId.upload = true;
-        }
-        else if (file.status === "download")
-        {
-            confirmationId.upload = false;
-        }
-
-        confirmationId.file = file.cast
-        confirmationId.fileName =  file.name
-        confirmationId.visible = true;
-    }
-
     function deleteSelectedFiles()
     {
         var toBeDeleted = [];
@@ -663,6 +628,13 @@ Zc.AppView
         })
     }
 
+    function deleteFile(file) {
+        if (mainView.haveTheRighToModify(file.cast.name)) {
+            mainView.lockFile(file.cast.name);
+            documentFolderId.deleteFile(file.cast);
+        }
+    }
+
     function refreshFiles()
     {
         documentFolderId.loadFiles();
@@ -675,26 +647,4 @@ Zc.AppView
         width : parent.width
         height: parent.height
     }
-
-
-    Confirmation
-    {
-        id : confirmationId
-
-        onClicked:
-        {
-            if (confirmationId.upload)
-            {
-                openUploadView()
-                confirmationId.visible = false
-                uploadManager.startUpload(confirmationId.file.cast,documentFolderId.localPath + confirmationId.file.name);
-            }
-            else
-            {
-                confirmationId.visible = false
-                downloadManager.startDownload(confirmationId.file);
-            }
-        }
-    }
-
 }

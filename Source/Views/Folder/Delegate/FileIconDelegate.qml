@@ -28,14 +28,14 @@ Image
 
     Component.onCompleted:
     {
-        if (item.status === "" ||item.status === null || item.status === "upload")
+        /*if (item.status === "" ||item.status === null || item.status === "upload")
         {
             source = "image://icons/" + "file:///" + documentFolder.localPath + item.cast.name
         }
         else
-        {
+        {*/
             source = "image://icons/" + "file:///" + item.cast.name
-        }
+        //}
 
     }
 
@@ -43,6 +43,7 @@ Image
     {
         anchors.fill: parent
 
-        onClicked: mainView.openFile(item)
+
+        onClicked: mainView.showFileContextualMenu(item)
     }
 }

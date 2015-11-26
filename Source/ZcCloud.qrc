@@ -10,7 +10,6 @@
         <file>Resources/import.png</file>
         <file>Resources/list.png</file>
         <file>Resources/lock.png</file>
-        <file>Resources/synchronize.png</file>
         <file>Resources/tile.png</file>
         <file>Resources/unlock.png</file>
         <file>Resources/up.png</file>
@@ -25,7 +24,6 @@
         <file>Views/Folder/Delegate/LockedDelegate.qml</file>
         <file>Views/Folder/Delegate/ModifyItDelegate.qml</file>
         <file>Views/Folder/Delegate/SizeDelegate.qml</file>
-        <file>Views/Folder/Delegate/SynchronizeDelegate.qml</file>
         <file>Views/Folder/Delegate/UploadViewDelegate.qml</file>
         <file>Views/Folder/FileHeaderDelegate.qml</file>
         <file>Views/Folder/FolderGridIconView.qml</file>
@@ -36,13 +34,13 @@
         <file>Views/Folder/ZcFolder.qml</file>
         <file>Resources/cancel.png</file>
         <file>Resources/ok.png</file>
-        <file>Views/Folder/Confirmation.qml</file>
         <file>Resources/checkbox_checked.png</file>
         <file>Resources/checkbox_unchecked.png</file>
         <file>Views/Folder/UploadManager.qml</file>
         <file>Views/Folder/DownloadManager.qml</file>
         <file>Components/Alert.qml</file>
         <file>Components/AlertButtonStyle.qml</file>
+        <file>Components/ActionList.qml</file>
+        <file>Components/ActionButtonStyle.qml</file>
     </qresource>
-    <qresource prefix="/"/>
 </RCC>

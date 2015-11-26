@@ -27,7 +27,7 @@ FileTextDelegate
         isBusy : item != null && item !== undefined ?  item.busy : false
     position : index
 
-    onClicked : mainView.openFile(item)
+    onClicked : mainView.showFileContextualMenu(item)
     notifyPressed: true
 
     Rectangle
