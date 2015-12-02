@@ -70,57 +70,6 @@ ScrollView
                 filesCalculateDateListView.model = model;
             }
 
-            /*
-            ListView
-            {
-                Component
-                {
-                    id : headerCheckComponent
-                    Item
-                    {
-                        height  : 30;
-                        width   : filesCheckListView.width;
-
-                        Rectangle
-                        {
-                            width       : parent.width
-                            height      : 25
-                            anchors.top : parent.top
-                            color       : "lightBlue"
-
-                            radius      : 3
-
-                            CheckBox
-                            {
-                                id : allSelected
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left    : parent.left
-                                anchors.leftMargin: 7
-                                enabled : !item.busy
-                                onCheckedChanged:
-                                {
-                                    fodlerGridViewId.selectedAllChanged(checked);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                id                  : filesCheckListView
-                spacing             : 10
-                contentY            : filesCalculateDateListView.contentY
-                Layout.minimumWidth : 40
-                Layout.maximumWidth : 40
-
-                model       : parent.model
-                interactive : false
-
-                delegate    : CheckedDelegate {}
-
-                header : headerCheckComponent
-            }*/
-
-
             ListView
             {
                 id                  : filesIconListView
@@ -142,8 +91,6 @@ ScrollView
                         sortAvailable: false
                     }
             }
-
-
 
             ListView
             {
@@ -204,7 +151,6 @@ ScrollView
                     }
             }
 
-
             ListView
             {
                 Zc.JavaScriptSorter
@@ -260,7 +206,6 @@ ScrollView
                         return leftdate < rightdate;
                     }
                 }
-
 
                 id                    : filesCalculateDateListView
                 spacing               : 10

@@ -59,7 +59,7 @@ Item
 
         order = sortListModel.order
 
-        validate.iconSource = sortListModel.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
+        validate.iconSource = sortListModel.order === 0 ? "../../Resources/down.png" : "../../Resources/up.png"
 
         sortJavaScriptObjet.qmlObjectSorter = sortJavaScriptObjet;
         sortListModel.setSorter(sortJavaScriptObjet);
@@ -98,7 +98,7 @@ Item
             action : Action
             {
                 id : validate
-                iconSource : delegateHeader.order === 0 ? "qrc:/ZcCloud/Resources/down.png" : "qrc:/ZcCloud/Resources/up.png"
+                iconSource : delegateHeader.order === 0 ? "../../Resources/down.png" : "../../Resources/up.png"
                 tooltip     : "Sort"
 
             onTriggered :

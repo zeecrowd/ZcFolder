@@ -377,11 +377,11 @@ Zc.AppView
             }
 
             id : loaderFolderView
-            source : parent.width < Zc.AppStyleSheet.width(3) ? "SmartFolderGridView.qml" : "FolderGridView.qml"
+            source : parent.width < Zc.AppStyleSheet.width(6) ? "SmartFolderGridView.qml" : "FolderGridView.qml"
             Layout.fillWidth : true
             onLoaded: {
-               // loaderFolderView.item.setModel(sortFilterObjectListModel);
-                loaderFolderView.item.setModel(documentFolderId.files);
+                loaderFolderView.item.setModel(sortFilterObjectListModel);
+                //loaderFolderView.item.setModel(documentFolderId.files);
 
             }
         }
@@ -551,13 +551,39 @@ Zc.AppView
         }
     }
 
+    // info sur un fichier
+    FolderComponents.Alert {
+        id : infoId
+        button1: "Ok"
+        //message: qsTr("Files already exist.\nDo you want to override them?")
+        onButton1Clicked: {
+            hide();
+        }
+
+        function showInfo(fileDescriptor)
+        {
+            message = "";
+            message += fileDescriptor.name + "\n"
+            message += qsTr("Size : " ) + fileDescriptor.remoteSizeKb + "kb\n"
+            message += qsTr("Modified : " ) + fileDescriptor.remoteTimeStampLabel.replace(" GMT","") + "\n"
+            var lby = lockedBy(fileDescriptor.datas);
+            if (lby !== "")
+                message += qsTr("Locked by : ") + lby + "\n"
+            show();
+        }
+    }
+
     function isLocked(theDatats) {
+        return lockedBy(theDatats) !== ""
+    }
+
+    function lockedBy(theDatats) {
         var dataObject = Tools.parseDatas(theDatats)
         if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "") {
-            return true;
+            return dataObject.lockedBy;
         }
         else {
-            return false;
+            return "";
         }
     }
 
@@ -603,6 +629,14 @@ Zc.AppView
                   mainView.unlockFile(fileContextualMenu.fileDescriptor.name);
                 else
                     mainView.lockFile(fileContextualMenu.fileDescriptor.name);
+            }
+        }
+
+
+        Action {
+            text: qsTr("Infos")
+            onTriggered: {
+                infoId.showInfo(fileContextualMenu.fileDescriptor)
             }
         }
 

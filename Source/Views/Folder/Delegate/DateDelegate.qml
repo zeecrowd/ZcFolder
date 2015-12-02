@@ -24,6 +24,6 @@ import QtQuick 2.5
 FileTextDelegate
 {
     position : index
-    text : remoteTimeStampLabel
+    text : remoteTimeStampLabel.replace(" GMT","")
     isBusy : item != null && item !== undefined ?  item.busy : false
 }

@@ -36,7 +36,7 @@ Image
         }
         else
         {*/
-            source = "image://icons/" + "file:///" + item.cast.name
+            source = "image://icons/" + "file:///" + item.name
         //}
 
     }

@@ -114,20 +114,16 @@ Item {
 
                 Text {
                     width : parent.width
-                    // Layout.fillHeight: true
                     text : name
                     font.pixelSize: Zc.AppStyleSheet.height(0.12)
                     color : "black"
-                    //    clip : true
                     elide : Text.ElideMiddle
                 }
                 Text {
                     width : parent.width
-                    //                Layout.preferredHeight:  Zc.AppStyleSheet.height(0.10)
                     text : remoteSizeKb + " kb"
                     font.pixelSize: Zc.AppStyleSheet.height(0.10)
                     color : "grey"
-                    //  clip : true
                     elide : Text.ElideMiddle
                 }
 

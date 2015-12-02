@@ -23,11 +23,17 @@ import QtQuick 2.5
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.4
 
+import ZcClient 1.0 as Zc
+
 import "../Tools.js" as Tools
 
-Item
+Rectangle
 {
     id : delegateLock
+
+    property bool isBusy : item != null && item !== undefined ?  item.busy : false
+    color : isBusy ? "lightgrey" : /*(position % 2 ? "#FFF2B7" :*/ "white" //)
+
 
     /*
     ** Et lock/unlock image from datas.lockedBy
@@ -37,16 +43,16 @@ Item
         if (item === undefined ||item === null)
             return;
 
-        var dataObject = Tools.parseDatas(item.cast.datas)
+        var dataObject = Tools.parseDatas(item.datas)
         if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
         {
-            lockImage.iconSource = "qrc:/ZcCloud/Resources/lock.png"
+            lockImage.iconSource = "../../../Resources/lock.png"
             lockImage.tooltip = "Unlock File"
             lbLockedBy.text = "  " + dataObject.lockedBy;
             return;
         }
 
-        lockImage.iconSource = "qrc:/ZcCloud/Resources/unlock.png"
+        lockImage.iconSource = "../../../Resources/unlock.png"
         lockImage.tooltip = "Lock File"
         lbLockedBy.text = "";
     }
@@ -57,11 +63,11 @@ Item
     Component.onCompleted:
     {
         setImageLock();
-        item.cast.datasChanged.connect(setImageLock)
+        item.datasChanged.connect(setImageLock)
     }
 
-    height      : 40
-    width       : 150
+    height: Zc.AppStyleSheet.height(0.36)
+    width  : Zc.AppStyleSheet.width(1)
 
     Row
     {
@@ -69,11 +75,12 @@ Item
 
         ToolButton
         {
-            height: 40
-            width: 40
+            height: Zc.AppStyleSheet.height(0.36)
+            width: Zc.AppStyleSheet.width(0.36)
+
+            enabled: !isBusy
 
             anchors.verticalCenter: parent.verticalCenter
-
 
             action : Action
             {
@@ -81,6 +88,9 @@ Item
 
             onTriggered :
             {
+                if (isBusy)
+                    return;
+
                 var datasObject = Tools.parseDatas(item.datas);
 
                 /*
@@ -107,46 +117,45 @@ Item
 
         }
     }
-//        Image
-//        {
-//            id : lockImage
-//            height      : 40
-//            width       : 40
+    /*
+        Image
+        {
+            id : lockImage
+            height      : 40
+            width       : 40
 
-//            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
 
-//            MouseArea
-//            {
-//                anchors.fill: parent
-//                enabled     : parent.visible
+            MouseArea
+            {
+                anchors.fill: parent
+                enabled     : parent.visible
 
-//                onClicked:
-//                {
-//                    var datasObject = Tools.parseDatas(item.datas);
+                onClicked:
+                {
+                    var datasObject = Tools.parseDatas(item.datas);
 
-//                    /*
-//                    ** I can't unlocked a file than i modify
-//                    */
-//                    if ( datasObject.modifyingBy === mainView.context.nickname )
-//                        return;
+                    if ( datasObject.modifyingBy === mainView.context.nickname )
+                        return;
 
-//                    // lock or unlock
-//                    if (datasObject.lockedBy === undefined ||
-//                            datasObject.lockedBy === "" ||
-//                            datasObject.lockedBy === null )
-//                    {
-//                        mainView.lockFile(item.name);
-//                    }
-//                    else
-//                    {
-//                        if (mainView.haveTheRighToLockUnlock(item.name))
-//                        {
-//                            mainView.unlockFile(item.name);
-//                        }
-//                    }
-//                }
-//            }
-//        }
+                    // lock or unlock
+                    if (datasObject.lockedBy === undefined ||
+                            datasObject.lockedBy === "" ||
+                            datasObject.lockedBy === null )
+                    {
+                        mainView.lockFile(item.name);
+                    }
+                    else
+                    {
+                        if (mainView.haveTheRighToLockUnlock(item.name))
+                        {
+                            mainView.unlockFile(item.name);
+                        }
+                    }
+                }
+            }
+        }
+                            */
 
         Label
         {
@@ -157,4 +166,6 @@ Item
             font.pixelSize              : 16
         }
     }
+
+
 }
