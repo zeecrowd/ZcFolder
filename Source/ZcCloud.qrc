@@ -42,5 +42,7 @@
         <file>Components/AlertButtonStyle.qml</file>
         <file>Components/ActionList.qml</file>
         <file>Components/ActionButtonStyle.qml</file>
+        <file>Views/Folder/SmartFolderGridView.qml</file>
+        <file>Views/Folder/Delegate/SmartFileDelegate.qml</file>
     </qresource>
 </RCC>

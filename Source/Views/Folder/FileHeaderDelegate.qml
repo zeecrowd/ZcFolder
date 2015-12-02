@@ -23,11 +23,12 @@ import QtQuick 2.5
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.4
 
+import ZcClient 1.0 as Zc
 
 Item
 {
     id : delegateHeader
-    height  : 30
+    height  : Zc.AppStyleSheet.height(0.26)
     width   : 100
 
     signal clicked();
@@ -66,13 +67,13 @@ Item
 
         // refresh the repeater view
         sortListModel.setModel(null);
-        sortListModel.setModel(documentFolder.files)
+        sortListModel.setModel(documentFolderId.files)
     }
 
     Rectangle
     {
         width       : parent.width
-        height      : 25
+        height      : Zc.AppStyleSheet.height(0.26)
         anchors.top : parent.top
         color       : "lightBlue"
 
@@ -90,7 +91,7 @@ Item
             anchors.top     : parent.top
             anchors.right   : parent.right
             anchors.bottom  : parent.bottom
-            anchors.bottomMargin     : 5
+            anchors.bottomMargin     : Zc.AppStyleSheet.height(0.05)
 
             width : height
 

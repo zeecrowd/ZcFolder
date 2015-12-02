@@ -21,14 +21,18 @@
 
 import QtQuick 2.5
 
+import ZcClient 1.0 as Zc
+
+
 Rectangle
 {
     id : fileTextDelegate
 
-    height : 40
+    height: Zc.AppStyleSheet.height(0.36)
     width : parent.width
 
     signal clicked()
+
 
     property bool notifyPressed : false
     property bool isBusy : false
@@ -47,17 +51,24 @@ Rectangle
         id                          : delegateId
         color                       : "black"
         anchors.verticalCenter      : parent.verticalCenter
+        width : parent.width - Zc.AppStyleSheet.width(0.05)
+
         anchors.left                : parent.left
         anchors.leftMargin          : 5
-        font.pixelSize              : 16
-        textFormat: Text.RichText
 
-        onLinkActivated:
-        {
-            if (!isBusy)
-                fileTextDelegate.clicked()
-        }
+        clip : true
+        elide : Text.ElideMiddle
+
+        font.pixelSize              : Zc.AppStyleSheet.height(0.14)
      }
+
+    MouseArea {
+         anchors.fill: parent
+         onClicked: {
+             if (!isBusy)
+                 fileTextDelegate.clicked()
+         }
+    }
 
 //    MouseArea
 //    {

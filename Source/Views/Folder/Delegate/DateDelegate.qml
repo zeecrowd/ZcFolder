@@ -24,6 +24,6 @@ import QtQuick 2.5
 FileTextDelegate
 {
     position : index
-    text : item.remoteTimeStampLabel
+    text : remoteTimeStampLabel
     isBusy : item != null && item !== undefined ?  item.busy : false
 }

@@ -21,10 +21,12 @@
 
 import QtQuick 2.5
 
+import ZcClient 1.0 as Zc
+
 Image
 {
-    width: 40
-    height: 40
+    width: Zc.AppStyleSheet.width(0.36)
+    height: Zc.AppStyleSheet.height(0.36)
 
     Component.onCompleted:
     {

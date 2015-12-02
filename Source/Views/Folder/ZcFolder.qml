@@ -56,7 +56,8 @@ Zc.AppView
             {
                 mainView.state = "putOnCloud"
                 fileDialog.selectMultiple = true;
-                fileDialog.selectFolder = false
+                fileDialog.selectFolder = false;
+
                 fileDialog.open()
             }
         }
@@ -150,6 +151,7 @@ Zc.AppView
                     javaScriptSorter.qmlObjectSorter = javaScriptSorter;
                     sortFilterObjectListModel.setSorter(javaScriptSorter);
 
+                    console.log(">> loaderFolderView.item.setModel " + sortFilterObjectListModel)
                     loaderFolderView.item.setModel(sortFilterObjectListModel);
 
                     /*
@@ -375,8 +377,13 @@ Zc.AppView
             }
 
             id : loaderFolderView
-            source : "FolderGridView.qml"
+            source : parent.width < Zc.AppStyleSheet.width(3) ? "SmartFolderGridView.qml" : "FolderGridView.qml"
             Layout.fillWidth : true
+            onLoaded: {
+               // loaderFolderView.item.setModel(sortFilterObjectListModel);
+                loaderFolderView.item.setModel(documentFolderId.files);
+
+            }
         }
 
         Loader
@@ -411,6 +418,8 @@ Zc.AppView
     {
         id: fileDialog
         nameFilters: ["All Files(*.*)"]
+
+        folder : shortcuts.documents
 
         onAccepted:
         {
@@ -542,6 +551,16 @@ Zc.AppView
         }
     }
 
+    function isLocked(theDatats) {
+        var dataObject = Tools.parseDatas(theDatats)
+        if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     function showFileContextualMenu(item) {
         fileContextualMenu.fileDescriptor = item
         fileContextualMenu.show()
@@ -551,6 +570,14 @@ Zc.AppView
         id: fileContextualMenu
 
         property var fileDescriptor : null
+        property bool isLocked : false
+
+        onFileDescriptorChanged: {
+            if (fileDescriptor === null)
+                return;
+            console.log(">> fileDescriptor.datas " + fileDescriptor.datas)
+            fileContextualMenu.isLocked = mainView.isLocked(fileDescriptor.datas)
+        }
 
         Action {
             text: qsTr("Save")
@@ -565,6 +592,17 @@ Zc.AppView
                 // quand il sera downloadé alors on l'ouvrira
                 fileStatus[fileContextualMenu.fileDescriptor.cast.name] = "open"
                 mainView.downloadFile(fileContextualMenu.fileDescriptor)
+            }
+        }
+
+        Action {
+            id : lockUnlock
+            text: fileContextualMenu.isLocked ? qsTr("Unlock") : qsTr("Lock")
+            onTriggered: {
+                if (fileContextualMenu.isLocked)
+                  mainView.unlockFile(fileContextualMenu.fileDescriptor.name);
+                else
+                    mainView.lockFile(fileContextualMenu.fileDescriptor.name);
             }
         }
 

@@ -59,4 +59,6 @@ DISTFILES += \
     ../../Source/Views/Folder/UploadManager.qml \
     ../../Source/Views/Folder/DownloadManager.qml \
     ../../Source/Components/ActionList.qml \
-    ../../Source/Components/ActionButtonStyle.qml
+    ../../Source/Components/ActionButtonStyle.qml \
+    ../../Source/Views/Folder/SmartFolderGridView.qml \
+    ../../Source/Views/Folder/Delegate/SmartFileDelegate.qml

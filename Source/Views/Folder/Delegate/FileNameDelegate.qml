@@ -24,7 +24,7 @@ import QtQuick 2.5
 FileTextDelegate
 {
     text : "<a href=\" \">"+name+"</a>"
-        isBusy : item != null && item !== undefined ?  item.busy : false
+    isBusy : item != null && item !== undefined ?  item.busy : false
     position : index
 
     onClicked : mainView.showFileContextualMenu(item)
