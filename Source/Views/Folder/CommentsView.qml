@@ -143,8 +143,7 @@ Rectangle
                         currentComments.append({ "who" : x.who, "comment" : x.comment, "date" : x.date, "identifier" : x.id })});
 
                     // voiture balai qui met le compteur à jour
-                    //var name = sharedResource.getNameFromUrl(sender.content)
-                    //nbrComments.setItem(name,result.datas.length);
+                    nbrComments.setItem(fileDescriptor.name,result.datas.length);
                 }
 
             }

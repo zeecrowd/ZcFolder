@@ -101,6 +101,41 @@ Zc.AppView
     {
         id : activity
 
+        /*
+        ** Nombre de commetaires par image
+        */
+        Zc.CrowdActivityItems
+        {
+            id         : nbrComments
+            name       : "NumberComments"
+            persistent : true
+
+            Zc.QueryStatus
+            {
+                id : nbrCommentsQueryStatus
+
+                onCompleted :
+                {
+
+                    mainView.refreshFiles();
+
+                    splashScreenId.height = 0;
+                    splashScreenId.width = 0;
+                    splashScreenId.visible = false;
+                }
+            }
+
+            onItemChanged : {
+                updateFileDatas(idItem);
+            }
+
+            onItemDeleted: {
+                updateFileDatas(idItem);
+            }
+        }
+
+
+
         Zc.CrowdDocumentFolder
         {
             id   : documentFolderId
@@ -131,12 +166,15 @@ Zc.AppView
                         }
 
                         /*
-                        ** SetDatas : lockedBy
+                        ** SetDatas : lockedBy and nbrComment
                         */
                         var lockedBy = lockedActivityItemsId.getItem(file.name,"");
+                        var nbrComment = nbrComments.getItem(file.name,"");
                         //var modifyingBy = modifiersActivityItems.getItem(file.name,"");
                         var objectData = Tools.parseDatas(lockedBy)
-                        objectData.lockedBy = lockedBy
+                        objectData.lockedBy = lockedBy;
+                        objectData.nbrComment = nbrComment;
+
                         //objectData.modifyingBy = modifyingBy
                         file.datas = JSON.stringify(objectData);
                     })
@@ -296,15 +334,9 @@ Zc.AppView
                 {
                     documentFolderId.ensureLocalPathExists();
                     documentFolderId.ensureLocalPathExists(".upload");
-                    //documentFolderId.ensureLocalPathExists(".modify");
-                    mainView.refreshFiles();
 
-                    splashScreenId.height = 0;
-                    splashScreenId.width = 0;
-                    splashScreenId.visible = false;
-
-                    //                    modifiersActivityItems.loadItems(
-                    //                                modifiersActivityItemsQueryStatus);
+                    // on charge le nombre de comments par fichier
+                    nbrComments.loadItems(nbrCommentsQueryStatus)
                 }
 
                 onErrorOccured :
@@ -313,33 +345,13 @@ Zc.AppView
                 }
             }
 
-            onItemChanged :
-            {
-                var objectFound = Tools.findInListModel(documentFolderId.files, function(x)
-                {return x.name === idItem});
-
-                if (objectFound !== null)
-                {
-                    var objectDatas = Tools.parseDatas(objectFound.datas);
-                    objectDatas.lockedBy = lockedActivityItemsId.getItem(idItem,"");
-                    objectFound.datas = JSON.stringify(objectDatas)
-                }
-
+            onItemChanged : {
+                updateFileDatas(idItem);
             }
 
             onItemDeleted :
             {
-
-                var objectFound = Tools.findInListModel(documentFolderId.files, function(x)
-                {return x.name === idItem});
-
-                if (objectFound !== null)
-                {
-                    var objectDatas = Tools.parseDatas(objectFound.datas);
-                    objectDatas.lockedBy = "";
-                    objectFound.datas = JSON.stringify(objectDatas)
-                }
-
+                updateFileDatas(idItem);
             }
         }
     }
@@ -468,6 +480,19 @@ Zc.AppView
     ListModel
     {
         id : uploadingFiles
+    }
+
+    function updateFileDatas(fileName) {
+        var objectFound = Tools.findInListModel(documentFolderId.files, function(x)
+        {return x.name === fileName});
+
+        if (objectFound !== null)
+        {
+            var objectDatas = Tools.parseDatas(objectFound.datas);
+            objectDatas.lockedBy = lockedActivityItemsId.getItem(fileName,"");
+            objectDatas.nbrComment = nbrComments.getItem(fileName,"");
+            objectFound.datas = JSON.stringify(objectDatas)
+        }
     }
 
     function lockFile(fileName)
@@ -644,7 +669,7 @@ Zc.AppView
             text: fileContextualMenu.isLocked ? qsTr("Unlock") : qsTr("Lock")
             onTriggered: {
                 if (fileContextualMenu.isLocked)
-                  mainView.unlockFile(fileContextualMenu.fileDescriptor.name);
+                    mainView.unlockFile(fileContextualMenu.fileDescriptor.name);
                 else
                     mainView.lockFile(fileContextualMenu.fileDescriptor.name);
             }
@@ -716,6 +741,7 @@ Zc.AppView
             mainView.lockFile(x.name);
             documentFolderId.deleteFile(x);
             commentsView.deleteComment(x.name);
+            nbrComments.deleteItem(x.name);
         })
     }
 

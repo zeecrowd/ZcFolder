@@ -25,6 +25,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.2
 
 import "../Tools.js" as Tools
+import "../../../Components" as FolderComponents
 
 import ZcClient 1.0 as Zc
 
@@ -36,17 +37,24 @@ Item {
     property bool isBusy : item != null && item !== undefined ?  item.busy : false
 
     property bool isLocked : false
+    property int  nbrComment    : 0
 
     Component.onCompleted: {
-        calculateIsLocked();
+        calculateFromDatas();
         // CP : for mock
         if (item.datasChanged !== undefined) {
-            item.datasChanged.connect(calculateIsLocked)
+            item.datasChanged.connect(calculateFromDatas)
         }
     }
 
-    function calculateIsLocked() {
+    function calculateFromDatas() {
         isLocked = mainView.isLocked(datas)
+
+        var dataObject = Tools.parseDatas(datas)
+
+        if (dataObject.nbrComment !== undefined) {
+            nbrComment =  parseInt(dataObject.nbrComment)
+        }
     }
 
     Column {
@@ -98,6 +106,15 @@ Item {
                         source = "image://icons/" + "file:///" + name
                     }
 
+                    FolderComponents.AlertCounter {
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.rightMargin: Zc.AppStyleSheet.width(0.02)
+                        anchors.bottomMargin: Zc.AppStyleSheet.width(0.02)
+                        width: Zc.AppStyleSheet.height(0.16)
+                        height: Zc.AppStyleSheet.height(0.16)
+                        count: nbrComment
+                    }
                 }
             }
 

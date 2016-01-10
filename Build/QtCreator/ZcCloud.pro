@@ -69,4 +69,6 @@ DISTFILES += \
     ../../Source/Components/BusyIndicatorStyle.qml \
     ../../Source/Views/Folder/OnCommentButtonStyle.qml \
     ../../Source/Views/Folder/OnCommentView.qml \
-    ../../Source/Views/Folder/Delegate/CommentDelegate.qml
+    ../../Source/Views/Folder/Delegate/CommentDelegate.qml \
+    ../../Source/Components/AlertCounter.qml \
+    ../../Source/Views/Folder/Delegate/NbrCommentDelegate.qml

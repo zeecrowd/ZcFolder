@@ -54,5 +54,7 @@
         <file>Views/Folder/OnCommentView.qml</file>
         <file>Views/Folder/Delegate/CommentDelegate.qml</file>
         <file>Resources/contact.png</file>
+        <file>Components/AlertCounter.qml</file>
+        <file>Views/Folder/Delegate/NbrCommentDelegate.qml</file>
     </qresource>
 </RCC>

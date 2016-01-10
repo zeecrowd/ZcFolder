@@ -141,9 +141,6 @@ Item
         }
     }
 
-
-
-
     /*
     ** Contact Image
     ** default contact image set
