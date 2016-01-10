@@ -61,4 +61,12 @@ DISTFILES += \
     ../../Source/Components/ActionList.qml \
     ../../Source/Components/ActionButtonStyle.qml \
     ../../Source/Views/Folder/SmartFolderGridView.qml \
-    ../../Source/Views/Folder/Delegate/SmartFileDelegate.qml
+    ../../Source/Views/Folder/Delegate/SmartFileDelegate.qml \
+    ../../Source/Views/Folder/CommentsView.qml \
+    ../../Source/Components/ToolBar.qml \
+    ../../Source/Components/ToolButton.qml \
+    ../../Source/Components/BusyIndicator.qml \
+    ../../Source/Components/BusyIndicatorStyle.qml \
+    ../../Source/Views/Folder/OnCommentButtonStyle.qml \
+    ../../Source/Views/Folder/OnCommentView.qml \
+    ../../Source/Views/Folder/Delegate/CommentDelegate.qml

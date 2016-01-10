@@ -125,20 +125,20 @@ Zc.AppView
                         /*
                         ** No longer exist on the server
                         */
-                        if (file.cast.status === "new")
+                        if (file.status === "new")
                         {
-                            toBeDeleted.push(file.cast.name);
+                            toBeDeleted.push(file.name);
                         }
 
                         /*
                         ** SetDatas : lockedBy
                         */
-                        var lockedBy = lockedActivityItemsId.getItem(file.cast.name,"");
-                        //var modifyingBy = modifiersActivityItems.getItem(file.cast.name,"");
+                        var lockedBy = lockedActivityItemsId.getItem(file.name,"");
+                        //var modifyingBy = modifiersActivityItems.getItem(file.name,"");
                         var objectData = Tools.parseDatas(lockedBy)
                         objectData.lockedBy = lockedBy
                         //objectData.modifyingBy = modifyingBy
-                        file.cast.datas = JSON.stringify(objectData);
+                        file.datas = JSON.stringify(objectData);
                     })
 
                     Tools.forEachInArray(toBeDeleted, function (x)
@@ -175,6 +175,8 @@ Zc.AppView
 
             onImportFileToLocalFolderCompleted :
             {
+                console.log(">> onImportFileToLocalFolderCompleted " + localFilePath)
+
                 // import a file to the .upload directory finished
                 if (localFilePath.indexOf(".upload") !== -1)
                 {
@@ -191,7 +193,7 @@ Zc.AppView
             onFileUploaded :
             {
                 uploadManager.uploadFinished(fileName,true);
-                appNotification.logEvent(Zc.AppNotification.Add,"File",fileName,"image://icons/" + "file:///" + fileName)
+                appNotification.logEvent(0 /*Zc.AppNotification.Add*/,"File",fileName,"image://icons/" + "file:///" + fileName)
 
                 // close the upload view
                 closeUploadViewIfNeeded()
@@ -227,6 +229,9 @@ Zc.AppView
 
         onStarted:
         {
+            console.log(">> onstarted " + mainView.context)
+            commentsView.setAppContext(mainView.context)
+
             lockedActivityItemsId.loadItems(
                         lockedActivityItemsQueryStatus);
         }
@@ -311,13 +316,13 @@ Zc.AppView
             onItemChanged :
             {
                 var objectFound = Tools.findInListModel(documentFolderId.files, function(x)
-                {return x.cast.name === idItem});
+                {return x.name === idItem});
 
                 if (objectFound !== null)
                 {
-                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
+                    var objectDatas = Tools.parseDatas(objectFound.datas);
                     objectDatas.lockedBy = lockedActivityItemsId.getItem(idItem,"");
-                    objectFound.cast.datas = JSON.stringify(objectDatas)
+                    objectFound.datas = JSON.stringify(objectDatas)
                 }
 
             }
@@ -326,13 +331,13 @@ Zc.AppView
             {
 
                 var objectFound = Tools.findInListModel(documentFolderId.files, function(x)
-                {return x.cast.name === idItem});
+                {return x.name === idItem});
 
                 if (objectFound !== null)
                 {
-                    var objectDatas = Tools.parseDatas(objectFound.cast.datas);
+                    var objectDatas = Tools.parseDatas(objectFound.datas);
                     objectDatas.lockedBy = "";
-                    objectFound.cast.datas = JSON.stringify(objectDatas)
+                    objectFound.datas = JSON.stringify(objectDatas)
                 }
 
             }
@@ -398,6 +403,12 @@ Zc.AppView
                 item.setModel(uploadingFiles);
             }
         }
+    }
+
+    CommentsView {
+        id : commentsView
+        anchors.fill: parent
+        visible : false
     }
 
     FileDialog {
@@ -506,7 +517,7 @@ Zc.AppView
         if (file === null || file === undefined)
             return;
 
-        uploadManager.startUpload(file.cast,path);
+        uploadManager.startUpload(file,path);
     }
 
     function downloadFile(file)
@@ -543,7 +554,7 @@ Zc.AppView
             openUploadView()
             Tools.forEachInArray(alertFilesExist.context, function (x)
             {
-                uploadManager.startUpload(x.fileDescriptor.cast,x.url);
+                uploadManager.startUpload(x.fileDescriptor,x.url);
             });
         }
         onButton2Clicked: {
@@ -616,11 +627,18 @@ Zc.AppView
             text: qsTr("Save and Open")
             onTriggered: {
                 // quand il sera downloadé alors on l'ouvrira
-                fileStatus[fileContextualMenu.fileDescriptor.cast.name] = "open"
+                fileStatus[fileContextualMenu.fileDescriptor.name] = "open"
                 mainView.downloadFile(fileContextualMenu.fileDescriptor)
             }
         }
 
+        Action {
+            text: qsTr("Comments")
+            onTriggered: {
+                commentsView.fileDescriptor = fileContextualMenu.fileDescriptor;
+                commentsView.visible = true;
+            }
+        }
         Action {
             id : lockUnlock
             text: fileContextualMenu.isLocked ? qsTr("Unlock") : qsTr("Lock")
@@ -672,7 +690,7 @@ Zc.AppView
             openUploadView();
             Tools.forEachInArray(fds, function (x)
             {
-                uploadManager.startUpload(x.fileDescriptor.cast,x.url);
+                uploadManager.startUpload(x.fileDescriptor,x.url);
             });
         }
     }
@@ -683,10 +701,10 @@ Zc.AppView
 
         Tools.forEachInObjectList( documentFolderId.files, function(file)
         {
-            if (file.cast.isSelected)
+            if (file.isSelected)
             {
 
-                if (mainView.haveTheRighToModify(file.cast.name))
+                if (mainView.haveTheRighToModify(file.name))
                 {
                     toBeDeleted.push(file);
                 }
@@ -695,15 +713,16 @@ Zc.AppView
 
         Tools.forEachInArray(toBeDeleted, function (x)
         {
-            mainView.lockFile(x.cast.name);
-            documentFolderId.deleteFile(x.cast);
+            mainView.lockFile(x.name);
+            documentFolderId.deleteFile(x);
+            commentsView.deleteComment(x.name);
         })
     }
 
     function deleteFile(file) {
-        if (mainView.haveTheRighToModify(file.cast.name)) {
-            mainView.lockFile(file.cast.name);
-            documentFolderId.deleteFile(file.cast);
+        if (mainView.haveTheRighToModify(file.name)) {
+            mainView.lockFile(file.name);
+            documentFolderId.deleteFile(file);
         }
     }
 

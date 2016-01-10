@@ -44,5 +44,15 @@
         <file>Components/ActionButtonStyle.qml</file>
         <file>Views/Folder/SmartFolderGridView.qml</file>
         <file>Views/Folder/Delegate/SmartFileDelegate.qml</file>
+        <file>Views/Folder/CommentsView.qml</file>
+        <file>Components/ToolBar.qml</file>
+        <file>Components/ToolButton.qml</file>
+        <file>Components/BusyIndicator.qml</file>
+        <file>Components/BusyIndicatorStyle.qml</file>
+        <file>Resources/busy-indicator.png</file>
+        <file>Views/Folder/OnCommentButtonStyle.qml</file>
+        <file>Views/Folder/OnCommentView.qml</file>
+        <file>Views/Folder/Delegate/CommentDelegate.qml</file>
+        <file>Resources/contact.png</file>
     </qresource>
 </RCC>

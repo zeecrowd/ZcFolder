@@ -89,3 +89,14 @@ function parseDatas(datas) {
 
     return objectDatas;
 }
+
+
+function forEachInListModel(listModel, delegate)
+{
+    for (var i=0;i<listModel.count;i++)
+    {
+       delegate(listModel.get(i))
+    }
+
+    return null;
+}
