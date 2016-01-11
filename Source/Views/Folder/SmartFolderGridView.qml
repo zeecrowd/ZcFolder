@@ -87,7 +87,7 @@ ScrollView
                         onClicked: {
                             if (busy)
                                 return;
-                            mainView.showFileContextualMenu(model)
+                            mainView.showFileContextualMenu(item)
                         }
                     }
                 }

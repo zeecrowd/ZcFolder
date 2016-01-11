@@ -31,9 +31,6 @@ Item {
     }
 
     function createFileDescriptorFromFile(url) {
-
-        console.log(">> createFileDescriptorFromFile " + createFileDescriptorFromFile)
-
         var fd = documentFolder.createFileDescriptorFromFile(url);
         if (fd === null)
             return;

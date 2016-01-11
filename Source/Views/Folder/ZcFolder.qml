@@ -66,6 +66,7 @@ Zc.AppView
 
     property bool  needRefresh : false
     property var fileStatus : ([])
+    property bool filesLoaded : false
 
     UploadManager
     {
@@ -114,9 +115,7 @@ Zc.AppView
             {
                 id : nbrCommentsQueryStatus
 
-                onCompleted :
-                {
-
+                onCompleted : {
                     mainView.refreshFiles();
 
                     splashScreenId.height = 0;
@@ -154,6 +153,8 @@ Zc.AppView
                 {
                     var toBeDeleted = [];
 
+                    mainView.filesLoaded = true;
+
                     Tools.forEachInObjectList( documentFolderId.files, function(file)
                     {
 
@@ -165,9 +166,14 @@ Zc.AppView
                             toBeDeleted.push(file.name);
                         }
 
+
                         /*
                         ** SetDatas : lockedBy and nbrComment
                         */
+
+                        updateFileDatas(file.name);
+
+                        /*
                         var lockedBy = lockedActivityItemsId.getItem(file.name,"");
                         var nbrComment = nbrComments.getItem(file.name,"");
                         //var modifyingBy = modifiersActivityItems.getItem(file.name,"");
@@ -176,12 +182,7 @@ Zc.AppView
                         objectData.nbrComment = nbrComment;
 
                         //objectData.modifyingBy = modifyingBy
-                        file.datas = JSON.stringify(objectData);
-                    })
-
-                    Tools.forEachInArray(toBeDeleted, function (x)
-                    {
-                        documentFolderId.removeFileDescriptor(x);
+                        file.datas = JSON.stringify(objectData);*/
                     })
 
 
@@ -189,8 +190,15 @@ Zc.AppView
                     javaScriptSorter.qmlObjectSorter = javaScriptSorter;
                     sortFilterObjectListModel.setSorter(javaScriptSorter);
 
-                    console.log(">> loaderFolderView.item.setModel " + sortFilterObjectListModel)
-                    loaderFolderView.item.setModel(sortFilterObjectListModel);
+                    if (loaderFolderView.status === Loader.Ready) {
+                        loaderFolderView.item.setModel(sortFilterObjectListModel);
+                    }
+
+                    Tools.forEachInArray(toBeDeleted, function (x)
+                    {
+                        documentFolderId.removeFileDescriptor(x);
+                    })
+
 
                     /*
                     ** Restart pending upload
@@ -211,9 +219,7 @@ Zc.AppView
                 }
             }
 
-            onImportFileToLocalFolderCompleted :
-            {
-                console.log(">> onImportFileToLocalFolderCompleted " + localFilePath)
+            onImportFileToLocalFolderCompleted : {
 
                 // import a file to the .upload directory finished
                 if (localFilePath.indexOf(".upload") !== -1)
@@ -257,17 +263,14 @@ Zc.AppView
                     Qt.openUrlExternally(localFilePath)
                 }
             }
-            onFileDeleted :
-            {
+            onFileDeleted : {
                 notifySender.sendMessage("","{ \"sender\" : \"" + mainView.context.nickname + "\", \"action\" : \"deleted\" , \"fileName\" : \"" + fileName + "\"}");
                 // file no longer exist .. then ubnlock it
                 mainView.unlockFile(fileName);
             }
         }
 
-        onStarted:
-        {
-            console.log(">> onstarted " + mainView.context)
+        onStarted: {
             commentsView.setAppContext(mainView.context)
 
             lockedActivityItemsId.loadItems(
@@ -295,10 +298,6 @@ Zc.AppView
                     if ( o.action === "deleted" )
                     {
                         documentFolderId.removeFileDescriptor(o.fileName)
-                        if (o.sender !== mainView.context.nickname)
-                        {
-                            documentFolderId.removeLocalFile(o.fileName)
-                        }
                     }
                     else if (o.action === "added")
                     {
@@ -330,8 +329,7 @@ Zc.AppView
             {
                 id : lockedActivityItemsQueryStatus
 
-                onCompleted :
-                {
+                onCompleted : {
                     documentFolderId.ensureLocalPathExists();
                     documentFolderId.ensureLocalPathExists(".upload");
 
@@ -397,7 +395,9 @@ Zc.AppView
             source : parent.width < Zc.AppStyleSheet.width(6) ? "SmartFolderGridView.qml" : "FolderGridView.qml"
             Layout.fillWidth : true
             onLoaded: {
-                loaderFolderView.item.setModel(sortFilterObjectListModel);
+                if (mainView.filesLoaded) {
+                  loaderFolderView.item.setModel(sortFilterObjectListModel);
+                }
                 //loaderFolderView.item.setModel(documentFolderId.files);
 
             }
@@ -483,11 +483,18 @@ Zc.AppView
     }
 
     function updateFileDatas(fileName) {
+
+        if (!mainView.filesLoaded)
+            return;
+
         var objectFound = Tools.findInListModel(documentFolderId.files, function(x)
         {return x.name === fileName});
 
         if (objectFound !== null)
         {
+            // on reset pour notifier l'ihm
+            objectFound.datas = ""
+
             var objectDatas = Tools.parseDatas(objectFound.datas);
             objectDatas.lockedBy = lockedActivityItemsId.getItem(fileName,"");
             objectDatas.nbrComment = nbrComments.getItem(fileName,"");
@@ -720,6 +727,7 @@ Zc.AppView
         }
     }
 
+    /*
     function deleteSelectedFiles()
     {
         var toBeDeleted = [];
@@ -743,12 +751,15 @@ Zc.AppView
             commentsView.deleteComment(x.name);
             nbrComments.deleteItem(x.name);
         })
-    }
+    }*/
 
     function deleteFile(file) {
         if (mainView.haveTheRighToModify(file.name)) {
             mainView.lockFile(file.name);
             documentFolderId.deleteFile(file);
+            commentsView.deleteComments(file.name);
+            nbrComments.deleteItem(file.name);
+            lockedActivityItemsId.deleteItem(file.name);
         }
     }
 

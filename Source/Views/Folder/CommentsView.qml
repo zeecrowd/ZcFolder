@@ -60,10 +60,14 @@ Rectangle
         id      : listenerCommentNotify
         subject : "Comment"
 
-        onMessageReceived :
-        {
-            console.log(">> onMessageReceived " + message.body)
+        onMessageReceived : {
+            // Un message qui arrive on blink et notifie
+            appNotification.blink();
+            if (!mainView.isCurrentView) {
+                appNotification.incrementNotification();
+            }
 
+            // je sui pas en train de ergarder ce message... alors on passe
             if (fileDescriptor === null)
                 return;
 
@@ -71,24 +75,6 @@ Rectangle
                 return;
 
             loadComments()
-
-            /*var o = Tools.parseDatas(message.body);
-
-            if ( o.url !==null && o.url !== undefined )
-            {
-                appNotification.blink();
-                if (!mainView.isCurrentView)
-                {
-                    appNotification.incrementNotification();
-                }
-
-                // pour l'instant on refait un Get ...
-                // a optimiser ..
-                if (o.url === loader.item.getPreviewSource())
-                {
-                    loadComments(o.url)
-                }
-            }*/
         }
     }
 
@@ -104,7 +90,6 @@ Rectangle
             id : getSharedResourceQueryStatus
 
             onErrorOccured : {
-                console.log(">> getSharedResourceQueryStatus.Error")
                 busyIndicator.running = false
             }
 
@@ -114,38 +99,31 @@ Rectangle
                 if (fileDescriptor == null)
                     return;
 
-                console.log(">> getSharedResourceQueryStatus.Completed " + sender.content)
                 if (sender.content === null || sender.content === undefined || sender.content !== fileDescriptor.name) {
                     return;
                 }
 
-                var result = Tools.parseDatas(sender.text);
-
-                console.log(">> result " + result)
-
                 currentComments.clear();
 
-                if (result.datas !== null && result.datas !== undefined)
-                {
+                var result = Tools.parseDatas(sender.text);
+                if (result.datas !== null && result.datas !== undefined) {
                     Tools.forEachInArray(result.datas , function (x) {
 
-                        if (x.comment === null || x.comment === undefined)
-                        {
+                        if (x.comment === null || x.comment === undefined) {
                             x.comment = ""
                         }
 
-                        if (x.date === null || x.date === undefined || x.date === "")
-                        {
+                        if (x.date === null || x.date === undefined || x.date === "") {
                             x.date = 0;
                         }
 
-                        console.log(">> append " + x.comment)
                         currentComments.append({ "who" : x.who, "comment" : x.comment, "date" : x.date, "identifier" : x.id })});
 
                     // voiture balai qui met le compteur à jour
-                    nbrComments.setItem(fileDescriptor.name,result.datas.length);
+                    if (fileDescriptor!== null) {
+                        nbrComments.setItem(fileDescriptor.name,result.datas.length);
+                    }
                 }
-
             }
         }
 
@@ -164,36 +142,22 @@ Rectangle
             onCompleted :
             {
                 busyIndicator.running = false
-
-                //var toNotify = sender.content;
-
-                console.log(">> call senderCommentNotify.sendMessage " + fileName)
-
                 senderCommentNotify.sendMessage("",fileName)
+                appNotification.logEvent(0 /*Zc.AppNotification.Add*/,"File Comment","New Comment on " + fileName + " : " + newComment,fileName)
 
-                //appNotification.logEvent(Zc.AppNotification.Add,"Photo Comment",newComment,url)
-
-                // Apres avoir pushé le nouveau commentaire on
-                // met le compteur d emessages à jour
-                //if (toNotify.url !== null && toNotify.url !== undefined || toNotify.url !== "")
-                //{
-                //    var name = sharedResource.getNameFromUrl(url)
-                //    nbrItem.setItem(name,result.datas.length);
-                //}
+                // voiture balai qui met le compteur à jour
+                if (fileDescriptor!== null) {
+                    nbrComments.setItem(fileDescriptor.name,result.datas.length);
+                }
             }
-
         }
-
     }
 
     function deleteComments(fileName) {
         sharedResource.deleteFile(__commentDirectory + fileName + "_txt",null)
     }
 
-    function putComments(filename,comment)
-    {
-        console.log(">> putComments " + filename + " -> " + comment)
-
+    function putComments(filename,comment) {
         if (comment === "" || comment === null || comment === undefined)
             return;
 
@@ -220,12 +184,6 @@ Rectangle
         newElm.date = new Date().getTime()
         result.datas.unshift(newElm);
         var toPut = JSON.stringify(result);
-
-        //   newElm.fileName = filename
-        //   var toNotify = JSON.stringify(newElm)
-
-        //putSharedResourceQueryStatus.content = toNotify
-
         putSharedResourceQueryStatus.fileName = filename
         putSharedResourceQueryStatus.newComment = comment;
 
@@ -233,18 +191,12 @@ Rectangle
     }
 
     function loadComments() {
-
-        console.log(">> loadComments")
         if (fileDescriptor === null)
             return;
 
         // on ne sait jamais on cancel al requete précedente
         getSharedResourceQueryStatus.cancel()
-
         getSharedResourceQueryStatus.content = fileDescriptor.name;
-
-        console.log(">> getText " + __commentDirectory + fileDescriptor.name  + "_txt")
-
         sharedResource.getText(__commentDirectory + fileDescriptor.name  + "_txt",getSharedResourceQueryStatus);
     }
 
