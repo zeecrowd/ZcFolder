@@ -42,7 +42,7 @@ Zc.AppView
         Action {
             id: close2Action
             shortcut: "Ctrl+X"
-            text:  "Close ZcFolder"
+            text: qsTr("Close ZcFolder")
             onTriggered:
             {
                 mainView.close();
@@ -51,7 +51,7 @@ Zc.AppView
         Action {
             id: addFile
             shortcut: "Ctrl+I"
-            text:  "Add files"
+            text: qsTr("Add files")
             onTriggered:
             {
                 mainView.state = "putOnCloud"
@@ -607,11 +607,11 @@ Zc.AppView
         {
             message = "";
             message += fileDescriptor.name + "\n"
-            message += qsTr("Size : " ) + fileDescriptor.remoteSizeKb + "kb\n"
-            message += qsTr("Modified : " ) + fileDescriptor.remoteTimeStampLabel.replace(" GMT","") + "\n"
+            message += qsTr("Size: " ) + fileDescriptor.remoteSizeKb + "kb\n"
+            message += qsTr("Modified: " ) + fileDescriptor.remoteTimeStampLabel.replace(" GMT","") + "\n"
             var lby = lockedBy(fileDescriptor.datas);
             if (lby !== "")
-                message += qsTr("Locked by : ") + lby + "\n"
+                message += qsTr("Locked by ") + lby + "\n"
             show();
         }
     }

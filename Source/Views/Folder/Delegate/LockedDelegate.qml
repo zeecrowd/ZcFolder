@@ -47,13 +47,13 @@ Rectangle
         if (dataObject.lockedBy !== undefined &&  dataObject.lockedBy !== null && dataObject.lockedBy !== "")
         {
             lockImage.iconSource = "../../../Resources/lock.png"
-            lockImage.tooltip = "Unlock File"
+            lockImage.tooltip = qsTr("Unlock File")
             lbLockedBy.text = "  " + dataObject.lockedBy;
             return;
         }
 
         lockImage.iconSource = "../../../Resources/unlock.png"
-        lockImage.tooltip = "Lock File"
+        lockImage.tooltip = qsTr("Lock File")
         lbLockedBy.text = "";
     }
 

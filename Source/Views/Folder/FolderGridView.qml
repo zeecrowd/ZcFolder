@@ -86,169 +86,159 @@ ScrollView
 
                 header :
                     FileHeaderDelegate
-                {
-                text :  ""
-                width : filesIconListView.width
-                sortAvailable: false
-            }
-        }
-
-        ListView
-        {
-
-            Zc.JavaScriptSorter
-            {
-                id : javaScriptSorterName
-
-                function lessThan(left,right)
-                {
-                    return left.name < right.name;
+                    {
+                    text :  ""
+                    width : filesIconListView.width
+                    sortAvailable: false
                 }
             }
 
-            id : filesNameListView
-            spacing             : 10
-            contentY            : filesCalculateDateListView.contentY
-            Layout.minimumWidth : 100
-            Layout.fillWidth    : true
-            model               : parent.model
-            interactive         : false
-            delegate            : FileNameDelegate {}
-
-            header              : FileHeaderDelegate
+            ListView
             {
-            text :  "Name"
-            width : filesNameListView.width
-            order : sortFilterObjectListModel.order
-            sortJavaScriptObjet : javaScriptSorterName
-            sortListModel : sortFilterObjectListModel
-            sortAvailable : splitView.activeSort === "Name"
 
-            onClicked:
+                Zc.JavaScriptSorter
+                {
+                    id : javaScriptSorterName
+
+                    function lessThan(left,right)
+                    {
+                        return left.name < right.name;
+                    }
+                }
+
+                id : filesNameListView
+                spacing             : 10
+                contentY            : filesCalculateDateListView.contentY
+                Layout.minimumWidth : 100
+                Layout.fillWidth    : true
+                model               : parent.model
+                interactive         : false
+                delegate            : FileNameDelegate {}
+
+                header              : FileHeaderDelegate {
+                    text :  "Name"
+                    width : filesNameListView.width
+                    order : sortFilterObjectListModel.order
+                    sortJavaScriptObjet : javaScriptSorterName
+                    sortListModel : sortFilterObjectListModel
+                    sortAvailable : splitView.activeSort === "Name"
+
+                    onClicked:
+                    {
+                        splitView.activeSort = "Name"
+                        switchSort()
+                    }
+
+                }
+            }
+
+            ListView
             {
-                splitView.activeSort = "Name"
-                switchSort()
+                id                  : filesNbrCommentListView
+                spacing             : 10
+                Layout.minimumWidth : 80
+                interactive         : false
+                contentY            : filesCalculateDateListView.contentY
+                delegate            : NbrCommentDelegate{}
+
+                header              : FileHeaderDelegate {
+                    text : qsTr("Comments")
+                    width : filesNbrCommentListView.width
+                    sortAvailable: false
+                }
+            }
+
+            ListView
+            {
+                id                  : filesLockedListView
+                spacing             : 10
+                Layout.minimumWidth : 125
+                interactive         : false
+                contentY            : filesCalculateDateListView.contentY
+                delegate            : LockedDelegate{}
+
+                header              : FileHeaderDelegate {
+                    text : "Locked by"
+                    width : filesLockedListView.width
+                    sortAvailable: false
+                }
+            }
+
+            ListView
+            {
+                Zc.JavaScriptSorter
+                {
+                    id : javaScriptSorterSize
+
+                    function lessThan(left,right)
+                    {
+                        var leftsize = left.status === "upload" ? left.sizeKb : left.remoteSizeKb
+                        var rightsize = right.status === "upload" ? right.sizeKb : right.remoteSizeKb
+                        return leftsize < rightsize;
+                    }
+                }
+
+
+                id                  : filesCalculateSizeListView
+                spacing             : 10
+                Layout.minimumWidth : 100
+                contentY            : filesCalculateDateListView.contentY
+                model               : parent.model
+                interactive         : false
+                delegate            : SizeDelegate {}
+                header              : FileHeaderDelegate {
+                    text :  "Size";
+                    width : filesCalculateSizeListView.width
+                    order : sortFilterObjectListModel.order
+                    sortJavaScriptObjet : javaScriptSorterSize
+                    sortListModel : sortFilterObjectListModel
+                    sortAvailable : splitView.activeSort === "Size"
+
+
+                    onClicked:
+                    {
+                        splitView.activeSort = "Size"
+                        switchSort();
+                    }
+                }
+            }
+
+            ListView
+            {
+                Zc.JavaScriptSorter {
+                    id : javaScriptSorterDate
+
+                    function lessThan(left,right)
+                    {
+                        var leftdate = left.status === "upload" ? left.timeStamp : left.remoteTimeStamp
+                        var rightdate = right.status === "upload" ? right.timeStamp : right.remoteTimeStamp
+
+                        return leftdate < rightdate;
+                    }
+                }
+
+                id                    : filesCalculateDateListView
+                spacing               : 10
+                Layout.minimumWidth   : 200
+                model                 : parent.model
+                interactive           : false
+                delegate              : DateDelegate {}
+                header                : FileHeaderDelegate {
+                    text :  "Date" ;
+                    width :filesCalculateDateListView.width
+                    sortJavaScriptObjet : javaScriptSorterDate
+                    sortListModel : sortFilterObjectListModel
+                    order : sortFilterObjectListModel.order
+                    sortAvailable : splitView.activeSort === "Date"
+
+                    onClicked:
+                    {
+                        splitView.activeSort = "Date"
+                        switchSort()
+                    }
+                }
             }
 
         }
     }
-
-    ListView
-    {
-        id                  : filesNbrCommentListView
-        spacing             : 10
-        Layout.minimumWidth : 80
-        interactive         : false
-        contentY            : filesCalculateDateListView.contentY
-        delegate            : NbrCommentDelegate{}
-
-
-        header              : FileHeaderDelegate {
-            text : qsTr("Comments")
-            width : filesNbrCommentListView.width
-            sortAvailable: false
-        }
-    }
-
-    ListView
-    {
-        id                  : filesLockedListView
-        spacing             : 10
-        Layout.minimumWidth : 125
-        interactive         : false
-        contentY            : filesCalculateDateListView.contentY
-        delegate            : LockedDelegate{}
-
-
-        header              :
-            FileHeaderDelegate
-        {
-        text : "Locked by"
-        width : filesLockedListView.width
-        sortAvailable: false
-    }
-}
-
-ListView
-{
-    Zc.JavaScriptSorter
-    {
-        id : javaScriptSorterSize
-
-        function lessThan(left,right)
-        {
-            var leftsize = left.status === "upload" ? left.sizeKb : left.remoteSizeKb
-            var rightsize = right.status === "upload" ? right.sizeKb : right.remoteSizeKb
-            return leftsize < rightsize;
-        }
-    }
-
-
-    id                  : filesCalculateSizeListView
-    spacing             : 10
-    Layout.minimumWidth : 100
-    contentY            : filesCalculateDateListView.contentY
-    model               : parent.model
-    interactive         : false
-    delegate            : SizeDelegate {}
-    header              : FileHeaderDelegate
-    {
-    text :  "Size";
-    width : filesCalculateSizeListView.width
-    order : sortFilterObjectListModel.order
-    sortJavaScriptObjet : javaScriptSorterSize
-    sortListModel : sortFilterObjectListModel
-    sortAvailable : splitView.activeSort === "Size"
-
-
-    onClicked:
-    {
-        splitView.activeSort = "Size"
-        switchSort();
-    }
-}
-}
-
-ListView
-{
-    Zc.JavaScriptSorter
-    {
-        id : javaScriptSorterDate
-
-        function lessThan(left,right)
-        {
-
-            var leftdate = left.status === "upload" ? left.timeStamp : left.remoteTimeStamp
-            var rightdate = right.status === "upload" ? right.timeStamp : right.remoteTimeStamp
-
-            return leftdate < rightdate;
-        }
-    }
-
-    id                    : filesCalculateDateListView
-    spacing               : 10
-    Layout.minimumWidth   : 200
-    model                 : parent.model
-    interactive           : false
-    delegate              : DateDelegate {}
-    header                : FileHeaderDelegate
-    {
-        text :  "Date" ;
-        width :filesCalculateDateListView.width
-        sortJavaScriptObjet : javaScriptSorterDate
-        sortListModel : sortFilterObjectListModel
-        order : sortFilterObjectListModel.order
-        sortAvailable : splitView.activeSort === "Date"
-
-
-        onClicked:
-        {
-            splitView.activeSort = "Date"
-            switchSort()
-        }
-    }
-}
-
-}
-}
 }

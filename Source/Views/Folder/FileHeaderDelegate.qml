@@ -99,15 +99,14 @@ Item
             {
                 id : validate
                 iconSource : delegateHeader.order === 0 ? "../../Resources/down.png" : "../../Resources/up.png"
-                tooltip     : "Sort"
+                tooltip     : qsTr("Sort")
 
-            onTriggered :
-            {
-                delegateHeader.clicked();
+                onTriggered :
+                {
+                    delegateHeader.clicked();
+                }
             }
 
         }
-
-        }
-}
+    }
 }

@@ -34,7 +34,7 @@ Rectangle
         anchors.centerIn: parent
         font.pixelSize:  40;
         color : "white"
-        text : "Loading ..."
+        text : "Loading..."
     }
 }
 

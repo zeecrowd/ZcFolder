@@ -11,7 +11,7 @@ FocusScope {
     z: parent.z+1
 	
     property var context
-    property string title : qsTr("your new comment :")
+    property string title : qsTr("Your new comment:")
     property string message
     property string button1: qsTr("Cancel")
     property string button2: qsTr("Add")
